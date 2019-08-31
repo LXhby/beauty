@@ -1,0 +1,69 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "辰风生物·卜瑞塔美妆"
+			}
+		},
+		{
+			"path": "pages/goods/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/shopcar/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/about/index",
+			"style": {
+				"navigationBarTitleText": "会员中心"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#fd82d1",
+		"selectedColor": "#ff0080",
+		"borderStyle": "black",
+		"backgroundColor": "#FFFFFF",
+		"list": [{
+				"pagePath": "pages/home/index",
+				"iconPath": "static/home1.png",
+				"selectedIconPath": "static/home2.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/goods/index",
+				"iconPath": "static/sheet1.png",
+				"selectedIconPath": "static/sheet2.png",
+				"text": "美妆帮"
+			}, {
+				"pagePath": "pages/shopcar/index",
+				"iconPath": "static/shopcar1.png",
+				"selectedIconPath": "static/shopcar2.png",
+				"text": "购物车"
+			}, {
+				"pagePath": "pages/my/index",
+				"iconPath": "static/my1.png",
+				"selectedIconPath": "static/my2.png",
+				"text": "我的"
+			}
+		]
+	}
+}

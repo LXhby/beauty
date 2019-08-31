@@ -1,0 +1,1 @@
+<view class="about-page data-v-5cd29401"><top-bar vue-id="1" rightText="实名认证" detailist="{{detailist}}" isreal="{{false}}" class="data-v-5cd29401" bind:__l="__l"></top-bar></view>

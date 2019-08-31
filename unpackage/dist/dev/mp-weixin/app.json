@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/goods/index",
+    "pages/shopcar/index",
+    "pages/my/index",
+    "pages/about/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#fd82d1",
+    "selectedColor": "#ff0080",
+    "borderStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "iconPath": "static/home1.png",
+        "selectedIconPath": "static/home2.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/goods/index",
+        "iconPath": "static/sheet1.png",
+        "selectedIconPath": "static/sheet2.png",
+        "text": "美妆帮"
+      },
+      {
+        "pagePath": "pages/shopcar/index",
+        "iconPath": "static/shopcar1.png",
+        "selectedIconPath": "static/shopcar2.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "iconPath": "static/my1.png",
+        "selectedIconPath": "static/my2.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {}
+}
