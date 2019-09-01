@@ -29,6 +29,12 @@
 			"style": {
 				"navigationBarTitleText": "会员中心"
 			}
+		},
+		{
+			"path": "pages/benefits/PaySuccess",
+			"style": {
+				"navigationBarTitleText": "付款成功"
+			}
 		}
 	],
 	"globalStyle": {
