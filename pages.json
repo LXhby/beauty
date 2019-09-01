@@ -65,6 +65,12 @@
 			"style": {
 				"navigationBarTitleText": "关于我们"
 			}
+		},
+		{
+			"path": "pages/benefits/PaySuccess",
+			"style": {
+				"navigationBarTitleText": "付款成功"
+			}
 		}
 	],
 	"globalStyle": {
