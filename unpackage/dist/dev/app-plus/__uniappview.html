@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    <head>
+        <meta charset="UTF-8" />
+        <script>
+            var coverSupport = 'CSS' in window && typeof CSS.supports === 'function' && (CSS.supports('top: env(a)') ||
+                CSS.supports('top: constant(a)'))
+            document.write(
+                '<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' +
+                (coverSupport ? ', viewport-fit=cover' : '') + '" />')
+        </script>
+        <title>View</title>
+        <style>
+            * {
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            input[type="search"i]::-webkit-search-cancel-button {
+                display: none;
+            }
+        </style>
+        <script>
+            var __wxConfig = {"debug":false,"appname":"beauty","entryPagePath":"pages/home/index.html","page":{"pages/home/index.html":{"window":{"navigationBarTitleText":"辰风生物·卜瑞塔美妆","usingComponents":{"top-bar":"/components/account/index1","uni-grid":"/components/uni-grid/uni-grid","uni-grid-item":"/components/uni-grid-item/uni-grid-item"}}},"pages/goods/index.html":{"window":{"navigationBarTitleText":"uni-app","usingComponents":{}}},"pages/shopcar/index.html":{"window":{"navigationBarTitleText":"uni-app","usingComponents":{}}},"pages/my/index.html":{"window":{"navigationBarTitleText":"uni-app","usingComponents":{"top-bar":"/components/account/index1","uni-grid":"/components/uni-grid/uni-grid","uni-grid-item":"/components/uni-grid-item/uni-grid-item"}}},"pages/my/fans.html":{"window":{"navigationBarTitleText":"我的粉丝","usingComponents":{"top-bar":"/components/account/index1"}}},"pages/my/reward.html":{"window":{"navigationBarTitleText":"我的奖金","usingComponents":{"top-bar":"/components/account/index1"}}},"pages/my/news.html":{"window":{"navigationBarTitleText":"我的消息","usingComponents":{"top-bar":"/components/account/index1"}}},"pages/my/serverule.html":{"window":{"navigationBarTitleText":"服务条款","usingComponents":{"top-bar":"/components/account/index1"}}},"pages/about/index.html":{"window":{"navigationBarTitleText":"关于我们","usingComponents":{"top-bar":"/components/account/index1"}}}},"global":{"window":{"navigationBarTextStyle":"black","navigationBarTitleText":"uni-app","navigationBarBackgroundColor":"#F8F8F8","backgroundColor":"#F8F8F8"}},"tabBar":{"color":"#fd82d1","selectedColor":"#ff0080","backgroundColor":"#FFFFFF","borderStyle":"black","list":[{"pagePath":"pages/home/index.html","iconPath":"static/home1.png","selectedIconPath":"static/home2.png","text":"首页"},{"pagePath":"pages/goods/index.html","iconPath":"static/sheet1.png","selectedIconPath":"static/sheet2.png","text":"美妆帮"},{"pagePath":"pages/shopcar/index.html","iconPath":"static/shopcar1.png","selectedIconPath":"static/shopcar2.png","text":"购物车"},{"pagePath":"pages/my/index.html","iconPath":"static/my1.png","selectedIconPath":"static/my2.png","text":"我的"}],"position":"bottom"},"networkTimeout":{"request":60000,"connectSocket":60000,"uploadFile":60000,"downloadFile":60000},"platform":"devtools","pages":["pages/home/index","pages/goods/index","pages/shopcar/index","pages/my/index","pages/my/fans","pages/my/reward","pages/my/news","pages/my/serverule","pages/about/index"],"nvueCompiler":"weex","renderer":"auto","splashscreen":{"alwaysShowBeforeRender":true,"autoclose":false},"compilerVersion":"2.2.2","usingComponents":{}}
+        </script>
+        <script>
+            var __id__ = '';
+            window.__dispatchGenerateFunc__ = function(page) {
+                __id__ = page;
+                document.title = page;
+                // window.history.pushState('', '', page);
+                var wxss = page.replace('.html', '.wxss')
+                if (
+                    typeof __wxAppCode__ !== 'undefined' &&
+                    __wxAppCode__.hasOwnProperty(wxss)
+                ) {
+                    var setCssToHead = __wxAppCode__[wxss]
+                    typeof setCssToHead === 'function' && setCssToHead()
+                    document.dispatchEvent(new CustomEvent("generateFuncReady", {
+                        detail: {
+                            generateFunc: $gwx(page.replace('.html', '.wxml'))
+                        }
+                    }));
+                } else {
+                    plus.webview.currentWebview().setJsFile('_www/' + page.replace('.html', '.js'));
+                }
+            };
+        </script>
+        <script src="__uniappes6.js"></script>
+        <script src="uniapp://ready"></script>
+    </head>
+
+    <body>
+        <div></div>
+    </body>
+
+</html>

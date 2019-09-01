@@ -25,9 +25,33 @@
 			}
 		},
 		{
+			"path": "pages/my/fans",
+			"style": {
+				"navigationBarTitleText": "我的粉丝"
+			}
+		},
+		{
+			"path": "pages/my/reward",
+			"style": {
+				"navigationBarTitleText": "我的奖金"
+			}
+		},
+		{
+			"path": "pages/my/news",
+			"style": {
+				"navigationBarTitleText": "我的消息"
+			}
+		},
+		{
+			"path": "pages/my/serverule",
+			"style": {
+				"navigationBarTitleText": "服务条款"
+			}
+		},
+		{
 			"path": "pages/about/index",
 			"style": {
-				"navigationBarTitleText": "会员中心"
+				"navigationBarTitleText": "关于我们"
 			}
 		},
 		{

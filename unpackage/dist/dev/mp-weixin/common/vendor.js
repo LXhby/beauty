@@ -1,9 +1,9 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
 
 /***/ 0:
-/*!*******************************************************!*\
-  !*** /Users/hubingyu/Documents/beauty-master/main.js ***!
-  \*******************************************************/
+/*!*****************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1608,9 +1608,9 @@ function normalizeComponent (
 /***/ }),
 
 /***/ 11:
-/*!***************************************************************************************!*\
-  !*** /Users/hubingyu/Documents/beauty-master/main.js?{"page":"pages%2Fhome%2Findex"} ***!
-  \***************************************************************************************/
+/*!*************************************************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js?{"page":"pages%2Fhome%2Findex"} ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1625,9 +1625,9 @@ createPage(_index.default);
 /***/ }),
 
 /***/ 19:
-/*!****************************************************************************************!*\
-  !*** /Users/hubingyu/Documents/beauty-master/main.js?{"page":"pages%2Fgoods%2Findex"} ***!
-  \****************************************************************************************/
+/*!**************************************************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js?{"page":"pages%2Fgoods%2Findex"} ***!
+  \**************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7591,9 +7591,9 @@ internalMixin(Vue);
 /***/ }),
 
 /***/ 25:
-/*!******************************************************************************************!*\
-  !*** /Users/hubingyu/Documents/beauty-master/main.js?{"page":"pages%2Fshopcar%2Findex"} ***!
-  \******************************************************************************************/
+/*!****************************************************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js?{"page":"pages%2Fshopcar%2Findex"} ***!
+  \****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7639,9 +7639,9 @@ module.exports = g;
 /***/ }),
 
 /***/ 31:
-/*!*************************************************************************************!*\
-  !*** /Users/hubingyu/Documents/beauty-master/main.js?{"page":"pages%2Fmy%2Findex"} ***!
-  \*************************************************************************************/
+/*!***********************************************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js?{"page":"pages%2Fmy%2Findex"} ***!
+  \***********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7655,10 +7655,27 @@ createPage(_index.default);
 
 /***/ }),
 
+/***/ 39:
+/*!**********************************************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js?{"page":"pages%2Fmy%2Ffans"} ***!
+  \**********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _fans = _interopRequireDefault(__webpack_require__(/*! ./pages/my/fans.vue */ 40));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_fans.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
 /***/ 4:
-/*!**********************************************************!*\
-  !*** /Users/hubingyu/Documents/beauty-master/pages.json ***!
-  \**********************************************************/
+/*!********************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/pages.json ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7667,10 +7684,10 @@ createPage(_index.default);
 
 /***/ }),
 
-/***/ 74:
-/*!****************************************************************************************!*\
-  !*** /Users/hubingyu/Documents/beauty-master/main.js?{"page":"pages%2Fabout%2Findex"} ***!
-  \****************************************************************************************/
+/***/ 47:
+/*!************************************************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js?{"page":"pages%2Fmy%2Freward"} ***!
+  \************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7678,7 +7695,58 @@ createPage(_index.default);
 /* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
 
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _index = _interopRequireDefault(__webpack_require__(/*! ./pages/about/index.vue */ 75));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var _reward = _interopRequireDefault(__webpack_require__(/*! ./pages/my/reward.vue */ 48));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_reward.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 55:
+/*!**********************************************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js?{"page":"pages%2Fmy%2Fnews"} ***!
+  \**********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _news = _interopRequireDefault(__webpack_require__(/*! ./pages/my/news.vue */ 56));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_news.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 63:
+/*!***************************************************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js?{"page":"pages%2Fmy%2Fserverule"} ***!
+  \***************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _serverule = _interopRequireDefault(__webpack_require__(/*! ./pages/my/serverule.vue */ 64));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+createPage(_serverule.default);
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 71:
+/*!**************************************************************************************************!*\
+  !*** /Users/lxandhby/Documents/HBuilderProjects/beauty/main.js?{"page":"pages%2Fabout%2Findex"} ***!
+  \**************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(createPage) {__webpack_require__(/*! uni-pages */ 4);
+
+var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _index = _interopRequireDefault(__webpack_require__(/*! ./pages/about/index.vue */ 72));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_index.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
 

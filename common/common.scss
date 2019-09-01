@@ -1,0 +1,25 @@
+@import "../uni.scss";
+.main-title{
+	display: flex;
+	align-content: center;
+	padding:10rpx 0  20rpx 28rpx;
+	border-bottom:1px solid $uni-border-color;
+	.line{
+		width: 8rpx;
+		font-size: 32rpx;
+		height: 32rpx;
+		border-radius: 8rpx;
+		background-color: $uni-bg-color ;
+	}
+	.text{
+		margin-left: 10rpx;
+		font-size: 32rpx;
+		line-height: 32rpx;
+		color: $uni-bg-color;
+	}
+}
+.bottom-line{
+	padding: 50rpx 0 45rpx 0;
+	text-align: center;
+	color: $uni-text-color-grey;
+}
