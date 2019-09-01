@@ -37,6 +37,18 @@
 			}
 		},
 		{
+			"path": "pages/my/address",
+			"style": {
+				"navigationBarTitleText": "收货地址"
+			}
+		},
+		{
+			"path": "pages/my/newaddress",
+			"style": {
+				"navigationBarTitleText": "地址"
+			}
+		},
+		{
 			"path": "pages/my/news",
 			"style": {
 				"navigationBarTitleText": "我的消息"

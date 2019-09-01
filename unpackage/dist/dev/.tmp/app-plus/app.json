@@ -6,6 +6,8 @@
     "pages/my/index",
     "pages/my/fans",
     "pages/my/reward",
+    "pages/my/address",
+    "pages/my/newaddress",
     "pages/my/news",
     "pages/my/serverule",
     "pages/about/index"

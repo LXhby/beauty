@@ -4,7 +4,7 @@
 		<view class="main">
 			<view class="main-title">
 				<view class="line"></view>
-				<text class="text">服务条款</text>
+				<text class="text">我的奖金</text>
 			</view>
 			<view class="main-content">
 				<view class="total-top uni-flex uni-row" style="justify-content: space-between;">
