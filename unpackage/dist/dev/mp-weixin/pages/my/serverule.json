@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "服务条款",
+  "usingComponents": {
+    "top-bar": "/components/account/index1"
+  }
+}

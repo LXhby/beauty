@@ -4,6 +4,10 @@
     "pages/goods/index",
     "pages/shopcar/index",
     "pages/my/index",
+    "pages/my/fans",
+    "pages/my/reward",
+    "pages/my/news",
+    "pages/my/serverule",
     "pages/about/index"
   ],
   "subPackages": [],

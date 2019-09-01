@@ -15,6 +15,7 @@
 <style>
 	/* #ifndef APP-PLUS-NVUE */
 	@import "./common/uni.css";
+
 	/*每个页面公共css */
 	/* #endif*/
 </style>
