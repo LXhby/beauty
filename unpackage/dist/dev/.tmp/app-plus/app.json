@@ -10,7 +10,8 @@
     "pages/my/newaddress",
     "pages/my/news",
     "pages/my/serverule",
-    "pages/about/index"
+    "pages/about/index",
+    "pages/benefits/PaySuccess"
   ],
   "window": {
     "navigationBarTextStyle": "black",

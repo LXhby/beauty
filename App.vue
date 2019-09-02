@@ -19,3 +19,26 @@
 	/*每个页面公共css */
 	/* #endif*/
 </style>
+<style lang="scss">
+	@font-face {
+		font-family: 'iconfont';
+		/* project id 1377410 */
+		src: url('https://at.alicdn.com/t/font_1377503_wk4mbv1sumf.eot');
+		src: url('https://at.alicdn.com/t/font_1377503_on63jn93awp.ttf') format('truetype');
+	}
+	.iconfont {
+		font-family: iconfont !important;
+		font-size: 32upx;
+		font-style: normal;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale
+	}
+	.cart-page {
+		.uni-checkbox-input {
+			background-color: $uni-bg-color;
+			border-radius: 50%;
+			border:1px solid $uni-bg-color;
+			margin-right: 25rpx;
+		}
+	}
+</style>
