@@ -34,11 +34,5 @@
 		-moz-osx-font-smoothing: grayscale
 	}
 	.cart-page {
-		.uni-checkbox-input {
-			background-color: $uni-bg-color;
-			border-radius: 50%;
-			border:1px solid $uni-bg-color;
-			margin-right: 25rpx;
-		}
 	}
 </style>

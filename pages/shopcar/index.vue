@@ -14,7 +14,7 @@
 				<view class="goods-item">
 					<view class="shop-name uni-flex uni-row" style="align-items: center; justify-content: space-between;">
 						<view class="uni-flex uni-row name-box" style="align-items: center; ">
-							<checkbox value="cb" checked="true" color="#fff" style="transform:scale(0.8);" />
+							<checkbox value="cb" checked="true"  color="#ff0080" style="transform:scale(0.8);" />
 							<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
 							<text>王晓文的VIP会员店铺</text>
 						</view>
@@ -22,7 +22,7 @@
 					</view>
 					<view class="detail uni-flex uni-row">
 						<view class="left uni-flex uni-row" style="align-items: center;">
-							<checkbox value="cb" checked="true" color="#fff" style="transform:scale(0.8);" />
+							<checkbox value="cb" checked="true" color="#ff0080" style="transform:scale(0.8);" />
 							<image src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90" mode="aspectFill"></image>
 						</view>
 						<view class="right">
@@ -30,36 +30,41 @@
 							<view class="size">
 								商品规格
 							</view>
-							<view class="bottom">
-								<text class="num">￥128</text>
-								<text class="send">赠送128个金币</text>
-								<uni-number-box :min="1"></uni-number-box>
-							</view>
-						</view>
-					</view>
-					<view class="detail">
-						<view class="left uni-flex uni-row" style="align-items: center;">
-							<checkbox value="cb" checked="true" color="#fff" style="transform:scale(0.8);" />
-							<image src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90" mode="aspectFill"></image>
-						</view>
-						<view class="right">
-							<text class="name">包图新款女式化妆护肤防晒霜 长效保湿安全护肤</text>
-							<view class="size">
-								商品规格
-							</view>
-							<view class="bottom">
-								<text>￥128</text>
-								<text>赠送128个金币</text>
-								<uni-number-box :min="1"></uni-number-box>
+							<view class="bottom  uni-flex uni-row">
+								<view class="num-box" style="overflow: hidden;">
+									<text class="num">￥1288</text>
+									<text class="send">赠送128个金币</text>
+								</view>
+								<view class="number-box">
+									<uni-number-box :min="1" ></uni-number-box>
+								</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
-			<view class="handle-bottom uni-flex uni-row">
-				<label class="radio">
-					<checkbox value="cb" checked="true" color="#fff" style="transform:scale(0.8);" />全选
-				</label>
+			<view class="handle-bottom ">
+				<view class="shop-bottom uni-flex uni-row">
+					<view class="all-left">
+						<label class="radio">
+							<checkbox value="cb" checked="true" color="#ff0080" style="transform:scale(0.8);" />全选
+						</label>
+						<text>赠送128个金币</text>
+					</view>
+					<view class="all-right uni-flex uni-row">
+						<text class="combined">合计</text>
+						<view>
+							<view class="count-box">
+								<view class="count-num">￥256</view>  
+								<!-- 大于7位数 弹窗-->
+								<text class="gray-color">
+									省256元
+								</text>
+							</view>
+						</view>
+						<button type="primary" size="mini">确认订单</button>
+					</view>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -140,6 +145,7 @@
 				height: calc(100% - 90rpx);
 
 				.goods-item {
+					border-radius: 5px;
 					background-color: #fff;
 
 					.shop-name {
@@ -160,6 +166,7 @@
 						image {
 							width: 40rpx;
 							height: 40rpx;
+							margin-left: 10rpx;
 							margin-right:10rpx;
 							border-radius: 50%;
 							overflow: hidden;
@@ -172,10 +179,11 @@
 						border-bottom:1px solid $uni-border-color;
 						align-items:flex-start;
 						.left{
-							margin-right: 25rpx;
+							margin-right: 20rpx;
 							image{
-								width: 140rpx;
-								height: 140rpx;
+								width: 150rpx;
+								height: 150rpx;
+								margin-left: 10rpx;
 							}
 						}
 						.right{
@@ -186,22 +194,35 @@
 							}
 							.size{
 								display: inline-block;
+								margin: 2rpx 0;
 								height: 40rpx;
 								padding: 0 84rpx 0 15rpx;
 								line-height: 40rpx;
-								font-size: 24rpx;
+								font-size: 22rpx;
 								color: $uni-text-color-grey;
 								background: #f9f9f9;
 							}
 							.bottom{
+								align-items:flex-end;
+								flex-wrap: wrap;
+								justify-content:space-between;
 								text{
 									font-size: 24rpx;
 								}
-								.num{			
-									color: $uni-bg-color;
+								.num-box{
+									white-space:nowrap;
+									.num{
+										color: $uni-bg-color;
+									}
+									.send{
+										color: $uni-text-color-grey;
+										font-size: 20rpx;
+										margin-left: 10rpx;
+									}
 								}
-								.send{
-									color: $uni-text-color-grey;
+								.number-box{
+									flex: 1;
+									text-align: right;
 								}
 							}
 						}
@@ -210,12 +231,55 @@
 			}
 
 			.handle-bottom {
-				position: absolute;
-				bottom: 0px;
+				position: fixed;
+				bottom: 50px;
 				left: 0px;
 				width: 100%;
 				height: 90rpx;
 				background-color: #fff;
+				.shop-bottom{
+					width: 100%;
+					height: 100%;
+					justify-content: space-between;
+					align-items:center;
+					.all-left{
+						margin-left: 20rpx;
+						text{
+							color: $uni-bg-color;
+							font-size: 20rpx;
+							margin-left: 10rpx;
+						}
+					}
+					.all-right{
+						margin-right: 20rpx;
+						align-items: center;
+						.combined{
+							margin-right: 10rpx;
+						}
+						.count-box{
+							margin-right:20rpx;
+							.count-num{
+								color: $uni-bg-color;
+								font-size: 28rpx;
+							}
+							.gray-color{
+								font-size: 20rpx;
+								color: $uni-text-color-grey;
+							}
+						}
+						
+						button{
+							display: flex;
+							align-content: center;
+							justify-content: center;
+							width: 212rpx;
+							height: 58rpx;
+							border-radius: 58rpx;
+							font-size: 28rpx;
+							background-color: $uni-bg-color ;
+						}
+					}
+				}
 			}
 		}
 

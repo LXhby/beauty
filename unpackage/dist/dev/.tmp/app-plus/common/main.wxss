@@ -1666,10 +1666,4 @@ radio-group label, checkbox-group label{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.cart-page .uni-checkbox-input {
-  background-color: #ff0080;
-  border-radius: 50%;
-  border: 1px solid #ff0080;
-  margin-right: 25rpx;
-}
 

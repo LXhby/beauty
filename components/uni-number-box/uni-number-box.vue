@@ -109,10 +109,10 @@ export default {
 };
 </script>
 <style lang="scss">
-$numbox-btn-width: 40upx;
-$numbox-input-width: 40upx;
-$numbox-height: 30upx;
-$uni-font-size-xxl: 30upx;
+$numbox-btn-width: 56upx;
+$numbox-input-width: 56upx;
+$numbox-height: 44upx;
+$uni-font-size-xxl: 44upx;
 
 .uni-numbox {
   display: inline-flex;
@@ -131,7 +131,7 @@ $uni-font-size-xxl: 30upx;
     left: -50%;
     right: -50%;
     bottom: -50%;
-    border: 1px solid $uni-border-color;
+    border: 1px solid #ccc;
     border-radius: $uni-border-radius-lg;
     transform: scale(0.5);
   }
@@ -141,7 +141,7 @@ $uni-font-size-xxl: 30upx;
     margin: 0;
     background-color: #f9f9f9;
     width: $numbox-btn-width;
-    font-size: $uni-font-size-xxl;
+    font-size: 24rpx;
     height: 100%;
     line-height: $numbox-height;
     text-align: center;
@@ -170,7 +170,7 @@ $uni-font-size-xxl: 30upx;
       right: -50%;
       bottom: -50%;
       border-style: solid;
-      border-color: $uni-border-color;
+      border-color: #ccc;
       border-left-width: 1px;
       border-right-width: 1px;
       border-top-width: 0;
