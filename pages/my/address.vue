@@ -8,8 +8,10 @@
 					<text class="text">收货地址</text>
 				</view>
 				<view class="right">
-					<button class="mini-btn" type="primary" size="mini">获取微信</button>
-					<button class="mini-btn" type="primary" size="mini">新增地址</button>
+					<view class="mini-btn btn" type="primary">获取微信</view>
+					<navigator url="/pages/my/newaddress">
+						<view class="btn" type="primary">新增地址</view>
+					</navigator>
 				</view>
 
 			</view>
@@ -22,23 +24,21 @@
 						</view>
 						<text class="address">北京市平昌区回龙观镇东村家园物业写字楼205室</text>
 					</view>
-					<view class="edit">
-						<label class="radio"><radio value="r1" checked="true" />设置默认</label>
-					</view>
-				</view>
-				<view class="item-box">
-					<view class="item">
-						<view class="user">
-							<text class="name">王晓文</text>
-							<text>18676766667</text>
+					<view class="edit uni-flex uni-row">
+						<label class="radio">
+							<radio value="r1" checked="true" color="#ff0080" style="transform:scale(0.7)" />设置默认</label>
+						<view class="uni-flex uni-row handle-box">
+							<view class="">
+								<text class="iconfont">&#xe73e;</text>
+								<text>修改</text>
+							</view>
+							<view class="delete">
+								<text class="iconfont">&#xe614;</text>
+								<text>删除</text>
+							</view>
 						</view>
-						<text class="address">北京市平昌区回龙观镇东村家园物业写字楼205室</text>
-					</view>
-					<view class="edit">
-						<label class="radio"><radio value="r1" checked="true" />设置默认</label>
 					</view>
 				</view>
-
 			</view>
 		</view>
 		<view class="bottom-line">
@@ -84,22 +84,72 @@
 	.address-page {
 		.main {
 			.main-title {
+				justify-content: space-between;
 				align-items: center;
+
+				.right {
+					flex: 1;
+					display: flex;
+					align-items: center;
+					justify-content: flex-end;
+					padding-right: 47rpx;
+
+					.btn {
+						padding: 0px;
+						margin: 0px;
+						width: 100rpx;
+						height: 37rpx;
+						line-height: 37rpx;
+						background-color: $uni-bg-color;
+						font-size: 20rpx;
+						text-align: center;
+						color: #fff;
+						border-radius: 4rpx;
+						border: 1px solid $uni-bg-color;
+					}
+
+					.mini-btn {
+						margin-right: 20rpx;
+					}
+				}
 			}
 
 			.main-content {
 				.item-box {
 					padding: 0 38rpx;
 					margin-bottom: 20rpx;
-					background-color:#f4f4f4;
+					background-color: #f1f1f1;
+
 					.item {
-						padding:0 12rpx;
-						border-bottom: 1px solid $uni-border-color;
+						padding: 4rpx 12rpx;
+						line-height: 50rpx;
+						border-bottom: 1px solid #e6e6e6;
 						color: $uni-text-color;
-						.user{
-							.name{
+
+						.user {
+							.name {
 								margin-right: 20rpx;
 							}
+						}
+
+					}
+
+					.edit {
+						height: 58rpx;
+						align-items: center;
+						justify-content: space-between;
+						color: $uni-text-color;
+
+						.handle-box {
+							padding-right: 9rpx;
+
+							.delete {
+								margin-left: 24rpx;
+							}
+						}
+
+						.iconfont {
+							font-size: 24rpx;
 						}
 					}
 				}

@@ -2,16 +2,19 @@
 	<view class="my-page">
 		<top-bar rightText="实名认证" :detailist="detailist" :isreal="false"></top-bar>
 		<view class="active-nav">
-			<view class="uni-flex uni-row nav-title">
-				<view class="nav-left">
-					<text class="iconfont">&#xe643;</text>
-					<text>我的订单</text>
+			<navigator url="/pages/my/order">
+				<view class="uni-flex uni-row nav-title">
+					<view class="nav-left">
+						<text class="iconfont">&#xe643;</text>
+						<text>我的订单</text>
+					</view>
+					<view class="order-nav">
+						<text>全部订单</text>
+						<text class="iconfont">&#xe642;</text>
+					</view>
 				</view>
-				<view class="order-nav">
-					<text>全部订单</text>
-					<text class="iconfont">&#xe642;</text>
-				</view>
-			</view>
+			</navigator>
+			
 			<uni-grid :column="5" :show-border="false" :square="false" class="my-list">
 				<uni-grid-item>
 					<image class="image" src="../../static/ic_待付款.png" mode="aspectFill" />
@@ -75,10 +78,11 @@
 			<view class="all-item">
 				<view class="item-left">
 					<text class="iconfont" :style="{color:'#d351ff'}" style="font-size: 44rpx;">&#xe620;</text>
-					<text class="nav-text">会议活动</text>
+					<text class="nav-text">上课记录</text>
 				</view>
 				<text class="iconfont arow">&#xe610;</text>
 			</view>
+			<navigator url="/pages/my/address">
 			<view class="all-item">
 				<view class="item-left">
 					<text class="iconfont" :style="{color:'#00b2b2'}" style="font-size: 44rpx;">&#xe657;</text>
@@ -86,6 +90,7 @@
 				</view>
 				<text class="iconfont arow">&#xe610;</text>
 			</view>
+			</navigator>
 			<navigator url="/pages/my/news">
 				<view class="all-item">
 					<view class="item-left">

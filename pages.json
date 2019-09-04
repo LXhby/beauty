@@ -25,6 +25,18 @@
 			}
 		},
 		{
+			"path": "pages/my/order",
+			"style": {
+				"navigationBarTitleText": "我的订单"
+			}
+		},
+		{
+			"path": "pages/my/shipment",
+			"style": {
+				"navigationBarTitleText": "出货记录"
+			}
+		},
+		{
 			"path": "pages/my/fans",
 			"style": {
 				"navigationBarTitleText": "我的粉丝"
@@ -37,6 +49,12 @@
 			}
 		},
 		{
+			"path": "pages/my/haveclass",
+			"style": {
+				"navigationBarTitleText": "上课记录"
+			}
+		},
+		{
 			"path": "pages/my/address",
 			"style": {
 				"navigationBarTitleText": "收货地址"
@@ -45,7 +63,7 @@
 		{
 			"path": "pages/my/newaddress",
 			"style": {
-				"navigationBarTitleText": "地址"
+				"navigationBarTitleText": "新建地址"
 			}
 		},
 		{
