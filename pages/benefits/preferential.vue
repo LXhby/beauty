@@ -10,11 +10,63 @@
 				@click="changeTab(index)"
 			>{{item.name}}</view>
 		</scroll-view>
+		
+		<!-- 下拉刷新组件 -->
+		<mix-pulldown-refresh ref="mixPulldownRefresh" class="panel-content" :top="90" @refresh="onPulldownReresh" @setEnableScroll="setEnableScroll">
+			<!-- 内容部分 -->
+			<swiper 
+				id="swiper"
+				class="swiper-box" 
+				:duration="300" 
+				:current="tabCurrentIndex" 
+				@change="changeTab"
+			>
+				<swiper-item v-for="tabItem in tabBars" :key="tabItem.id">
+					<scroll-view 
+						class="panel-scroll-box" 
+						:scroll-y="enableScroll" 
+						@scrolltolower="loadMore"
+						>
+						
+						<view v-for="(item, index) in tabItem.newsList" :key="index" class="news-item" @click="navToDetails(item)">
+							<view class="item uni-flex uni-row">
+								<view class="left uni-flex uni-row">
+									<image src="../../static/ad3.jpg" mode="aspectFill"></image>
+									<view class="detail">
+										<text class="title">美白黄金美白黄金美白黄金美白黄金</text>
+										<view class="bottom ">
+											<text>限时购：3天18小时45秒</text>
+										</view>
+									</view>
+								</view>
+								
+								<view class="right">
+									<text class="dark-color">限时价</text>
+									<view class="money">
+										<text class="num">20600</text>
+										<text>积分</text>
+									</view>
+									<view class="btn">
+										+购物车
+									</view>
+								</view>
+							</view>
+						</view>
+						
+						<!-- 上滑加载更多组件 -->
+						<mix-load-more :status="tabItem.loadMoreStatus"></mix-load-more>
+					</scroll-view>
+				</swiper-item>
+			</swiper>
+		</mix-pulldown-refresh>
+		<!-- <view class="bottom-line">-- 我是有底线的卡瑞塔 --</view> -->
 	</view>
 </template>
 
 <script>
 	import commomTop from "./index.vue";
+	import mixPulldownRefresh from '@/components/mix-pulldown-refresh/mix-pulldown-refresh';
+	import mixLoadMore from '@/components/mix-load-more/mix-load-more';
 	let windowWidth = 0, scrollTimer = false, tabBar;
 	export default {
 		data(){
@@ -23,13 +75,16 @@
 				tabCurrentIndex: 0, //当前选项卡索引
 				scrollLeft: 0, //顶部选项卡左滑距离
 				tabBars:[
-					{name:'限时特惠'},
-					{name:'全部商品'},
-				]
+					{name:'限时特惠',newsList:[1,2,3]},
+					{name:'全部商品',newsList:[2]},
+				],
+				enableScroll: true,
 			}
 		},
 		components: {
 			commomTop,
+			mixPulldownRefresh,
+			mixLoadMore,
 		},
 		methods:{
 			//获得元素的size
@@ -47,7 +102,6 @@
 			},
 			//tab切换
 			async changeTab(e){
-				console.log(e)
 				if(scrollTimer){
 					//多次切换只执行最后一次
 					clearTimeout(scrollTimer);
@@ -100,13 +154,64 @@
 				}, 300)
 				
 			},
-			loadNewsList(){}
+			//请求数据
+			loadNewsList(type){
+				let tabItem = this.tabBars[this.tabCurrentIndex];
+				
+				//type add 加载更多 refresh下拉刷新
+				if(type === 'add'){
+					if(tabItem.loadMoreStatus === 2){
+						return;
+					}
+					tabItem.loadMoreStatus = 1;
+				}
+				// #ifdef APP-PLUS
+				else if(type === 'refresh'){
+					tabItem.refreshing = true;
+				}
+				// #endif
+				
+				//setTimeout模拟异步请求数据
+				setTimeout(()=>{
+					let list = json.newsList;
+					list.sort((a,b)=>{
+						return Math.random() > .5 ? -1 : 1; //静态数据打乱顺序
+					})
+					if(type === 'refresh'){
+						tabItem.newsList = []; //刷新前清空数组
+					}
+					list.forEach(item=>{
+						item.id = parseInt(Math.random() * 10000);
+						tabItem.newsList.push(item);
+					})
+					//下拉刷新 关闭刷新动画
+					if(type === 'refresh'){
+						this.$refs.mixPulldownRefresh && this.$refs.mixPulldownRefresh.endPulldownRefresh();
+						// #ifdef APP-PLUS
+						tabItem.refreshing = false;
+						// #endif
+						tabItem.loadMoreStatus = 0;
+					}
+					//上滑加载 处理状态
+					if(type === 'add'){
+						tabItem.loadMoreStatus = tabItem.newsList.length > 40 ? 2: 0;
+					}
+				}, 600)
+			},
+			//新闻详情
 		}
 	}
 </script>
 
 <style lang="scss">
+	@import "../../common/common.scss";
+	page{
+		height: 100%;
+		overflow: hidden;
+	}
 	.meeting-page{
+		height: 100%;
+		overflow: hidden;
 		.nav-bar{
 			position: relative;
 			z-index: 10;
@@ -152,6 +257,60 @@
 					background: #fff;
 					padding: 30px 0;
 					border-bottom: 2px solid #000;
+				}
+			}
+		}
+		.item{
+			padding: 20rpx;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom:20rpx solid $uni-border-color;
+			.left{
+				color:$uni-text-color;
+				
+				image{
+					width: 200rpx;
+					height: 150rpx;
+					margin-right:20rpx;
+				}
+				.detail{
+					width:240rpx;
+					
+					.title{
+						font-size: 28rpx;
+					}
+					.bottom{
+						margin-top:26rpx;
+						text{
+							font-size: 22rpx;
+							color: $uni-bg-color;
+						}
+					}
+				}
+			}
+			.right{
+				text-align: center;
+				color:$uni-text-color;
+				.dark-color{
+					color: $uni-bg-color;
+					font-size: 24rpx;
+				}
+				.money{
+					font-size: 24rpx;
+					.num{
+						font-size: 32rpx;
+					}
+				}
+				.btn{
+					width: 140rpx;
+					height: 45rpx;
+					margin-top:8rpx;
+					border-radius: 45rpx;
+					background: $uni-bg-color;
+					text-align: center;
+					color: #fff;
+					line-height: 45rpx;
+					font-size: 24rpx;
 				}
 			}
 		}

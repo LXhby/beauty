@@ -2,13 +2,24 @@
   "pages": [
     "pages/home/index",
     "pages/goods/index",
+    "pages/benefits/meeting",
+    "pages/benefits/preferential",
+    "pages/benefits/integral",
+    "pages/benefits/upvue",
     "pages/shopcar/index",
     "pages/my/index",
+    "pages/my/order",
+    "pages/my/shipment",
     "pages/my/fans",
     "pages/my/reward",
+    "pages/my/getmoney",
+    "pages/my/haveclass",
+    "pages/my/address",
+    "pages/my/newaddress",
     "pages/my/news",
     "pages/my/serverule",
-    "pages/about/index"
+    "pages/about/index",
+    "pages/benefits/PaySuccess"
   ],
   "subPackages": [],
   "window": {

@@ -133,6 +133,7 @@
 		}
 
 		.goods-content {
+			position: relative;
 			width: 100%;
 			height: 100%;
 			background: #f1f1f1;
@@ -232,7 +233,7 @@
 
 			.handle-bottom {
 				position: fixed;
-				bottom: 50px;
+				bottom: 0px;
 				left: 0px;
 				width: 100%;
 				height: 90rpx;

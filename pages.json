@@ -73,6 +73,12 @@
 			}
 		},
 		{
+			"path": "pages/my/getmoney",
+			"style": {
+				"navigationBarTitleText": "提现申请"
+			}
+		},
+		{
 			"path": "pages/my/haveclass",
 			"style": {
 				"navigationBarTitleText": "上课记录"

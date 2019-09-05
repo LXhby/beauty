@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "新建地址",
+  "usingComponents": {
+    "top-bar": "/components/account/index1",
+    "mpvue-city-picker": "/components/mpvue-citypicker/mpvueCityPicker"
+  }
+}
