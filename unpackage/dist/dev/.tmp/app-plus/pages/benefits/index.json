@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "特实惠",
+  "usingComponents": {
+    "top-bar": "/components/account/index1",
+    "uni-grid": "/components/uni-grid/uni-grid",
+    "uni-grid-item": "/components/uni-grid-item/uni-grid-item"
+  },
+  "component": true
+}

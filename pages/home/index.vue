@@ -2,7 +2,7 @@
 	<view class="home-page">
 		<top-bar rightText="店铺设置" :detailist="detailist" :isreal="false"></top-bar>
 		<view class="active-nav">
-			<uni-grid :column="4" :show-border="false" :square="false" @change="change">
+			<uni-grid :column="4" :show-border="false" :square="false" @change="goPage">
 				<uni-grid-item >
 					<image class="image" src="../../static/meeting.png" mode="aspectFill" />
 					<text class="text">会议活动</text>
@@ -61,7 +61,35 @@
 		},
 		data(){
 			return{
-				detailist:["可提现","待提现","产品余额"]
+				detailist:["可提现","待提现","产品额度"]
+			}
+		},
+		methods:{
+			goPage(event){
+				var index = event.detail.index;
+				switch (index){
+					case 0:
+					uni.navigateTo({
+					    url: '/pages/benefits/meeting'
+					});
+					break;
+					case 1:
+					uni.navigateTo({
+					    url: '/pages/benefits/preferential'
+					});
+					break;
+					case 2:
+					uni.navigateTo({
+					    url: '/pages/benefits/integral'
+					});
+					break;
+					case 3:
+					uni.navigateTo({
+					    url: '/pages/benefits/upvue'
+					});
+					break;
+				}
+				
 			}
 		}
 	}

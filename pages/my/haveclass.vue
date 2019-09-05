@@ -4,21 +4,71 @@
 		<view class="main">
 			<view class="main-title">
 				<view class="line"></view>
-				<text class="text">出货记录</text>
+				<text class="text">上课记录</text>
 			</view>
 			<view class="main-content">
-				<view class="total-top uni-flex uni-row" style="justify-content: space-between;">
-					<text>本月流水：￥2340.00元</text>
-					<text>：￥2340.00元</text>
-				</view>
-				<view class="item">
-					
+				<view class="list">
+					<view class="item uni-flex uni-row">
+						<view class="left uni-flex uni-column">
+							<view class="title">第一期某某课程某某课程某某课程</view>
+							<view class="bottom-box uni-flex uni-row">
+								<view class="time">
+									<text class="iconfont">&#xe6dd;</text>
+									<text>2019.09.12-2019.09.15</text>
+								</view>
+								<view class="address">
+									<text class="iconfont">&#xe853;</text>
+									<text>北京 九华山庄</text>
+								</view>
+							</view>
+						</view>
+						<view class="right dark">
+							<view class="num">
+								<text>9</text>天
+							</view>
+							<text>倒计时</text>
+						</view>
+					</view>
+					<view class="item uni-flex uni-row">
+						<view class="left uni-flex uni-column">
+							<view class="title">第一期某某课程某某课程某某课程</view>
+							<view class="bottom-box uni-flex uni-row">
+								<view class="time">
+									<text class="iconfont">&#xe6dd;</text>
+									<text>2019.09.12-2019.09.15</text>
+								</view>
+								<view class="address">
+									<text class="iconfont">&#xe853;</text>
+									<text>北京 九华山庄</text>
+								</view>
+							</view>
+						</view>
+						<view class="right dark">
+							<text>已签到</text>
+						</view>
+					</view>
+					<view class="item uni-flex uni-row">
+						<view class="left uni-flex uni-column">
+							<view class="title">第一期某某课程某某课程某某课程</view>
+							<view class="bottom-box uni-flex uni-row">
+								<view class="time">
+									<text class="iconfont">&#xe6dd;</text>
+									<text>2019.09.12-2019.09.15</text>
+								</view>
+								<view class="address">
+									<text class="iconfont">&#xe853;</text>
+									<text>北京 九华山庄</text>
+								</view>
+							</view>
+						</view>
+						<view class="right gray">
+							<text>未签到</text>
+						</view>
+					</view>
 				</view>
 			</view>
 		</view>
-		<view class="bottom-line">
-			-- 我是有底线的卡瑞塔 --
-		</view>
+		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 	</view>
 </template>
 
@@ -27,61 +77,121 @@
 	import topBar from "@/components/account/index1.vue";
 	export default {
 		components: {
-			topBar,
+			topBar
 		},
-		data(){
-			return{
-				detailist:["可提现","待提现","产品余额","粉丝量"]
-			}
+		data() {
+			return {
+				detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
+			};
 		}
-	}
+	};
 </script>
 
 <style lang="scss" scoped>
 	@import "../../style/topaccount.scss";
-		@import "../../common/common.scss";
+	@import "../../common/common.scss";
+
 	@font-face {
-	  font-family: 'iconfont';  /* project id 1377410 */
-	  src: url('https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.eot');
-	  src: url('https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.ttf') format('truetype');
+		font-family: "iconfont";
+		/* project id 1377410 */
+		src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.eot");
+		src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.ttf") format("truetype");
 	}
+
 	.iconfont {
 		font-family: iconfont !important;
 		font-size: 32upx;
 		font-style: normal;
 		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale
+		-moz-osx-font-smoothing: grayscale;
 	}
-	.reward-page{
-		.main{
-			.main-content{
-				padding:0 36rpx;
-				color: $uni-text-color;
-				.total-top{
+
+	.reward-page {
+		.main {
+			.main-content {
+				.total-top {
 					padding: 20rpx 12rpx;
 					border-bottom: 1px solid $uni-border-color;
 					font-size: 28rpx;
 					color: #304455;
 				}
-				.item{
-					padding: 20rpx 12rpx;
-					border-bottom: 1px solid $uni-border-color;
-					.money{
-						.bold{
-							color: $uni-bg-color;
+
+				.list {
+					padding: 0 30rpx;
+
+					.item {
+						align-items: center;
+						justify-content: space-between;
+						margin-top: 30rpx;
+						padding: 30rpx;
+						background-color: $uni-bg-color-hovers;
+						border-radius: 5px;
+
+						.left {
+							width: 500rpx;
+							height: 100rpx;
+							justify-content: space-between;
+
+							.title {
+								width: 100%;
+								overflow: hidden;
+								white-space: nowrap;
+								text-overflow: ellipsis;
+								font-size: 32rpx;
+								color: #000000;
+								font-weight: 600;
+							}
+
+							.bottom-box {
+								color: $uni-text-color;
+								justify-content: space-between;
+								align-items: center;
+
+								.time {
+									font-size: 24rpx;
+								}
+
+								.address {
+									font-size: 24rpx;
+								}
+
+								.iconfont {
+									color: $uni-text-color;
+								}
+							}
 						}
-						.status{
-							font-size: 24rpx;
+
+						.right {
+							display: flex;
+							justify-content: center;
+							flex-wrap: wrap;
+							align-items: center;
+							width: 90rpx;
+							height: 90rpx;
+							color: #fff;
+							border-radius: 5px;
+
+							text {
+								font-size: 24rpx;
+								line-height: 24rpx;
+							}
+
+							.num {
+								font-size: 24rpx;
+								line-height: 24rpx;
+
+								text {
+									font-size: 28rpx;
+								}
+							}
 						}
-					}
-					.from{
-						margin-top:8rpx;
-						font-size: 24rpx;
-						.first{
-							flex: 1;
+
+						.dark {
+							background-color: $uni-bg-color-grey;
 						}
-						.time{
-							color: $uni-text-color-grey;
+
+						.gray {
+							background-color: $uni-textbg-color-grey;
 						}
 					}
 				}

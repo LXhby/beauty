@@ -9,13 +9,37 @@
 		{
 			"path": "pages/goods/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "美妆帮"
+			}
+		},
+		{
+			"path": "pages/benefits/meeting",
+			"style": {
+				"navigationBarTitleText": "会议活动"
+			}
+		},
+		{
+			"path": "pages/benefits/preferential",
+			"style": {
+				"navigationBarTitleText": "特实惠"
+			}
+		},
+		{
+			"path": "pages/benefits/integral",
+			"style": {
+				"navigationBarTitleText": "积分购"
+			}
+		},
+		{
+			"path": "pages/benefits/upvue",
+			"style": {
+				"navigationBarTitleText": "升级VIP"
 			}
 		},
 		{
 			"path": "pages/shopcar/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "购物车"
 			}
 		},
 		{

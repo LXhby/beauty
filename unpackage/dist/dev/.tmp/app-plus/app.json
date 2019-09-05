@@ -2,6 +2,10 @@
   "pages": [
     "pages/home/index",
     "pages/goods/index",
+    "pages/benefits/meeting",
+    "pages/benefits/preferential",
+    "pages/benefits/integral",
+    "pages/benefits/upvue",
     "pages/shopcar/index",
     "pages/my/index",
     "pages/my/order",

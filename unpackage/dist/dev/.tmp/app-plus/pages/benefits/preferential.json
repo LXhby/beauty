@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "特实惠",
+  "usingComponents": {
+    "commom-top": "/pages/benefits/index"
+  }
+}
