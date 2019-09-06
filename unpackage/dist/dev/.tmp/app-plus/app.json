@@ -2,6 +2,8 @@
   "pages": [
     "pages/home/index",
     "pages/goods/index",
+    "pages/goods/detail",
+    "pages/goods/consulting",
     "pages/benefits/meeting",
     "pages/benefits/preferential",
     "pages/benefits/integral",
@@ -14,6 +16,7 @@
     "pages/my/reward",
     "pages/my/getmoney",
     "pages/my/haveclass",
+    "pages/my/collection",
     "pages/my/address",
     "pages/my/newaddress",
     "pages/my/news",

@@ -13,6 +13,18 @@
 			}
 		},
 		{
+			"path": "pages/goods/detail",
+			"style": {
+				"navigationBarTitleText": "商品详情"
+			}
+		},
+		{
+			"path": "pages/goods/consulting",
+			"style": {
+				"navigationBarTitleText": "咨询内容页"
+			}
+		},
+		{
 			"path": "pages/benefits/meeting",
 			"style": {
 				"navigationBarTitleText": "会议活动"
@@ -82,6 +94,12 @@
 			"path": "pages/my/haveclass",
 			"style": {
 				"navigationBarTitleText": "上课记录"
+			}
+		},
+		{
+			"path": "pages/my/collection",
+			"style": {
+				"navigationBarTitleText": "我的收藏"
 			}
 		},
 		{

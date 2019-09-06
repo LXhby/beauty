@@ -1,6 +1,4 @@
 {
   "navigationBarTitleText": "升级VIP",
-  "usingComponents": {
-    "commom-top": "/pages/benefits/index"
-  }
+  "usingComponents": {}
 }

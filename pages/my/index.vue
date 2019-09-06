@@ -83,6 +83,15 @@
           <text class="iconfont arow">&#xe610;</text>
         </view>
       </navigator>
+	  <navigator url="/pages/my/collection">
+	    <view class="all-item">
+	      <view class="item-left">
+	        <text class="iconfont" :style="{color:'#d351ff'}" style="font-size: 44rpx;">&#xe620;</text>
+	        <text class="nav-text">我的收藏</text>
+	      </view>
+	      <text class="iconfont arow">&#xe610;</text>
+	    </view>
+	  </navigator>
       <navigator url="/pages/my/address">
         <view class="all-item">
           <view class="item-left">

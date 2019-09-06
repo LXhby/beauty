@@ -79,21 +79,24 @@
 				border-bottom:20rpx solid $uni-border-color;
 				.left{
 					color:$uni-text-color;
-					
+					align-items:center;
 					image{
 						width: 200rpx;
 						height: 150rpx;
 						margin-right:20rpx;
 					}
 					.detail{
+						min-height:150rpx;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-around;
 						width:240rpx;
-						
 						.title{
 							font-size: 28rpx;
 						}
 						.bottom{
 							justify-content: space-between;
-							margin-top:20rpx;
+							// margin-top:20rpx;
 							text{
 								font-size: 20rpx;
 								color: $uni-text-color-grey;

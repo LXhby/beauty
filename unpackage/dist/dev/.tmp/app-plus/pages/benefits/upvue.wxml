@@ -1,1 +1,1 @@
-<view class="meeting-page"><commom-top vue-id="1" lightIndex="{{lightIndex}}" bind:__l="__l"></commom-top></view>
+<view class="vip-page data-v-56fc6c60"><view class="bg-box data-v-56fc6c60"></view><view class="main data-v-56fc6c60"></view></view>

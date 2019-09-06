@@ -1,22 +1,27 @@
 <template>
-	<view class="meeting-page">
-		<commom-top :lightIndex="lightIndex"></commom-top>
+	<view class="vip-page">
+		<view class="bg-box">
+			
+		</view>
+		<view class="main">
+			
+		</view>
 	</view>
 </template>
 
 <script>
-	import commomTop from "./index.vue";
 	export default {
 		components: {
-			commomTop,
+			
 		},
 		data(){
 			return{
-				lightIndex:3
+				
 			}
 		},
 	}
 </script>
 
-<style>
+<style lang="vip-page" scoped>
+	
 </style>
