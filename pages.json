@@ -31,6 +31,12 @@
 			}
 		},
 		{
+			"path": "pages/benefits/courseinfo",
+			"style": {
+				"navigationBarTitleText": "课程详情"
+			}
+		},
+		{
 			"path": "pages/benefits/preferential",
 			"style": {
 				"navigationBarTitleText": "特实惠"
@@ -64,6 +70,12 @@
 			"path": "pages/my/order",
 			"style": {
 				"navigationBarTitleText": "我的订单"
+			}
+		},
+		{
+			"path": "pages/my/orderinfo",
+			"style": {
+				"navigationBarTitleText": "订单详情"
 			}
 		},
 		{
