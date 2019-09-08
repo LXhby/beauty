@@ -23,8 +23,8 @@
 	@font-face {
 		font-family: 'iconfont';
 		/* project id 1377410 */
-		src: url('https://at.alicdn.com/t/font_1377503_wk4mbv1sumf.eot');
-		src: url('https://at.alicdn.com/t/font_1377503_on63jn93awp.ttf') format('truetype');
+		src: url('https://at.alicdn.com/t/font_1377410_dll3e2hv5gf.eot');
+		src: url('//at.alicdn.com/t/font_1377410_dll3e2hv5gf.ttf') format('truetype');
 	}
 	.iconfont {
 		font-family: iconfont !important;

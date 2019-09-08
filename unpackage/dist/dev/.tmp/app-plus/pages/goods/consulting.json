@@ -1,6 +1,4 @@
 {
   "navigationBarTitleText": "咨询内容页",
-  "usingComponents": {
-    "top-bar": "/components/account/index1"
-  }
+  "usingComponents": {}
 }
