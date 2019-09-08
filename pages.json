@@ -13,7 +13,7 @@
 			}
 		},
 		{
-			"path": "pages/goods/detail",
+			"path": "pages/home/detail",
 			"style": {
 				"navigationBarTitleText": "商品详情"
 			}
