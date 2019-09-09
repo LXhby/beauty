@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "咨询内容页",
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-badge": "/components/uni-badge/uni-badge"
+  }
 }

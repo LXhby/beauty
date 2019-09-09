@@ -334,7 +334,7 @@
 			height: 90rpx;
 			border-radius: 90rpx;
 			margin-top: 50rpx;
-			margin-bottom: 50rpx;
+		
 			background: $uni-bg-color;
 		}
 		.alert-box{

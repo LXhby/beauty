@@ -1,1 +1,1 @@
-<view class="_div"></view>
+<view class="withdrawal-page"><top-bar vue-id="1" rightText="实名认证" detailist="{{detailist}}" isreal="{{false}}" bind:__l="__l"></top-bar><view class="main"><view class="main-title"><view class="line"></view><text class="text">我的粉丝</text></view></view></view>

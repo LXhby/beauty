@@ -30,40 +30,40 @@
   src: url("//at.alicdn.com/t/font_1377410_wk4mbv1sumf.eot");
   src: url("//at.alicdn.com/t/font_1377410_wk4mbv1sumf.ttf") format("truetype");
 }
-.iconfont.data-v-94eaef76 {
+.iconfont.data-v-36e6270c {
   font-family: iconfont !important;
   font-size: 32rpx;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.home-page .active-nav .image.data-v-94eaef76 {
+.home-page .active-nav .image.data-v-36e6270c {
   width: 90rpx;
   height: 90rpx;
 }
-.home-page .active-nav .text.data-v-94eaef76 {
+.home-page .active-nav .text.data-v-36e6270c {
   font-size: 24rpx;
 }
-.home-page .goods-example.data-v-94eaef76 {
+.home-page .goods-example.data-v-36e6270c {
   border-top: 20rpx solid #f5f5f5;
   border-bottom: 20rpx solid #f5f5f5;
   width: 100%;
 }
-.home-page .goods-example .preferential.data-v-94eaef76 {
+.home-page .goods-example .preferential.data-v-36e6270c {
     width: 50%;
     position: relative;
 }
-.home-page .goods-example .preferential .hot-right.data-v-94eaef76 {
+.home-page .goods-example .preferential .hot-right.data-v-36e6270c {
       position: absolute;
       right: 0px;
       top: 0px;
       width: 70rpx;
       height: 70rpx;
 }
-.home-page .goods-example .preferential .hot-right .iconfont.data-v-94eaef76 {
+.home-page .goods-example .preferential .hot-right .iconfont.data-v-36e6270c {
         color: #ff0080;
 }
-.home-page .goods-example .goods-right.data-v-94eaef76 {
+.home-page .goods-example .goods-right.data-v-36e6270c {
     width: 50%;
 }
 

@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "提现申请",
-  "usingComponents": {}
+  "usingComponents": {
+    "top-bar": "/components/account/index1"
+  }
 }

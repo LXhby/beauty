@@ -1,1 +1,2 @@
+setCssToHead(["@charset \x22UTF-8\x22;\n",],undefined,{path:"./pages/my/getmoney.wxss"})();
 document.dispatchEvent(new CustomEvent("generateFuncReady", { detail: { generateFunc: $gwx('./pages/my/getmoney.wxml') } }));

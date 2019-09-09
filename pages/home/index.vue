@@ -23,7 +23,7 @@
 		</view>
 		<!-- 限时特惠 -->
 		<view class="goods-example uni-flex uni-row">
-			<view class="preferential" >
+			<view class="preferential" @click="goDetail">
 				<view class="hot-right">
 					<text class="iconfont">&#xe6c6;</text>
 					<text class="text">热销</text>
@@ -46,6 +46,10 @@
 				</view>
 			</view>
 		</view>
+		<navigator url="/pages/goods/consulting">
+			<button type="primary" >咨询也</button>
+		</navigator>
+		
 	</view>
 </template>
 
@@ -90,6 +94,11 @@
 					break;
 				}
 				
+			},
+			goDetail(){
+				uni.navigateTo({
+				    url: '/pages/home/detail'
+				});
 			}
 		}
 	}
