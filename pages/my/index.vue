@@ -67,6 +67,7 @@
           <text class="iconfont arow">&#xe610;</text>
         </view>
       </navigator>
+	   <navigator url="/pages/my/getmoney">
       <view class="all-item">
         <view class="item-left">
           <text class="iconfont" :style="{color:'#ff9858'}" style="font-size: 46rpx;">&#xe841;</text>
@@ -74,6 +75,7 @@
         </view>
         <text class="iconfont arow">&#xe610;</text>
       </view>
+	  </navigator>
       <navigator url="/pages/my/haveclass">
         <view class="all-item">
           <view class="item-left">

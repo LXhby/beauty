@@ -33,6 +33,4 @@
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale
 	}
-	.cart-page {
-	}
 </style>

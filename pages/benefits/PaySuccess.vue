@@ -40,20 +40,20 @@
 			padding: 0 60rpx;
 			margin: -280rpx 0 0;
 			.success-word {
-				color: $uni-bg-color-grey;
+				color: $uni-bg-color;
 				font-size: 40rpx;
 				font-weight: bold;
 			}
 			
 			.success-tips {
 				margin: 280rpx 0 70rpx 0;
-				font-weight: bold;
 				line-height: 45rpx;
-				color: $uni-text-color-grey;
+				color: $uni-text-color;
 			}
 			
 			.order {
 				margin-bottom: 30rpx;
+				background: #4aa3f0;
 			}
 			
 			.gohome {

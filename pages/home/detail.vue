@@ -71,7 +71,7 @@
 					<view class="line"></view>
 					<text class="text">粉丝们好评如潮</text>
 				</view>
-				<view class="right">
+				<view class="right" @click="gocomment">
 					620评论
 					<text class="iconfont">&#xe642;</text>
 				</view>
@@ -127,6 +127,36 @@
 			</view>
 		</view>
 		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
+		<view class="height-box">
+			
+		</view>
+		<view class="foot-main">
+			<view class="main-btns uni-flex uni-row">
+				<view class="icon-btn uni-flex uni-row">
+					<view class="btn-sm">
+						<text class="iconfont icon1">&#xe660;</text>
+						<view class="text-nav nav1">
+							首页
+						</view>
+					</view>
+					<view class="btn-sm">
+						<text class="iconfont">&#xe6c5;</text>
+						<view class="text-nav">
+							客服
+						</view>
+					</view>
+					<view class="btn-sm">
+						<text class="iconfont">&#xe69b;</text>
+						<view class="text-nav">
+							收藏
+						</view>
+					</view>
+				</view>
+				<button type="primary" class="btn1">加入购物车</button>
+				<button type="primary" class="btn2" @click="payGoods">立即购买</button>
+			</view>
+			
+		</view>
 	</view>
 </template>
 
@@ -138,6 +168,19 @@
 		},
 		data() {
 			return {}
+		},
+		methods:{
+			gocomment(){
+				uni.navigateTo({
+				    url: '/pages/home/comment'
+				});
+			},
+			payGoods(){
+				uni.navigateTo({
+				    url: '/pages/benefits/PaySuccess'
+				});
+				
+			}
 		}
 	}
 </script>
@@ -380,7 +423,65 @@
 		}
 		.bottom-line{
 			padding: 30rpx 0;
+			
 			background: #f1f1f1;
 		}
+		.height-box{
+			height:100rpx;
+		}
+		.foot-main{
+			
+			position: fixed;
+			left: 0;
+			bottom: 0;
+			width:100%;
+			height:100rpx;
+			.main-btns{
+				align-items: center;
+				height: 100%;
+			}
+			.icon-btn{
+				flex:1;
+				display: flex;
+				height: 100%;
+				flex-direction: row;
+				justify-content: space-around;
+				background:#fff;
+				align-items:center;
+				
+				.btn-sm{
+					text-align:center;
+					.iconfont{
+						color: #4aa3f0;
+						font-size: 32rpx;
+					}
+					.text-nav{
+						font-size: 24rpx;
+						color: $uni-text-color-grey;
+					}
+					.icon1{
+						color: $uni-bg-color;
+					}
+					.nav1{
+						color: $uni-bg-color;
+					}
+				}
+				
+			}
+			button{
+				width: 242rpx;
+				height: 100%;
+				font-size: 32rpx;
+				line-height:100rpx;
+				border-radius: 0px;
+			}
+			.btn1{
+				background: #4aa3f0;
+			}
+			.btn2{
+				background: $uni-bg-color;
+			}
+		}
+			
 	}
 </style>

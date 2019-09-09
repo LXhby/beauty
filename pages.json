@@ -19,6 +19,12 @@
 			}
 		},
 		{
+			"path": "pages/home/comment",
+			"style": {
+				"navigationBarTitleText": "更多评论"
+			}
+		},
+		{
 			"path": "pages/goods/consulting",
 			"style": {
 				"navigationBarTitleText": "咨询内容页"

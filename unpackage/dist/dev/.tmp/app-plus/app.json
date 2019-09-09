@@ -3,6 +3,7 @@
     "pages/home/index",
     "pages/goods/index",
     "pages/home/detail",
+    "pages/home/comment",
     "pages/goods/consulting",
     "pages/benefits/meeting",
     "pages/benefits/courseinfo",
