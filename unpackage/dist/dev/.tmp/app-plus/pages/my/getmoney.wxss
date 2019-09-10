@@ -104,4 +104,48 @@
     font-size: 24rpx;
     line-height: 40rpx;
 }
+.withdrawal-page .alert-box {
+  position: relative;
+  width: 480rpx;
+  padding-bottom: 36rpx;
+  border-radius: 5px;
+  background-color: #fff;
+}
+.withdrawal-page .alert-box .title {
+    height: 78rpx;
+    line-height: 78rpx;
+    border-bottom: 1px solid #f5f5f5;
+    color: #ff0080;
+    font-size: 36rpx;
+    font-weight: 600;
+}
+.withdrawal-page .alert-box .item-text {
+    color: #666;
+}
+.withdrawal-page .alert-box .item-money {
+    color: #ff0080;
+}
+.withdrawal-page .alert-box .get-box {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    border-bottom: 1px solid #f5f5f5;
+    padding: 26rpx 40rpx;
+}
+.withdrawal-page .alert-box .get-total {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding: 26rpx 40rpx;
+}
+.withdrawal-page .alert-box .btn {
+    width: 300rpx;
+    height: 45rpx;
+    margin: 0 auto;
+    border-radius: 45rpx;
+    color: #fff;
+    background: #ff0080;
+}
 

@@ -19,19 +19,57 @@
 				<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 			</view>
 		</view>
+		<uni-popup ref="popup" type="center" custom="true">
+			<view class="alert-box">
+				<view class="title">
+					提现确认
+				</view>
+				<view class="get-box uni-flex uni-row">
+					<view class="item">
+						<view class="item-text">
+							提现金额
+						</view>
+						<text class="item-money">￥9000.00</text>
+					</view>
+					<view class="item">
+						<view class="item-text">
+							提现手续费
+						</view>
+						<text class="item-money">￥180.00</text>
+					</view>
+				</view>
+				<view class="get-total uni-flex uni-row">
+					<view class="item-text">
+						到账金额
+					</view>
+					<view class="item-money">
+						￥8640.00
+					</view>
+				</view>
+				
+				<view class="btn">
+					提现确认
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
 	import topBar from "@/components/account/index1.vue";
+	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	export default {
 		components: {
 			topBar,
+			uniPopup
 		},
 		data(){
 			return{
 				detailist:["可提现","待提现","产品额度","粉丝量"]
 			}
+		},
+		mounted(){
+			this.$refs.popup.open()
 		}
 	}
 </script>
@@ -62,6 +100,44 @@
 				color:$uni-text-color;
 				font-size: 24rpx;
 				line-height: 40rpx;
+			}
+		}
+		.alert-box{
+			position: relative;
+			width: 480rpx;
+			padding-bottom: 36rpx;
+			border-radius: 5px;
+			background-color:#fff;
+			.title{
+				height: 78rpx;
+				line-height: 78rpx;
+				border-bottom: 1px solid $uni-border-color;
+				color: $uni-bg-color;
+				font-size: 36rpx;
+				font-weight: 600;
+			}
+			.item-text{
+				color: $uni-text-color;
+			}
+			.item-money{
+				color: $uni-bg-color;
+			}
+			.get-box{
+				justify-content: space-between;
+				border-bottom: 1px solid $uni-border-color;
+				padding:26rpx 40rpx;
+			}
+			.get-total{
+				justify-content: space-between;
+				padding:26rpx 40rpx;
+			}
+			.btn{
+				width: 300rpx;
+				height: 45rpx;
+				margin:0 auto;
+				border-radius: 45rpx;
+				color: #fff;
+				background: $uni-bg-color;
 			}
 		}
 	}

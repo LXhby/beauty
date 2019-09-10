@@ -46,6 +46,19 @@
 				</view>
 			</view>
 		</view>
+		<view class="swiper-box">
+			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="interval" :duration="duration" :circular="true">
+				<swiper-item>
+					<image src="../../static/ad3.jpg" mode=""></image>
+				</swiper-item>
+				<swiper-item>
+					<image src="../../static/chuke.jpg" mode=""></image>
+				</swiper-item>
+				<swiper-item>
+					<image src="../../static/order_bm_bg.jpg" mode=""></image>
+				</swiper-item>
+			</swiper>
+		</view>
 		<navigator url="/pages/goods/consulting">
 			<button type="primary" >咨询也</button>
 		</navigator>
@@ -105,18 +118,6 @@
 </script>
 
 <style lang="scss" scoped>
-	@font-face {
-	  font-family: 'iconfont';  /* project id 1377410 */
-	  src: url('//at.alicdn.com/t/font_1377410_wk4mbv1sumf.eot');
-	  src: url('//at.alicdn.com/t/font_1377410_wk4mbv1sumf.ttf') format('truetype');
-	}
-	.iconfont {
-		font-family: iconfont !important;
-		font-size: 32upx;
-		font-style: normal;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale
-	}
 	.home-page{
 		.active-nav{
 			.image{
@@ -130,7 +131,6 @@
 		// 限时特惠
 		.goods-example{
 			border-top:20rpx solid #f5f5f5;
-			border-bottom:20rpx solid #f5f5f5;
 			width:100%;
 			.preferential{
 				width: 50%;
@@ -153,6 +153,25 @@
 				width: 50%;
 			}	
 		}
-
+		
+	}
+</style>
+<style lang="scss">
+	.home-page{
+		.swiper-box {
+			padding: 20rpx;
+			border-top: 20rpx solid #f5f5f5;
+			border-bottom: 20rpx solid #f5f5f5;
+			
+			.swiper {
+				overflow: hidden;
+				height: 180rpx;
+				border-radius:5px;
+				image {
+					width: 100%;
+					height: 100%;
+				}
+			}
+		}
 	}
 </style>

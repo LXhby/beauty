@@ -49,6 +49,7 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "../../common/common.scss";
 	.fans-page{
 		.main-content{
 			padding:0 36rpx;
