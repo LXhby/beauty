@@ -90,22 +90,6 @@
 <style lang="scss" scoped>
 	@import "../../style/topaccount.scss";
 	@import "../../common/common.scss";
-
-	@font-face {
-		font-family: "iconfont";
-		/* project id 1377410 */
-		src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.eot");
-		src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.ttf") format("truetype");
-	}
-
-	.iconfont {
-		font-family: iconfont !important;
-		font-size: 32upx;
-		font-style: normal;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-	}
-
 	.reward-page {
 		.main {
 			.main-content {

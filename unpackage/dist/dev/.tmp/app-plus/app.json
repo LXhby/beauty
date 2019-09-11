@@ -13,6 +13,7 @@
     "pages/shopcar/index",
     "pages/my/index",
     "pages/my/order",
+    "pages/my/returngoods",
     "pages/my/orderinfo",
     "pages/my/shipment",
     "pages/my/fans",

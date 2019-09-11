@@ -3,6 +3,8 @@
   "usingComponents": {
     "top-bar": "/components/account/index1",
     "uni-grid": "/components/uni-grid/uni-grid",
-    "uni-grid-item": "/components/uni-grid-item/uni-grid-item"
+    "uni-grid-item": "/components/uni-grid-item/uni-grid-item",
+    "uni-list": "/components/uni-list/uni-list",
+    "uni-list-item": "/components/uni-list-item/uni-list-item"
   }
 }

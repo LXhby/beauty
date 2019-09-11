@@ -79,6 +79,12 @@
 			}
 		},
 		{
+			"path": "pages/my/returngoods",
+			"style": {
+				"navigationBarTitleText": "退货"
+			}
+		},
+		{
 			"path": "pages/my/orderinfo",
 			"style": {
 				"navigationBarTitleText": "订单详情"

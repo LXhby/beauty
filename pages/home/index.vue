@@ -59,9 +59,6 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		<navigator url="/pages/goods/consulting">
-			<button type="primary" >咨询也</button>
-		</navigator>
 		
 	</view>
 </template>

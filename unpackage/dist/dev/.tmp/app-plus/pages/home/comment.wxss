@@ -49,7 +49,7 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.main-title.data-v-6145df87 {
+.main-title.data-v-2d6896dc {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -60,41 +60,41 @@
   padding: 10rpx 0  20rpx 28rpx;
   border-bottom: 1px solid #f5f5f5;
 }
-.main-title .line.data-v-6145df87 {
+.main-title .line.data-v-2d6896dc {
     width: 8rpx;
     font-size: 32rpx;
     height: 32rpx;
     border-radius: 8rpx;
     background-color: #ff0080;
 }
-.main-title .text.data-v-6145df87 {
+.main-title .text.data-v-2d6896dc {
     margin-left: 10rpx;
     font-size: 32rpx;
     line-height: 32rpx;
     color: #ff0080;
 }
-.bottom-line.data-v-6145df87 {
+.bottom-line.data-v-2d6896dc {
   padding: 50rpx 0 45rpx 0;
   text-align: center;
   font-size: 24rpx;
   color: #999;
 }
-page.data-v-6145df87 {
+page.data-v-2d6896dc {
   width: 100%;
   height: 100%;
 }
-.comment-page.data-v-6145df87 {
+.comment-page.data-v-2d6896dc {
   width: 100%;
   height: 100%;
   background: #f1f1f1;
 }
-.comment-page .goods.data-v-6145df87 {
+.comment-page .goods.data-v-2d6896dc {
     position: relative;
     padding: 60rpx 30rpx 30rpx 30rpx;
     margin-bottom: 20rpx;
     background: #fff;
 }
-.comment-page .goods .shop-car.data-v-6145df87 {
+.comment-page .goods .shop-car.data-v-2d6896dc {
       position: absolute;
       top: 20rpx;
       right: 30rpx;
@@ -104,126 +104,126 @@ page.data-v-6145df87 {
       background: rgba(0, 0, 0, 0.5);
       text-align: center;
 }
-.comment-page .goods .shop-car .iconfont.data-v-6145df87 {
+.comment-page .goods .shop-car .iconfont.data-v-2d6896dc {
         line-height: 60rpx;
         color: #fff;
         font-size: 36rpx;
 }
-.comment-page .goods .shop-car .shopcar-badge.data-v-6145df87 {
+.comment-page .goods .shop-car .shopcar-badge.data-v-2d6896dc {
         position: absolute;
         top: -16rpx;
         right: -10rpx;
 }
-.comment-page .goods .goods-detail.data-v-6145df87 {
+.comment-page .goods .goods-detail.data-v-2d6896dc {
       padding: 30rpx;
       -webkit-box-shadow: 0 0 5px 0.5px rgba(0, 0, 0, 0.2);
               box-shadow: 0 0 5px 0.5px rgba(0, 0, 0, 0.2);
 }
-.comment-page .goods .goods-detail .title.data-v-6145df87 {
+.comment-page .goods .goods-detail .title.data-v-2d6896dc {
         -webkit-box-pack: justify;
         -webkit-justify-content: space-between;
             -ms-flex-pack: justify;
                 justify-content: space-between;
         margin-bottom: 20rpx;
 }
-.comment-page .goods .goods-detail .title .title-text.data-v-6145df87 {
+.comment-page .goods .goods-detail .title .title-text.data-v-2d6896dc {
           font-size: 36rpx;
 }
-.comment-page .goods .goods-detail .title .iconfont.data-v-6145df87 {
+.comment-page .goods .goods-detail .title .iconfont.data-v-2d6896dc {
           font-size: 46rpx;
           color: #999;
 }
-.comment-page .goods .goods-detail .img-box.data-v-6145df87 {
+.comment-page .goods .goods-detail .img-box.data-v-2d6896dc {
         -webkit-box-align: center;
         -webkit-align-items: center;
             -ms-flex-align: center;
                 align-items: center;
 }
-.comment-page .goods .goods-detail .img-box image.data-v-6145df87 {
+.comment-page .goods .goods-detail .img-box image.data-v-2d6896dc {
           width: 150rpx;
           height: 112rpx;
 }
-.comment-page .goods .goods-detail .img-box .right.data-v-6145df87 {
+.comment-page .goods .goods-detail .img-box .right.data-v-2d6896dc {
           margin-left: 30rpx;
 }
-.comment-page .goods .goods-detail .img-box .right .num.data-v-6145df87 {
+.comment-page .goods .goods-detail .img-box .right .num.data-v-2d6896dc {
             margin-bottom: 10rpx;
             font-size: 32rpx;
             color: #ff4b0f;
 }
-.comment-page .goods .goods-detail .img-box .right text.data-v-6145df87 {
+.comment-page .goods .goods-detail .img-box .right text.data-v-2d6896dc {
             font-size: 28rpx;
             margin-right: 10rpx;
             color: #999;
 }
-.comment-page .comment-main.data-v-6145df87 {
+.comment-page .comment-main.data-v-2d6896dc {
     background: #fff;
 }
-.comment-page .comment-main .main-title.data-v-6145df87 {
+.comment-page .comment-main .main-title.data-v-2d6896dc {
       padding-top: 20rpx;
 }
-.comment-page .comment-main .comment-item.data-v-6145df87 {
+.comment-page .comment-main .comment-item.data-v-2d6896dc {
       padding: 20rpx 0;
       margin: 0 30rpx;
       border-bottom: 1px solid #f5f5f5;
 }
-.comment-page .comment-main .comment-item .headurl.data-v-6145df87 {
+.comment-page .comment-main .comment-item .headurl.data-v-2d6896dc {
         width: 60rpx;
         height: 60rpx;
         border-radius: 50%;
 }
-.comment-page .comment-main .comment-item .comment-main.data-v-6145df87 {
+.comment-page .comment-main .comment-item .comment-main.data-v-2d6896dc {
         -webkit-box-flex: 1;
         -webkit-flex: 1;
             -ms-flex: 1;
                 flex: 1;
         margin-left: 20rpx;
 }
-.comment-page .comment-main .comment-item .comment-main .comment-user.data-v-6145df87 {
+.comment-page .comment-main .comment-item .comment-main .comment-user.data-v-2d6896dc {
           -webkit-box-pack: justify;
           -webkit-justify-content: space-between;
               -ms-flex-pack: justify;
                   justify-content: space-between;
           font-size: 32rpx;
 }
-.comment-page .comment-main .comment-item .comment-main .comment-user .name.data-v-6145df87 {
+.comment-page .comment-main .comment-item .comment-main .comment-user .name.data-v-2d6896dc {
             font-size: 28rpx;
 }
-.comment-page .comment-main .comment-item .comment-main .comment-user .time.data-v-6145df87 {
+.comment-page .comment-main .comment-item .comment-main .comment-user .time.data-v-2d6896dc {
             margin-left: 20rpx;
             font-size: 24rpx;
             color: #999;
 }
-.comment-page .comment-main .comment-item .comment-main .comment-user .star .iconfont.data-v-6145df87 {
+.comment-page .comment-main .comment-item .comment-main .comment-user .star .iconfont.data-v-2d6896dc {
             font-size: 20rpx;
             color: #999;
             margin-left: 4rpx;
 }
-.comment-page .comment-main .comment-item .comment-main .comment-user .star .light-star.data-v-6145df87 {
+.comment-page .comment-main .comment-item .comment-main .comment-user .star .light-star.data-v-2d6896dc {
             color: #ff0080;
 }
-.comment-page .comment-main .comment-item .comment-main .comment-text.data-v-6145df87 {
+.comment-page .comment-main .comment-item .comment-main .comment-text.data-v-2d6896dc {
           font-size: 24rpx;
           font-size: #666;
 }
-.comment-page .comment-main .comment-item .comment-main .comments-image.data-v-6145df87 {
+.comment-page .comment-main .comment-item .comment-main .comments-image.data-v-2d6896dc {
           margin-top: 10rpx;
 }
-.comment-page .comment-main .comment-item .comment-main .comments-image image.data-v-6145df87 {
+.comment-page .comment-main .comment-item .comment-main .comments-image image.data-v-2d6896dc {
             width: 112rpx;
             height: 112rpx;
             border-radius: 2px;
             margin-right: 20rpx;
 }
-.comment-page .bottom-line.data-v-6145df87 {
+.comment-page .bottom-line.data-v-2d6896dc {
     padding: 30rpx 0;
     margin-bottom: 100rpx;
     background: #f1f1f1;
 }
-.comment-page .height-box.data-v-6145df87 {
+.comment-page .height-box.data-v-2d6896dc {
     height: 100rpx;
 }
-.comment-page .foot-main.data-v-6145df87 {
+.comment-page .foot-main.data-v-2d6896dc {
     position: fixed;
     left: 0;
     bottom: 0;
@@ -231,14 +231,14 @@ page.data-v-6145df87 {
     height: 100rpx;
     overflow: hidden;
 }
-.comment-page .foot-main .main-btns.data-v-6145df87 {
+.comment-page .foot-main .main-btns.data-v-2d6896dc {
       -webkit-box-align: center;
       -webkit-align-items: center;
           -ms-flex-align: center;
               align-items: center;
       height: 100%;
 }
-.comment-page .foot-main .icon-btn.data-v-6145df87 {
+.comment-page .foot-main .icon-btn.data-v-2d6896dc {
       -webkit-box-flex: 1;
       -webkit-flex: 1;
           -ms-flex: 1;
@@ -262,34 +262,34 @@ page.data-v-6145df87 {
           -ms-flex-align: center;
               align-items: center;
 }
-.comment-page .foot-main .icon-btn .btn-sm.data-v-6145df87 {
+.comment-page .foot-main .icon-btn .btn-sm.data-v-2d6896dc {
         text-align: center;
 }
-.comment-page .foot-main .icon-btn .btn-sm .iconfont.data-v-6145df87 {
+.comment-page .foot-main .icon-btn .btn-sm .iconfont.data-v-2d6896dc {
           color: #4aa3f0;
           font-size: 32rpx;
 }
-.comment-page .foot-main .icon-btn .btn-sm .text-nav.data-v-6145df87 {
+.comment-page .foot-main .icon-btn .btn-sm .text-nav.data-v-2d6896dc {
           font-size: 24rpx;
           color: #999;
 }
-.comment-page .foot-main .icon-btn .btn-sm .icon1.data-v-6145df87 {
+.comment-page .foot-main .icon-btn .btn-sm .icon1.data-v-2d6896dc {
           color: #ff0080;
 }
-.comment-page .foot-main .icon-btn .btn-sm .nav1.data-v-6145df87 {
+.comment-page .foot-main .icon-btn .btn-sm .nav1.data-v-2d6896dc {
           color: #ff0080;
 }
-.comment-page .foot-main button.data-v-6145df87 {
+.comment-page .foot-main button.data-v-2d6896dc {
       width: 242rpx;
       height: 100%;
       font-size: 32rpx;
       line-height: 100rpx;
       border-radius: 0px;
 }
-.comment-page .foot-main .btn1.data-v-6145df87 {
+.comment-page .foot-main .btn1.data-v-2d6896dc {
       background: #4aa3f0;
 }
-.comment-page .foot-main .btn2.data-v-6145df87 {
+.comment-page .foot-main .btn2.data-v-2d6896dc {
       background: #ff0080;
 }
 

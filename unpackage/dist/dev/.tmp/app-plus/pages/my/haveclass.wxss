@@ -24,35 +24,35 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.top-account.data-v-68a473c5 {
+.top-account.data-v-1eab6e60 {
   padding: 20rpx;
 }
-.top-account .top-content.data-v-68a473c5 {
+.top-account .top-content.data-v-1eab6e60 {
     overflow: hidden;
     position: relative;
     width: 100%;
     height: 320rpx;
     border-radius: 4px;
 }
-.top-account .top-content .bg-img.data-v-68a473c5 {
+.top-account .top-content .bg-img.data-v-1eab6e60 {
       width: 100%;
       height: 100%;
 }
-.top-account .top-content .bg-weave.data-v-68a473c5 {
+.top-account .top-content .bg-weave.data-v-1eab6e60 {
       position: absolute;
       left: 0px;
       bottom: 0px;
       width: 100%;
       height: 100%;
 }
-.top-account .top-content .real.data-v-68a473c5 {
+.top-account .top-content .real.data-v-1eab6e60 {
       position: absolute;
       bottom: 0px;
       right: 0;
       width: 76rpx;
       height: 61.4rpx;
 }
-.top-account .top-content .top-main.data-v-68a473c5 {
+.top-account .top-content .top-main.data-v-1eab6e60 {
       position: absolute;
       top: 0px;
       left: 0px;
@@ -61,27 +61,27 @@
       z-index: 3;
       color: #fff;
 }
-.top-account .top-content .top-main .top-detail.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail.data-v-1eab6e60 {
         height: 94rpx;
         margin-left: 28rpx;
         margin-top: 40rpx;
 }
-.top-account .top-content .top-main .top-detail .account-img.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .account-img.data-v-1eab6e60 {
           position: relative;
           width: 94rpx;
           height: 94rpx;
 }
-.top-account .top-content .top-main .top-detail .account-img image.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .account-img image.data-v-1eab6e60 {
             width: 94rpx;
             height: 94rpx;
 }
-.top-account .top-content .top-main .top-detail .account-img .icon-vip.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .account-img .icon-vip.data-v-1eab6e60 {
             position: absolute;
             top: -10rpx;
             right: 0rpx;
             color: #f4ea2a;
 }
-.top-account .top-content .top-main .top-detail .shop-detail.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-detail.data-v-1eab6e60 {
           max-width: 342rpx;
           height: 100%;
           margin-left: 18rpx;
@@ -89,17 +89,17 @@
               -ms-flex-pack: distribute;
                   justify-content: space-around;
 }
-.top-account .top-content .top-main .top-detail .shop-detail .shop-name.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-detail .shop-name.data-v-1eab6e60 {
             font-size: 32rpx;
 }
-.top-account .top-content .top-main .top-detail .shop-detail .shop-busis.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-detail .shop-busis.data-v-1eab6e60 {
             font-size: 24rpx;
             white-space: nowrap;
             overflow: hidden;
             -o-text-overflow: ellipsis;
                text-overflow: ellipsis;
 }
-.top-account .top-content .top-main .top-detail .shop-right.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-right.data-v-1eab6e60 {
           display: -webkit-box;
           display: -webkit-flex;
           display: -ms-flexbox;
@@ -113,27 +113,27 @@
               -ms-flex-pack: distribute;
                   justify-content: space-around;
 }
-.top-account .top-content .top-main .top-detail .shop-right .time.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-right .time.data-v-1eab6e60 {
             padding-left: 26rpx;
             text-align: center;
             font-size: 20rpx;
             vertical-align: middle;
 }
-.top-account .top-content .top-main .top-detail .shop-right .time text.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-right .time text.data-v-1eab6e60 {
               vertical-align: middle;
 }
-.top-account .top-content .top-main .top-detail .shop-right .time .text.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-right .time .text.data-v-1eab6e60 {
               font-size: 24rpx;
               vertical-align: middle;
               font-weight: 600;
 }
-.top-account .top-content .top-main .top-detail .shop-right .shop-nav.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-right .shop-nav.data-v-1eab6e60 {
             width: 252rpx;
             border-radius: 26rpx;
             height: 52rpx;
             background-color: #ff87cf;
 }
-.top-account .top-content .top-main .top-detail .shop-right .shop-nav .start.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-right .shop-nav .start.data-v-1eab6e60 {
               display: -webkit-box;
               display: -webkit-flex;
               display: -ms-flexbox;
@@ -153,25 +153,25 @@
               overflow: hidden;
               background-color: #ff72d3;
 }
-.top-account .top-content .top-main .top-detail .shop-right .shop-nav .text.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-right .shop-nav .text.data-v-1eab6e60 {
               margin-left: 8rpx;
               font-size: 28rpx;
 }
-.top-account .top-content .top-main .top-detail .shop-right .shop-nav .text .right.data-v-68a473c5 {
+.top-account .top-content .top-main .top-detail .shop-right .shop-nav .text .right.data-v-1eab6e60 {
                 font-size: 20rpx;
                 margin-left: 8rpx;
 }
-.top-account .top-content .example-body.data-v-68a473c5 {
+.top-account .top-content .example-body.data-v-1eab6e60 {
       position: absolute;
       width: 100%;
       bottom: 6px;
 }
-.top-account .top-content .example-body .text-one.data-v-68a473c5 {
+.top-account .top-content .example-body .text-one.data-v-1eab6e60 {
         margin-bottom: 10rpx;
         color: #fff;
         font-size: 32rpx;
 }
-.top-account .top-content .example-body .text.data-v-68a473c5 {
+.top-account .top-content .example-body .text.data-v-1eab6e60 {
         color: #fff;
         font-size: 28rpx;
 }
@@ -200,7 +200,7 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.main-title.data-v-68a473c5 {
+.main-title.data-v-1eab6e60 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -211,48 +211,35 @@
   padding: 10rpx 0  20rpx 28rpx;
   border-bottom: 1px solid #f5f5f5;
 }
-.main-title .line.data-v-68a473c5 {
+.main-title .line.data-v-1eab6e60 {
     width: 8rpx;
     font-size: 32rpx;
     height: 32rpx;
     border-radius: 8rpx;
     background-color: #ff0080;
 }
-.main-title .text.data-v-68a473c5 {
+.main-title .text.data-v-1eab6e60 {
     margin-left: 10rpx;
     font-size: 32rpx;
     line-height: 32rpx;
     color: #ff0080;
 }
-.bottom-line.data-v-68a473c5 {
+.bottom-line.data-v-1eab6e60 {
   padding: 50rpx 0 45rpx 0;
   text-align: center;
   font-size: 24rpx;
   color: #999;
 }
-@font-face {
-  font-family: "iconfont";
-  /* project id 1377410 */
-  src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.eot");
-  src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.ttf") format("truetype");
-}
-.iconfont.data-v-68a473c5 {
-  font-family: iconfont !important;
-  font-size: 32rpx;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.reward-page .main .main-content .total-top.data-v-68a473c5 {
+.reward-page .main .main-content .total-top.data-v-1eab6e60 {
   padding: 20rpx 12rpx;
   border-bottom: 1px solid #f5f5f5;
   font-size: 28rpx;
   color: #304455;
 }
-.reward-page .main .main-content .list.data-v-68a473c5 {
+.reward-page .main .main-content .list.data-v-1eab6e60 {
   padding: 0 30rpx;
 }
-.reward-page .main .main-content .list .item.data-v-68a473c5 {
+.reward-page .main .main-content .list .item.data-v-1eab6e60 {
     -webkit-box-align: center;
     -webkit-align-items: center;
         -ms-flex-align: center;
@@ -266,7 +253,7 @@
     background-color: #ffeef9;
     border-radius: 5px;
 }
-.reward-page .main .main-content .list .item .left.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .left.data-v-1eab6e60 {
       width: 500rpx;
       height: 100rpx;
       -webkit-box-pack: justify;
@@ -274,7 +261,7 @@
           -ms-flex-pack: justify;
               justify-content: space-between;
 }
-.reward-page .main .main-content .list .item .left .title.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .left .title.data-v-1eab6e60 {
         width: 100%;
         overflow: hidden;
         white-space: nowrap;
@@ -284,7 +271,7 @@
         color: #000000;
         font-weight: 600;
 }
-.reward-page .main .main-content .list .item .left .bottom-box.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .left .bottom-box.data-v-1eab6e60 {
         color: #666;
         -webkit-box-pack: justify;
         -webkit-justify-content: space-between;
@@ -295,16 +282,16 @@
             -ms-flex-align: center;
                 align-items: center;
 }
-.reward-page .main .main-content .list .item .left .bottom-box .time.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .left .bottom-box .time.data-v-1eab6e60 {
           font-size: 24rpx;
 }
-.reward-page .main .main-content .list .item .left .bottom-box .address.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .left .bottom-box .address.data-v-1eab6e60 {
           font-size: 24rpx;
 }
-.reward-page .main .main-content .list .item .left .bottom-box .iconfont.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .left .bottom-box .iconfont.data-v-1eab6e60 {
           color: #666;
 }
-.reward-page .main .main-content .list .item .right.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .right.data-v-1eab6e60 {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -325,21 +312,21 @@
       color: #fff;
       border-radius: 5px;
 }
-.reward-page .main .main-content .list .item .right text.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .right text.data-v-1eab6e60 {
         font-size: 24rpx;
         line-height: 24rpx;
 }
-.reward-page .main .main-content .list .item .right .num.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .right .num.data-v-1eab6e60 {
         font-size: 24rpx;
         line-height: 24rpx;
 }
-.reward-page .main .main-content .list .item .right .num text.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .right .num text.data-v-1eab6e60 {
           font-size: 28rpx;
 }
-.reward-page .main .main-content .list .item .dark.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .dark.data-v-1eab6e60 {
       background-color: #ff72d3;
 }
-.reward-page .main .main-content .list .item .gray.data-v-68a473c5 {
+.reward-page .main .main-content .list .item .gray.data-v-1eab6e60 {
       background-color: #ccc;
 }
 
