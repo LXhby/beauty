@@ -172,21 +172,24 @@
       padding: 20rpx 60rpx 0rpx 30rpx;
       color: #999;
 }
-.order .user-info .user-word image.data-v-dac10288 {
-        width: 50rpx;
-        height: 50rpx;
+.order .user-info .user-word .iconfont.data-v-dac10288 {
+        font-size: 42rpx;
+        color: #ff0080;
 }
 .order .user-info .user-word .user-order.data-v-dac10288 {
         margin-left: 30rpx;
         letter-spacing: 3rpx;
 }
-.order .user-info .user-word .user-order ._p.data-v-dac10288 {
+.order .user-info .user-word .user-order view.data-v-dac10288 {
           margin: 10rpx 0;
 }
-.order .user-info .user-word .user-order ._p .user-name.data-v-dac10288 {
-            margin-right: 40rpx;
-            font-size: 32rpx;
+.order .user-info .user-word .user-order view .user-name.data-v-dac10288 {
+            margin-right: 30rpx;
+            font-size: 28rpx;
             font-weight: bold;
+}
+.order .user-info .user-word .user-order view .num.data-v-dac10288 {
+            font-size: 24rpx;
 }
 .order .user-info .bg-bottom.data-v-dac10288 {
       width: 100%;
