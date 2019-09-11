@@ -31,15 +31,16 @@
 		</view>
 		<view class="user-info">
 			<view class="user-word">
-				<image src=""></image>
+				<text class="iconfont">&#xe853;</text>
 				<view class="user-order">
-					<p>
+					<view>
 						<text class="user-name">叶小天</text>
-						<text>1869536545</text>
-					</p>
-					<p>
-						北京市  北京市  朝阳区  花园路甲22号建国路甲13号215室
-					</p>
+						<text class="num">1869536545</text>
+					</view>
+					<view>
+						北京市 北京市 朝阳区 花园路甲22号建国路甲13号215室
+					</view>
+
 				</view>
 			</view>
 			<image class="bg-bottom" src="../../static/add_bg.jpg"></image>
@@ -76,6 +77,7 @@
 <style lang="scss" scoped>
 	.order {
 		background-color: #f4f4f4;
+
 		.header {
 			display: flex;
 			align-items: center;
@@ -84,6 +86,7 @@
 			font-size: 32rpx;
 			color: #fff;
 			background: linear-gradient(to right, #ff0180 0%, #ff8175 100%);
+
 			image {
 				width: 120rpx;
 				height: 80rpx;
@@ -93,28 +96,34 @@
 		.store-name {
 			margin: 20rpx 0;
 			background-color: $uni-text-color-inverse;
+
 			.store-header {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				padding: 20rpx;
 				border-bottom: 1px solid #f4f4f4;
+
 				.header-left {
 					display: flex;
 					align-items: center;
+
 					image {
 						width: 50rpx;
 						height: 50rpx;
 						border-radius: 50%;
 					}
+
 					text {
 						margin: 0 10rpx;
 						color: $uni-bg-color;
 					}
 				}
+
 				.header-right {
-					display:flex;
-					align-items:center;
+					display: flex;
+					align-items: center;
+
 					.btn {
 						margin: 6rpx;
 						padding: 0 8rpx;
@@ -123,41 +132,50 @@
 						line-height: 50rpx;
 						border-radius: 30rpx;
 					}
+
 					.friend-pay {
-						background-color: #4aa3f0;						
+						background-color: #4aa3f0;
 					}
+
 					.me-pay {
-						background-color:$uni-bg-color;
+						background-color: $uni-bg-color;
 					}
 				}
 			}
+
 			.store-content {
 				padding-bottom: 20rpx;
+
 				.goods-info {
 					display: flex;
 					justify-content: space-between;
 					padding: 40rpx 0;
 					margin: 0 40rpx;
 					border-bottom: 1px solid #f4f4f4;
+
 					image {
 						width: 140rpx;
 						height: 140rpx;
 						border-radius: 10rpx;
 						background-color: red;
 					}
+
 					.goods-src {
 						display: flex;
 						flex-wrap: wrap;
 						margin-left: 20rpx;
 						width: 450rpx;
 						letter-spacing: 3rpx;
+
 						text {
 							margin-top: 30rpx;
 						}
 					}
+
 					.goods-price {
 						text-align: right;
 					}
+
 					text {
 						font-size: $uni-font-size-sm;
 						color: $uni-text-color-grey;
@@ -165,44 +183,53 @@
 				}
 			}
 		}
-		
+
 		.user-info {
 			background-color: $uni-text-color-inverse;
-			
+
 			.user-word {
 				display: flex;
-				align-items: center;;
+				align-items: center;
+				;
 				padding: 20rpx 60rpx 0rpx 30rpx;
 				color: $uni-text-color-grey;
-				image {
-					width: 50rpx;
-					height: 50rpx;
+
+				.iconfont {
+					
+					font-size: 42rpx;
+					color: $uni-bg-color;
 				}
+
 				.user-order {
 					margin-left: 30rpx;
 					letter-spacing: 3rpx;
-					p {
+
+					view {
 						margin: 10rpx 0;
+
 						.user-name {
-							margin-right: 40rpx;
-							font-size: $uni-font-size-lg;
+							margin-right: 30rpx;
+							font-size: 28rpx;
 							font-weight: bold;
 						}
-						
+						.num{
+							font-size: 24rpx;
+						}
 					}
 				}
 			}
-			
+
 			.bg-bottom {
 				width: 100%;
 				height: 8rpx;
 			}
 		}
-	
+
 		.order-info {
 			margin: 20rpx 0;
 			padding: 40rpx;
 			background-color: $uni-text-color-inverse;
+
 			p {
 				display: flex;
 				align-items: center;
@@ -210,14 +237,16 @@
 				margin-bottom: 10rpx;
 				color: $uni-text-color-grey;
 			}
+
 			.to-pay {
 				color: #000;
 			}
+
 			.money {
 				color: $uni-bg-color;
 			}
 		}
-		
+
 		.bottom-line {
 			padding-bottom: 40rpx;
 			color: $uni-text-color-grey;

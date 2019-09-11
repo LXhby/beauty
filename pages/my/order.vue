@@ -51,25 +51,25 @@
 								<text class="num">X1</text>
 							</view>
 						</view>
-						<view class="total">
+						<view class="total uni-flex uni-row">
 							<view class="total-glod">
 								<text>赠送</text>
 								<text class="dark-color">100</text>
 								<text>个金币</text>
 							</view>
 							<view class="total-num uni-flex uni-row">
-								<text>共2件商品</text>
+								<text class="heji">共2件商品</text>
 								<view class="">
-									<text>合计：</text>
+									<text >合计：</text>
 									<text class="dark-color">￥128.00</text>
 								</view>
 							</view>
 						</view>
 						<view class="btn-list uni-flex uni-row">
-							<button type="primary">订单详情</button>
-							<view class="right-btn">
-								<button type="primary">朋友代付</button>
-								<button type="primary">立即付款</button>
+							<button type="primary" class="detail" @click="godetail">订单详情</button>
+							<view class="right-btn uni-flex uni-row">
+								<button type="primary" class="blue btn1">申请退款</button>
+								<button type="primary" class="dark">立即付款</button>
 							</view>
 						</view>
 
@@ -169,6 +169,11 @@
 
 		},
 		methods: {
+			godetail(){
+				uni.navigateTo({
+					url:'/pages/my/orderinfo'
+				})
+			},
 			//获取订单列表
 			loadData(source) {
 				//这里是将订单挂载到tab列表下
@@ -299,6 +304,12 @@
 				}
 			}
 		}
+		.swiper-box{
+			height: 100%;
+			.tab-content{
+				overflow: auto;
+			}
+		}
 		.order-item{
 			margin-top:20rpx;
 			background:#fff;
@@ -322,8 +333,10 @@
 				}
 			}
 			.item-main{
-				margin:30rpx;
+				margin:0 30rpx;
+				padding: 30rpx 0;
 				justify-content:space-between;
+				border-bottom: 1px solid $uni-border-color;
 				.left{
 					width: 580rpx;
 					
@@ -340,7 +353,7 @@
 							font-size: 28rpx;
 						}
 						text{
-							font-size: 20rpx;
+							font-size: 24rpx;
 							color: $uni-text-color-grey;
 						}
 					}
@@ -355,6 +368,51 @@
 						font-size: 20rpx;
 						color: $uni-text-color-grey;
 					}
+				}
+			}
+			.total{
+				margin: 0 30rpx;
+				height: 75rpx;
+				justify-content:space-between;
+				align-items: center;
+				border-bottom: 1px solid $uni-border-color;
+				.dark-color{
+					color: $uni-bg-color;
+				}
+				.total-num{
+					.heji{
+						margin-right: 20rpx;
+					}
+				}
+			}
+			.btn-list{
+				margin: 0 30rpx;
+				padding: 20rpx 0;
+				justify-content:space-between;
+				button{
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 180rpx;
+					height: 56rpx;
+					border-radius: 56rpx;
+					margin: 0px;
+					font-size: 28rpx;
+				}
+				.detail{
+					color: $uni-text-color;
+					background: #ddd;
+				}
+				.btn1{
+					margin-right: 20rpx;
+				}
+				.blue{
+					color: #fff;
+					background: #4aa3f0;
+				}
+				.dark{
+					color: #fff;
+					background-color: $uni-bg-color;
 				}
 			}
 		}
