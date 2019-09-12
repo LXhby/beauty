@@ -3,7 +3,7 @@
 		<top-bar rightText="店铺设置" :detailist="detailist" :isreal="false"></top-bar>
 		<view class="active-nav">
 			<uni-grid :column="4" :show-border="false" :square="false" @change="goPage">
-				<uni-grid-item >
+				<uni-grid-item>
 					<image class="image" src="../../static/meeting.png" mode="aspectFill" />
 					<text class="text">会议活动</text>
 				</uni-grid-item>
@@ -31,15 +31,27 @@
 				<view class="title">
 					限时特惠
 				</view>
-				<text>
+				<text class="sub-title">
 					今日推荐特实惠
 				</text>
-				<image src="../../static/TB1y_c6JVXXXXX1XXXX433t9pXX_042320.jpg" class="good-image"></image>
+				<image src="../../static/cp01.png" class="good-image"></image>
 			</view>
 			<view class="uni-flex uni-column goods-right" >
-				<view class="text" >
-					文字居左，留出左间距
+				<view class=""top1>
+					<view class="top-main">
+						<view class="text" >
+							<text class="title">美白黄金</text>
+							<view class="subtitle">
+								美白修复
+							</view>
+						</view>
+						<view class="money">
+							拼团388元/盒
+						</view>
+					</view>
+					<image src="../../static/cp01.png" mode="widthFix"></image>
 				</view>
+				
 				<view class="uni-flex uni-row">
 					<view class="text" style="-webkit-flex: 1;flex: 1;">剩余数量</view>
 					<view class="text" style="-webkit-flex: 1;flex: 1;">立即购买</view>
@@ -49,19 +61,17 @@
 		<view class="swiper-box">
 			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="interval" :duration="duration" :circular="true">
 				<swiper-item>
-					<image src="../../static/ad3.jpg" mode=""></image>
+					<image src="../../static/ad3.jpg" mode="aspectFill"></image>
 				</swiper-item>
 				<swiper-item>
-					<image src="../../static/chuke.jpg" mode=""></image>
+					<image src="../../static/chuke.jpg" mode="aspectFill"></image>
 				</swiper-item>
 				<swiper-item>
-					<image src="../../static/order_bm_bg.jpg" mode=""></image>
+					<image src="../../static/order_bm_bg.jpg" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
-		<navigator url="/pages/goods/consulting">
-			<button type="primary" >咨询也</button>
-		</navigator>
+		
 		
 	</view>
 </template>
@@ -132,6 +142,10 @@
 		.goods-example{
 			border-top:20rpx solid #f5f5f5;
 			width:100%;
+			.sub-title{
+				font-size: 20rpx;
+				color: $uni-text-color-grey;
+			}
 			.preferential{
 				width: 50%;
 				position:relative;
@@ -147,6 +161,9 @@
 					.text{
 						
 					}
+				}
+				.title{
+					color: $uni-bg-color;
 				}
 			}
 			.goods-right{
@@ -172,6 +189,7 @@
 					height: 100%;
 				}
 			}
+			
 		}
 	}
 </style>
