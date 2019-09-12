@@ -1,249 +1,420 @@
 <template>
-	<section class="aui-flexView">
-		<section class="aui-scrollView">
-			<div class="aui-tab" data-ydui-tab>
-				<ul class="tab-nav">
-					<block v-for="(menuTab,index) in menuTabs" :key="index">
-						<li v-bind:id="'tabNum'+index" @click="swichMenu(index)" :class="[currentTab==index ? 'tab-nav-item tab-active' : 'tab-nav-item']">
-							{{menuTab.name}}
-						</li>
-					</block>
-				</ul>
-				<div class="divHeight"></div>
-				<div class="tab-panel">
-					<block v-for="(menuList,index2) in menuLists" :key="index2">
-						<div :class="[currentTab==index2 ? 'tab-panel-item tab-active' : 'tab-panel-item']">
-							<block v-for="(menuList2,index3) in menuList" :key="index3">
-								<div class="tab-item">
-									<a href="javascript:void(0);" class="aui-well-item aui-well-item-clear">
-										<div class="aui-well-item-hd">
-											<img :src="menuList2.logoimg" alt="">
-										</div>
-										<div class="aui-well-item-bd">
-											<h3>{{menuList2.dname}}</h3>
-										</div>
-										<span class="aui-well-item-fr">{{menuList2.zt}}</span>
-									</a>
-									<div class="aui-mail-product">
-										<a href="javascript:;" class="aui-mail-product-item">
-											<div class="aui-mail-product-item-hd">
-												<img :src="menuList2.img" alt="">
-											</div>
-											<div class="aui-mail-product-item-bd">
-												<p>{{menuList2.name}}</p>
-											</div>
-										</a>
-									</div>
-									<a href="javascript:;" class="aui-mail-payment">
-										<p>
-											共{{menuList2.sum}}件商品 合计: ￥{{menuList2.pri}}
-										</p>
-									</a>
-									<div class="aui-mail-button">
-										<a href="javascript:;" :class="[menuList2.but_ddshouhuo==0 ? 'hd' : menuList2.but_ddshouhuo==2 ? '' :'aui-df-color']">等待收货</a>
-										<a href="javascript:;" :class="[menuList2.but_wuliu==0 ? 'hd' : menuList2.but_wuliu==2 ? '' :'aui-df-color']">查看物流</a>
-										<a href="javascript:;" :class="[menuList2.but_rebuy==0 ? 'hd' : menuList2.but_rebuy==2 ? '' :'aui-df-color']">再次购买</a>
-										<a href="javascript:;" :class="[menuList2.but_pingjia==0 ? 'hd' : menuList2.but_pingjia==2 ? '' :'aui-df-color']">评价晒单</a>
-										<a href="javascript:;" :class="[menuList2.but_fapiao==0 ? 'hd' : menuList2.but_fapiao==2 ? '' :'aui-df-color']">查看发票</a>
-										<a href="javascript:;" :class="[menuList2.but_zhifu==0 ? 'hd' : menuList2.but_zhifu==2 ? '' :'aui-df-color']">去支付</a>
-									</div>
-								</div>
-								<div :class="[index3+1==menuList.length ? 'hd':'divHeight']"></div>
-							</block>
-						</div>
-					</block>
-				</div>
-			</div>
-		</section>
-	</section>
+	<view class="order-page">
+		<view class="navbar">
+			<view v-for="(item, index) in navList" :key="index" class="nav-item" :class="{current: tabCurrentIndex === index}"
+			 @click="tabClick(index)">
+				{{item.text}}
+			</view>
+		</view>
+		<swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
+			<swiper-item class="tab-content" v-for="(tabItem,tabIndex) in navList" :key="tabIndex">
+				<scroll-view class="list-scroll-content" scroll-y @scrolltolower="loadData">
+					<!-- 空白页 -->
+					<!-- <empty v-if="tabItem.loaded === true && tabItem.orderList.length === 0"></empty> -->
+
+					<!-- 订单列表 -->
+					<view v-for="(item,index) in tabItem.orderList" :key="index" class="order-item">
+						<view class="top uni-flex uni-row">
+							<view class="left">
+								<text class="iconfont">&#xe608;</text>
+								<text class="time">2019-09-02 15:00</text>
+							</view>
+							<text class="status">交易成功</text>
+						</view>
+						<view class="item-main uni-flex uni-row">
+							<view class="left uni-flex uni-row">
+								<image src="../../static/006tlvijgy1g6ldbo6anuj30e20e2wjb.jpg" mode="aspectFill"></image>
+								<view class="item-title">
+									<view class="name">
+										家收到货氨基酸考得好发送加快速度哈弗
+									</view>
+									<text>套装产品加乳液</text>
+								</view>
+							</view>
+							<view class="right">
+								<view class="money">￥99</view>
+								<text class="num">X1</text>
+							</view>
+						</view>
+						<view class="item-main uni-flex uni-row">
+							<view class="left uni-flex uni-row">
+								<image src="../../static/006tlvijgy1g6ldbo6anuj30e20e2wjb.jpg" mode="aspectFill"></image>
+								<view class="item-title">
+									<view class="name">
+										家收到货氨基酸考得好发送加快速度哈弗
+									</view>
+									<text>套装产品加乳液</text>
+								</view>
+							</view>
+							<view class="right">
+								<view class="money">￥99</view>
+								<text class="num">X1</text>
+							</view>
+						</view>
+						<view class="total uni-flex uni-row">
+							<view class="total-glod">
+								<text>赠送</text>
+								<text class="dark-color">100</text>
+								<text>个金币</text>
+							</view>
+							<view class="total-num uni-flex uni-row">
+								<text class="heji">共2件商品</text>
+								<view class="">
+									<text >合计：</text>
+									<text class="dark-color">￥128.00</text>
+								</view>
+							</view>
+						</view>
+						<view class="btn-list uni-flex uni-row">
+							<button type="primary" class="detail" @click="godetail">订单详情</button>
+							<view class="right-btn uni-flex uni-row">
+								<button type="primary" class="blue btn1">申请退款</button>
+								<button type="primary" class="dark">立即付款</button>
+							</view>
+						</view>
+
+
+					</view>
+
+					<uni-load-more :status="tabItem.loadingType"></uni-load-more>
+
+				</scroll-view>
+			</swiper-item>
+		</swiper>
+	</view>
+
 </template>
 
 <script>
+	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	export default {
+		components: {
+			uniLoadMore,
+
+		},
 		data() {
 			return {
-				scrollLeft: 0,
-				isClickChange: false,
-				currentTab: 0,
-				menuTabs: [
-					{
-						name: '全部'
-					}, {
-						name: '待付款'
-					}, {
-						name: '待发货'
-					}, {
-						name: '待收货'
-					}, {
-						name: '待评价'
+				tabCurrentIndex: 0,
+				navList: [{
+						state: 0,
+						text: '全部',
+						loadingType: 'more',
+						orderList: []
 					},
+					{
+						state: 1,
+						text: '待付款',
+						loadingType: 'more',
+						orderList: []
+					},
+					{
+						state: 2,
+						text: '待发货',
+						loadingType: 'more',
+						orderList: []
+					},
+					{
+						state: 3,
+						text: '待收货',
+						loadingType: 'more',
+						orderList: []
+					},
+					{
+						state: 4,
+						text: '待评价',
+						loadingType: 'more',
+						orderList: []
+					}
 				],
-				menuLists: [
-					[
-						{
-							"logoimg": '../../static/icon-logo.png',
-							"dname":"自营Apple产品专营店",
-							"zt":"已取消",
-							"img": '../../static/pd-001.png',
-							"name":"Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机",
-							"sum":"1",
-							"pri":"6899.00",
-							// 0=没有,1=有,2=标红
-							"but_rebuy":2,
-							"but_pingjia":1,
-							"but_fapiao":1,
-							"but_zhifu":0,
-							"but_wuliu":0,
-							"but_ddshouhuo":0,
-						},
-						{
-							"logoimg": '../../static/icon-logo.png',
-							"dname":"自营Apple产品专营店",
-							"zt":"已取消",
-							"img": '../../static/pd-002.png',
-							"name":"Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机",
-							"sum":"1",
-							"pri":"3899.00",
-							"but_rebuy":2,
-							"but_pingjia":0,
-							"but_fapiao":0,
-							"but_zhifu":0,
-							"but_wuliu":0,
-							"but_ddshouhuo":0,
-						},
-						{
-							"logoimg": '../../static/icon-logo.png',
-							"dname":"自营Apple产品专营店",
-							"zt":"已取消",
-							"img": '../../static/pd-003.png',
-							"name":"Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机Apple 苹果 iPhone8 Plus 4G手机 深空灰 移动联通版64G裸机",
-							"sum":"1",
-							"pri":"4899.00",
-							"but_rebuy":2,
-							"but_pingjia":1,
-							"but_fapiao":0,
-							"but_zhifu":0,
-							"but_wuliu":0,
-							"but_ddshouhuo":0,
-						},
-					],
-					[
-						{
-							"logoimg": '../../static/icon-logo.png',
-							"dname":"SONY京东自营官方旗舰店",
-							"zt":"等待付款",
-							"img": '../../static/pd-002.png',
-							"name":"索尼（SONY）WH-1000XM2 Hi-Res无线蓝牙耳机 智能降噪耳机 头戴式 1000x二代 香槟金",
-							"sum":"1",
-							"pri":"2899.00",
-							"but_rebuy":0,
-							"but_pingjia":0,
-							"but_fapiao":0,
-							"but_zhifu":2,
-							"but_wuliu":0,
-							"but_ddshouhuo":0,
-						}
-					],
-					[
-						{
-							"logoimg": '../../static/icon-logo.png',
-							"dname":"自营FILA产品专营店",
-							"zt":"等待收货",
-							"img": '../../static/pd-003.png',
-							"name":"FILA斐乐男鞋2018夏季新款LOGO轻便复古跑鞋运动鞋男 标准白 41FILA斐乐男鞋2018夏季新款LOGO轻便复古跑鞋运动鞋男 标准白 41FILA斐乐男鞋2018夏季新款LOGO轻便复古跑鞋运动鞋男 标准白 41FILA斐乐男鞋2018夏季新款LOGO轻便复古跑鞋运动鞋男 标准白 41",
-							"sum":"1",
-							"pri":"5899.00",
-							"but_ddshouhuo":2,
-							"but_rebuy":1,
-							"but_pingjia":0,
-							"but_fapiao":0,
-							"but_zhifu":0,
-							"but_wuliu":1,
-						}
-					],
-					[
-						{
-							"logoimg": '../../static/icon-logo.png',
-							"dname":"自营零食产品专营店",
-							"zt":"已完成",
-							"img": '../../static/pd-004.png',
-							"name":"盼盼 酸梅汤 酸梅汁风味饮料 250ml*24盒 整箱 果汁饮料",
-							"sum":"1",
-							"pri":"21.00",
-							"but_rebuy":2,
-							"but_pingjia":1,
-							"but_fapiao":1,
-							"but_zhifu":0,
-							"but_wuliu":0,
-							"but_ddshouhuo":0,
-						}
-					],
-					[
-						{
-							"logoimg": '../../static/icon-logo.png',
-							"dname":"自营OPPO产品专营店",
-							"zt":"已取消",
-							"img": '../../static/pd-005.png',
-							"name":"OPPO R15 全面屏双摄拍照手机 4G+128G 雪盈白 全网通 移动联通电信4G 双卡双待手机",
-							"sum":"1",
-							"pri":"21.00",
-							"but_rebuy":2,
-							"but_pingjia":1,
-							"but_fapiao":1,
-							"but_zhifu":0,
-							"but_wuliu":0,
-							"but_ddshouhuo":0,
-						}
-					],
+				menuLists: [{
+						state: 1,
+						time: "2019-01-04"
+					},
+					{
+
+						state: 2,
+						time: "2019-01-04"
+					},
+					{
+						state: 3,
+						time: "2019-01-04"
+					},
+					{
+						state: 4,
+						time: "2019-01-04"
+					},
+					{
+
+						time: "2019-01-04"
+					},
 				]
 			}
 		},
-		onLoad() {
-			// for (var i = 0; i < this.menuLists.length; i++) {
-			// 	this.getDateList(i);
-			// }
+		onLoad(options) {
+			/**
+			 * 修复app端点击除全部订单外的按钮进入时不加载数据的问题
+			 * 替换onLoad下代码即可
+			 */
+			console.log('tabCurrentIndex', this.tabCurrentIndex)
+			console.log('options.state', options.state)
+			this.tabCurrentIndex = +options.state;
+			// #ifndef MP
+			this.loadData()
+			// #endif
+			// #ifdef MP
+			if (options.state == 0) {
+				this.loadData()
+			}
+			// #endif
+
 		},
 		methods: {
-			swichMenu: async function(current) { //点击其中一个选项
-				if (this.currentTab == current) {
-					return false;
-				} else {
-					this.currentTab = current;
-					this.setScrollLeft(current);
-				}
-			},
-			swiperChange: async function(e) {
-				let index = e.target.current;
-				this.setScrollLeft(index);
-				this.currentTab = index;
-			},
-			setScrollLeft: async function(tabIndex) {
-				let leftWidthSum = 0;
-				for (var i = 0; i <= tabIndex; i++) {
-					let nowElement = await this.getWidth('tabNum' + i);
-					leftWidthSum = leftWidthSum + nowElement.width;
-				}
-				let winWidth = uni.getSystemInfoSync().windowWidth;
-				this.scrollLeft = leftWidthSum > winWidth ? (leftWidthSum - winWidth) : 0
-			},
-			getWidth: function(id) { //得到元素的宽高
-				return new Promise((res, rej) => {
-					uni.createSelectorQuery().select("#" + id).fields({
-						size: true,
-						scrollOffset: true
-					}, (data) => {
-						res(data);
-					}).exec();
+			godetail(){
+				uni.navigateTo({
+					url:'/pages/my/orderinfo'
 				})
 			},
-			getDateList: function(tabIndex) {
-				// var entity = this.menuTabs[tabIndex].name;
-				// this.menuLists[tabIndex].push(entity);
+			//获取订单列表
+			loadData(source) {
+				//这里是将订单挂载到tab列表下
+				let index = this.tabCurrentIndex;
+				let navItem = this.navList[index];
+				let state = navItem.state;
+				console.log(navItem)
+				if (source === 'tabChange' && navItem.loaded === true) {
+					//tab切换只有第一次需要加载数据
+					return;
+				}
+				if (navItem.loadingType === 'loading') {
+					//防止重复加载
+					return;
+				}
+
+				navItem.loadingType = 'loading';
+
+				setTimeout(() => {
+					let orderList = this.menuLists.filter(item => {
+						//演示数据所以自己进行状态筛选
+						if (state === 0) {
+							//0为全部订单
+							return item;
+						}
+						return item.state === state
+					});
+					orderList.forEach(item => {
+						navItem.orderList.push(item);
+					})
+					console.log(navItem)
+					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
+					this.$set(navItem, 'loaded', true);
+
+					//判断是否还有数据， 有改为 more， 没有改为noMore 
+					navItem.loadingType = 'more';
+				}, 600);
 			},
+
+			//swiper 切换
+			changeTab(e) {
+				this.tabCurrentIndex = e.target.current;
+				this.loadData('tabChange');
+			},
+			//顶部tab点击
+			tabClick(index) {
+				this.tabCurrentIndex = index;
+			},
+			//删除订单
+			deleteOrder(index) {
+				uni.showLoading({
+					title: '请稍后'
+				})
+				setTimeout(() => {
+					this.navList[this.tabCurrentIndex].orderList.splice(index, 1);
+					uni.hideLoading();
+				}, 600)
+			},
+			//取消订单
+			cancelOrder(item) {
+				uni.showLoading({
+					title: '请稍后'
+				})
+				setTimeout(() => {
+					let {
+						stateTip,
+						stateTipColor
+					} = this.orderStateExp(9);
+					item = Object.assign(item, {
+						state: 9,
+						stateTip,
+						stateTipColor
+					})
+
+					//取消订单后删除待付款中该项
+					let list = this.navList[1].orderList;
+					let index = list.findIndex(val => val.id === item.id);
+					index !== -1 && list.splice(index, 1);
+
+					uni.hideLoading();
+				}, 600)
+			},
+
 		}
 	}
 </script>
 
-<style>
-	@import '../../style/style.css';
+<style lang="scss" scoped>
+	page{
+		width: 100%;
+		height: 100%;
+	}
+	.order-page {
+		background:#f1f1f1;
+		height: 100%;
+		.navbar {
+			display: flex;
+			height: 40px;
+			padding: 0 5px;
+			background: #fff;
+			box-shadow: 0 1px 5px rgba(0, 0, 0, .06);
+			position: relative;
+			z-index: 10;
+
+			.nav-item {
+				flex: 1;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100%;
+				font-size: 15px;
+				color: $uni-text-color;
+				position: relative;
+
+				&.current {
+					color: $uni-bg-color;
+
+					&:after {
+						content: '';
+						position: absolute;
+						left: 50%;
+						bottom: 0;
+						transform: translateX(-50%);
+						width: 44px;
+						height: 0;
+						border-bottom: 2px solid $uni-bg-color;
+					}
+				}
+			}
+		}
+		.swiper-box{
+			height: 100%;
+			.tab-content{
+				overflow: auto;
+			}
+		}
+		.order-item{
+			margin-top:20rpx;
+			background:#fff;
+			.top{
+				height: 74rpx;
+				padding: 0 30rpx;
+				justify-content: space-between;
+				align-items: center;
+				border-bottom: 1px solid $uni-border-color;
+				.left{
+					line-height: 74rpx;
+					color:$uni-text-color;
+					.iconfont{
+						font-size: 24rpx;
+						margin-right: 8rpx;
+						line-height: 74rpx;
+					}
+				}
+				.status{
+					color: $uni-bg-color;
+				}
+			}
+			.item-main{
+				margin:0 30rpx;
+				padding: 30rpx 0;
+				justify-content:space-between;
+				border-bottom: 1px solid $uni-border-color;
+				.left{
+					width: 580rpx;
+					
+					image{
+						overflow: hidden;
+						width: 135rpx;
+						height: 135rpx;
+						margin-right: 20rpx;
+						border-radius: 5px;
+					}
+					.item-title{
+						.name{
+							margin-bottom: 20rpx;
+							font-size: 28rpx;
+						}
+						text{
+							font-size: 24rpx;
+							color: $uni-text-color-grey;
+						}
+					}
+				}
+				.right{
+					flex:1;
+					text-align:right;
+					.money{
+						
+					}
+					.num{
+						font-size: 20rpx;
+						color: $uni-text-color-grey;
+					}
+				}
+			}
+			.total{
+				margin: 0 30rpx;
+				height: 75rpx;
+				justify-content:space-between;
+				align-items: center;
+				border-bottom: 1px solid $uni-border-color;
+				.dark-color{
+					color: $uni-bg-color;
+				}
+				.total-num{
+					.heji{
+						margin-right: 20rpx;
+					}
+				}
+			}
+			.btn-list{
+				margin: 0 30rpx;
+				padding: 20rpx 0;
+				justify-content:space-between;
+				button{
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 180rpx;
+					height: 56rpx;
+					border-radius: 56rpx;
+					margin: 0px;
+					font-size: 28rpx;
+				}
+				.detail{
+					color: $uni-text-color;
+					background: #ddd;
+				}
+				.btn1{
+					margin-right: 20rpx;
+				}
+				.blue{
+					color: #fff;
+					background: #4aa3f0;
+				}
+				.dark{
+					color: #fff;
+					background-color: $uni-bg-color;
+				}
+			}
+		}
+	}
 </style>

@@ -79,6 +79,12 @@
 			}
 		},
 		{
+			"path": "pages/my/returngoods",
+			"style": {
+				"navigationBarTitleText": "退货"
+			}
+		},
+		{
 			"path": "pages/my/orderinfo",
 			"style": {
 				"navigationBarTitleText": "订单详情"
@@ -154,6 +160,12 @@
 			"path": "pages/benefits/PaySuccess",
 			"style": {
 				"navigationBarTitleText": "付款成功"
+			}
+		},
+		{
+			"path": "pages/my/drawback",
+			"style": {
+				"navigationBarTitleText": "退款申请"
 			}
 		}
 	],
