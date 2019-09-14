@@ -169,10 +169,10 @@
 				if(url.detail.index !=4){
 					uni.navigateTo({
 						url:'/pages/my/order?state='+url.detail.index
-					})  
+					})   
 				}else{
 					uni.navigateTo({
-						url:'/pages/my/order?state='+url.detail.index
+						url:'/pages/my/returngoods'
 					})
 				}
 				
