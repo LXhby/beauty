@@ -161,6 +161,12 @@
 			"style": {
 				"navigationBarTitleText": "付款成功"
 			}
+		},
+		{
+			"path": "pages/my/drawback",
+			"style": {
+				"navigationBarTitleText": "退款申请"
+			}
 		}
 	],
 	"globalStyle": {
