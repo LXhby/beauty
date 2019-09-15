@@ -35,6 +35,10 @@
   border-top: 20rpx solid #f5f5f5;
   width: 100%;
 }
+.home-page .goods-example .sub-title.data-v-94eaef76 {
+    font-size: 20rpx;
+    color: #999;
+}
 .home-page .goods-example .preferential.data-v-94eaef76 {
     width: 50%;
     position: relative;
@@ -48,6 +52,9 @@
 }
 .home-page .goods-example .preferential .hot-right .iconfont.data-v-94eaef76 {
         color: #ff0080;
+}
+.home-page .goods-example .preferential .title.data-v-94eaef76 {
+      color: #ff0080;
 }
 .home-page .goods-example .goods-right.data-v-94eaef76 {
     width: 50%;
