@@ -1,7 +1,7 @@
 <template>
 	<view class="course">
 		<view class="">
-			<image src="../../static/chuke.jpg"></image>
+			<image src="../../static/chuke.jpg" mode="aspectFill"></image>
 		</view>
 
 		<view class="course-show">
