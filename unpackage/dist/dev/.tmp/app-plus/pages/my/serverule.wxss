@@ -230,6 +230,29 @@
   font-size: 24rpx;
   color: #999;
 }
+.draw-back textarea.data-v-3d15966a {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 670rpx;
+  height: 230rpx;
+  padding: 20rpx;
+  margin: 20rpx 40rpx;
+  background: #f4f4f4;
+  border-radius: 5px;
+}
+.order textarea.data-v-3d15966a {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 470rpx;
+  height: 190rpx;
+  padding: 20rpx;
+  margin: 30rpx 40rpx;
+  text-align: left;
+  font-size: 28rpx;
+  background: #f4f4f4;
+  border-radius: 5px;
+  color: #333;
+}
 @font-face {
   font-family: "iconfont";
   /* project id 1377410 */

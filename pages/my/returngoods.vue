@@ -45,7 +45,8 @@
 				</view>
 				<view class="flow-line"></view>
 				<view class="flow-li">
-					<view class="flow-bor"></view>
+					<!-- <view class="flow-bor"></view> -->
+					<view class="iconfont flow-icon">&#xe63e;</view>
 					<view class="flow-text">
 						<view>退款成功</view>
 						<text>2019-09-08 10:56</text>
@@ -186,6 +187,16 @@
 						height: 12rpx;
 						border-radius: 50%;
 						text-align: center;
+					}
+					.flow-icon{
+						width: 30rpx;
+						height: 30rpx;
+						position: absolute;
+						left: 0;
+						top: -9rpx;
+						border-radius: 50%;
+						background-color: #FF4000;
+						color: #fff;
 					}
 
 					.flow-text {

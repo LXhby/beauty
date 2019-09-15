@@ -4,7 +4,7 @@
 			<image src="../../static/order_top_bg.jpg" mode="widthFix"></image>
 			<!-- <text>待付款：订单倒计时30分钟，订单取消</text> -->
 			<view class="text uni-flex uni-row">
-				<text>待评价：评价有奖哦！</text>
+				<text>待发货</text>
 			</view>
 		</view>
 		<view class="store-name">
@@ -17,7 +17,7 @@
 				<view class="header-right">
 					<!-- <button class="friend-pay btn" type="primary" size="mini">朋友代付</button>
 					<button class="me-pay btn" type="primary" size="mini">立即付款</button> -->
-					<button class="me-pay btn" type="primary" size="mini">立即评价</button>
+					<button class="me-pay btn" type="primary" size="mini">提醒发货</button>
 				</view>
 			</view>
 			<view class="store-content">
@@ -72,7 +72,7 @@
 				<text>2018-07-15 15:30:23</text>
 			</p>
 		</view>
-		<view class="progress">
+		<view class="progress" v-if="0">
 			<view class="title">
 				中通快递单号：38947394587023
 			</view>
@@ -126,18 +126,13 @@
 					王晓文的店铺
 				</view>
 				<view class="star">
-					<text class="iconfont">&#xe623;</text>
+					<text class="iconfont dark-color">&#xe623;</text>
 					<text class="iconfont">&#xe623;</text>
 					<text class="iconfont">&#xe623;</text>
 					<text class="iconfont">&#xe623;</text>
 					<text class="iconfont">&#xe623;</text>
 				</view>
-				<textarea
-				  maxlength="200"
-				  placeholder-style="width:100%;border-radius: 5px;"
-				  placeholder=""
-				  value="非常好"
-				/>
+				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f4f4f4;" placeholder="" value="非常好" />
 				<view class="upload uni-flex uni-row">
 					<view class="up-image">
 						<text class="iconfont">&#xe64a;</text>
@@ -149,6 +144,27 @@
 						<text>内容丰富的评价更容易成为优质评价哦！</text>
 					</view>
 				</view>
+				<view class="noname">
+					<label>
+						<checkbox value="cb" checked="true" style="transform:scale(0.7)" color="#ff0080" />匿名评价
+					</label>
+				</view>
+				<view class="uni-btnv">
+					<button type="primary">提交评价</button>
+				</view>
+			</view>
+		</uni-popup>
+		
+		<!-- 提醒发货 -->
+		<uni-popup ref="popups" type="center" custom="true">
+			<view class="alert-pop">
+				<view class="shop-image">
+					<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
+				</view>
+				<view class="title">
+					王晓文的店铺
+				</view>
+				<view class="text">亲，我们已收到提醒，将尽快发货！</view>
 			</view>
 		</uni-popup>
 	</view>
@@ -161,7 +177,7 @@
 			uniPopup
 		},
 		mounted(){
-			this.$refs.popup.open()
+			this.$refs.popups.open()
 		}
 	}
 </script>
@@ -243,6 +259,9 @@
 						width: 140rpx;
 						padding: 0px;
 						border-radius: 42rpx;
+						&:after{
+							border: none;
+						}
 					}
 
 					.friend-pay {
@@ -252,6 +271,9 @@
 
 					.me-pay {
 						background-color: $uni-bg-color;
+						&:after{
+							border: none;
+						}
 					}
 				}
 			}
@@ -479,7 +501,6 @@
 		.coment-form{
 			position: relative;
 			width: 550rpx;
-			height: 718rpx;
 			border-radius: 5px;
 			background:#fff;
 			.shop-image{
@@ -506,22 +527,16 @@
 				margin:30rpx 0 20rpx 0;
 				.iconfont{
 					margin: 0 10rpx;
+					color: #999;
+				}
+				.dark-color{
+					color: $uni-bg-color;
 				}
 			}
-			uni-textarea {
-			  box-sizing: border-box;
-			  width: 450rpx;
-			  height:190rpx;
-			  padding: 20rpx;
-			  margin: 20rpx 40rpx;
-			  text-align:left;
-			  font-size:28rpx;
-			  background: #f4f4f4;
-			  border-radius: 5px;
-			  color: #333;
-			}
+			
 		}
 		.upload{
+			padding:0 40rpx;
 			align-items:center;
 			.up-image{
 				display: flex;
@@ -534,14 +549,74 @@
 				border-radius: 5rpx;
 			}
 			.up-text{
+				flex: 1;
 				text-align:left;
 				.title{
-					
+					padding-top: 0px;
+					font-size: 24rpx;
+				}
+				text{
+					color:$uni-text-color-grey;
+					font-size: 20rpx;
+					line-height: 20rpx;
 				}
 			}
 			.iconfont{
 				color: #fff;
 				font-size: 46rpx;
+			}
+		}
+		.noname{
+			margin-top: 30rpx;
+			padding-left: 40rpx;
+			text-align: left;
+			label{
+				font-size: 24rpx;
+			}
+		}
+		.uni-btnv{
+			padding:20rpx 0 40rpx 0;
+			button{
+				width: 276rpx;
+				height: 54rpx;
+				line-height: 54rpx;
+				border-radius: 54rpx;
+				color: #fff;
+				font-size: 28rpx;
+				background: $uni-bg-color;
+				&:after{
+					border: none;
+				}
+			}
+		}
+		.alert-pop{
+			position: relative;
+			width: 550rpx;
+			border-radius: 5px;
+			background:#fff;
+			.shop-image{
+				position: absolute;
+				width:138rpx;
+				height:138rpx;
+				top: -64rpx;
+				left: 0;
+				right: 0;
+				margin:0 auto;
+				border-radius: 50%;
+				overflow:hidden;
+				image{
+					width:138rpx;
+					height:138rpx;
+					border-radius: 50%;
+				}
+			}
+			.title{
+				padding-top:84rpx;
+				color: #333;
+				font-size: 26rpx;
+			}
+			.text{
+				padding: 50rpx 0;
 			}
 		}
 	}
