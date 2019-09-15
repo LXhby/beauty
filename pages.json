@@ -167,6 +167,12 @@
 			"style": {
 				"navigationBarTitleText": "退款申请"
 			}
+		},
+		{
+			"path": "pages/my/toPay",
+			"style": {
+				"navigationBarTitleText": "订单待付款"
+			}
 		}
 	],
 	"globalStyle": {
