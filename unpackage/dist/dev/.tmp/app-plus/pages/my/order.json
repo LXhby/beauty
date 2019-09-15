@@ -1,6 +1,8 @@
 {
   "navigationBarTitleText": "我的订单",
   "usingComponents": {
-    "uni-load-more": "/components/uni-load-more/uni-load-more"
+    "uni-load-more": "/components/uni-load-more/uni-load-more",
+    "nav-tab": "/components/navTab",
+    "refresh": "/components/refresh"
   }
 }

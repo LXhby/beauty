@@ -26,15 +26,22 @@
 			<view class="preferential" @click="goDetail">
 				<view class="hot-right">
 					<text class="iconfont">&#xe6c6;</text>
-					<text class="text">热销</text>
+					<text class="text1">热</text>
+					<text class="text2">销</text>
 				</view>
 				<view class="title">
-					限时特惠
+					店主推荐
 				</view>
 				<text class="sub-title">
 					今日推荐特实惠
 				</text>
-				<image src="../../static/cp01.png" class="good-image"></image>
+				<view class="image-box uni-flex uni-row">
+					<image src="../../static/cp01.png" class="good-image" mode="widthFix"></image>
+					<view class="circle">
+						￥10.00
+					</view>
+				</view>
+				
 			</view>
 			<view class="uni-flex uni-column goods-right" >
 				<view class=""top1>
@@ -52,12 +59,11 @@
 					<image src="../../static/cp01.png" mode="widthFix"></image>
 				</view>
 				
-				<view class="uni-flex uni-row">
-					<view class="text" style="-webkit-flex: 1;flex: 1;">剩余数量</view>
-					<view class="text" style="-webkit-flex: 1;flex: 1;">立即购买</view>
-				</view>
+				
 			</view>
 		</view>
+		
+		
 		<view class="swiper-box">
 			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="interval" :duration="duration" :circular="true">
 				<swiper-item>
@@ -71,8 +77,6 @@
 				</swiper-item>
 			</swiper>
 		</view>
-		
-		
 	</view>
 </template>
 
@@ -143,6 +147,7 @@
 			border-top:20rpx solid #f5f5f5;
 			width:100%;
 			.sub-title{
+				margin-left: 20rpx;
 				font-size: 20rpx;
 				color: $uni-text-color-grey;
 			}
@@ -154,17 +159,61 @@
 					right: 0px;
 					top:0px;
 					width:70rpx;
-					height:70rpx;
+					height:80rpx;
+					
+					
 					.iconfont{
+						margin-top: -2rpx;
+						vertical-align: top;
+						font-size: 70rpx;
 						color:$uni-bg-color ;
 					}
-					.text{
+					text{
+						position: absolute;
+						top: 0;
+						bottom: 0;
+						left: 0;
+						right: 0;
+						margin: auto auto;
+						color: #fff;
+						font-size: 20rpx;
 						
+					}
+					.text1{
+						margin-left: 26rpx;
+					}
+					.text2{
+						margin-top: 23rpx;
+						margin-left: 46rpx;
 					}
 				}
 				.title{
+					padding: 20rpx 0 0 20rpx;
 					color: $uni-bg-color;
+					font-size: 32rpx;
+					line-height: 32rpx;
 				}
+				.image-box{
+					padding: 0 40rpx;
+					margin-top:20rpx;
+					justify-content:space-between;
+					.good-image{
+						width: 160rpx;
+						padding-top: 20rpx;
+					}
+					.circle{
+						width: 106rpx;
+						height: 106rpx;
+						
+						background: #fce0f5;
+						border-radius: 50%;
+						text-align: center;
+						line-height: 106rpx;
+						font-size: 20rpx;
+						color: $uni-bg-color;
+					}
+				}
+				
 			}
 			.goods-right{
 				width: 50%;

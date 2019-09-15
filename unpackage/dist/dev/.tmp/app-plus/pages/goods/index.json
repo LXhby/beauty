@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "美妆帮",
-  "usingComponents": {}
+  "usingComponents": {
+    "nav-tab": "/components/navTab",
+    "uni-tag": "/components/uni-tag/uni-tag"
+  }
 }
