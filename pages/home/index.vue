@@ -30,7 +30,7 @@
 					<text class="text2">销</text>
 				</view>
 				<view class="title">
-					店主推荐
+					限时特惠
 				</view>
 				<text class="sub-title">
 					今日推荐特实惠
@@ -41,29 +41,42 @@
 						￥10.00
 					</view>
 				</view>
-				
+				<text class="word-black">美白美金美白美金</text><br />
+				<text class="word-red">倒计时：3天18小时56秒</text>
 			</view>
-			<view class="uni-flex uni-column goods-right" >
-				<view class=""top1>
+			<view class="uni-flex uni-column goods-right">
+				<view class="top">
 					<view class="top-main">
-						<view class="text" >
+						<view class="text">
 							<text class="title">美白黄金</text>
 							<view class="subtitle">
 								美白修复
 							</view>
 						</view>
 						<view class="money">
-							拼团388元/盒
+							拼团 388元 / 盒
 						</view>
 					</view>
-					<image src="../../static/cp01.png" mode="widthFix"></image>
+					<image src="../../static/cp01.png" mode="aspectFit"></image>
 				</view>
-				
-				
+				<view class="top">
+					<view class="top-main">
+						<view class="text">
+							<text class="title">美白黄金</text>
+							<view class="subtitle">
+								美白修复
+							</view>
+						</view>
+						<view class="money">
+							秒杀 388元 / 盒
+						</view>
+					</view>
+					<image src="../../static/cp01.png" mode="aspectFit"></image>
+				</view>
 			</view>
 		</view>
-		
-		
+
+
 		<view class="swiper-box">
 			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="interval" :duration="duration" :circular="true">
 				<swiper-item>
@@ -77,6 +90,8 @@
 				</swiper-item>
 			</swiper>
 		</view>
+
+		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 	</view>
 </template>
 
@@ -90,41 +105,41 @@
 			uniGrid,
 			uniGridItem
 		},
-		data(){
-			return{
-				detailist:["可提现","待提现","产品额度"]
+		data() {
+			return {
+				detailist: ["可提现", "待提现", "产品额度"]
 			}
 		},
-		methods:{
-			goPage(event){
+		methods: {
+			goPage(event) {
 				var index = event.detail.index;
-				switch (index){
+				switch (index) {
 					case 0:
-					uni.navigateTo({
-					    url: '/pages/benefits/meeting'
-					});
-					break;
+						uni.navigateTo({
+							url: '/pages/benefits/meeting'
+						});
+						break;
 					case 1:
-					uni.navigateTo({
-					    url: '/pages/benefits/preferential'
-					});
-					break;
+						uni.navigateTo({
+							url: '/pages/benefits/preferential'
+						});
+						break;
 					case 2:
-					uni.navigateTo({
-					    url: '/pages/benefits/integral'
-					});
-					break;
+						uni.navigateTo({
+							url: '/pages/benefits/integral'
+						});
+						break;
 					case 3:
-					uni.navigateTo({
-					    url: '/pages/benefits/upvue'
-					});
-					break;
+						uni.navigateTo({
+							url: '/pages/benefits/upvue'
+						});
+						break;
 				}
-				
+
 			},
-			goDetail(){
+			goDetail() {
 				uni.navigateTo({
-				    url: '/pages/home/detail'
+					url: '/pages/home/detail'
 				});
 			}
 		}
@@ -132,43 +147,51 @@
 </script>
 
 <style lang="scss" scoped>
-	.home-page{
-		.active-nav{
-			.image{
+	@import "../../common/common.scss";
+
+	.home-page {
+		.active-nav {
+			.image {
 				width: 90rpx;
 				height: 90rpx;
 			}
-			.text{
+
+			.text {
 				font-size: 24rpx;
 			}
 		}
+
 		// 限时特惠
-		.goods-example{
-			border-top:20rpx solid #f5f5f5;
-			width:100%;
-			.sub-title{
+		.goods-example {
+			border-top: 20rpx solid #f5f5f5;
+			width: 100%;
+
+			.sub-title {
 				margin-left: 20rpx;
 				font-size: 20rpx;
 				color: $uni-text-color-grey;
 			}
-			.preferential{
+
+			.preferential {
 				width: 50%;
-				position:relative;
-				.hot-right{
+				position: relative;
+
+				.hot-right {
 					position: absolute;
 					right: 0px;
-					top:0px;
-					width:70rpx;
-					height:80rpx;
-					
-					
-					.iconfont{
+					top: 0px;
+					width: 70rpx;
+					height: 80rpx;
+
+
+					.iconfont {
 						margin-top: -2rpx;
 						vertical-align: top;
 						font-size: 70rpx;
-						color:$uni-bg-color ;
+						color: $uni-bg-color;
 					}
-					text{
+
+					text {
 						position: absolute;
 						top: 0;
 						bottom: 0;
@@ -177,34 +200,40 @@
 						margin: auto auto;
 						color: #fff;
 						font-size: 20rpx;
-						
+
 					}
-					.text1{
+
+					.text1 {
 						margin-left: 26rpx;
 					}
-					.text2{
+
+					.text2 {
 						margin-top: 23rpx;
 						margin-left: 46rpx;
 					}
 				}
-				.title{
+
+				.title {
 					padding: 20rpx 0 0 20rpx;
 					color: $uni-bg-color;
 					font-size: 32rpx;
 					line-height: 32rpx;
 				}
-				.image-box{
+
+				.image-box {
 					padding: 0 40rpx;
-					margin-top:20rpx;
-					justify-content:space-between;
-					.good-image{
+					margin-top: 20rpx;
+					justify-content: space-between;
+
+					.good-image {
 						width: 160rpx;
 						padding-top: 20rpx;
 					}
-					.circle{
+
+					.circle {
 						width: 106rpx;
 						height: 106rpx;
-						
+
 						background: #fce0f5;
 						border-radius: 50%;
 						text-align: center;
@@ -213,32 +242,79 @@
 						color: $uni-bg-color;
 					}
 				}
-				
+
+				.word-black {
+					margin-left: 16rpx;
+					font-size: 32rpx;
+					line-height: 32rpx;
+				}
+
+				.word-red {
+					margin-left: 16rpx;
+					color: $uni-bg-color;
+					font-size: 20rpx;
+				}
 			}
-			.goods-right{
+
+			.goods-right {
 				width: 50%;
-			}	
+
+				.top {
+					display: flex;
+					justify-content: space-between;
+					padding: 20rpx;
+					border-bottom: 1px solid #f4f4f4;
+
+					.text {
+						.title {
+							font-size: 32rpx;
+							line-height: 32rpx;
+						}
+
+						.subtitle {
+							margin-left: 5rpx;
+							font-size: 20rpx;
+							color: $uni-text-color-grey;
+						}
+					}
+
+					.money {
+						margin-top: 40rpx;
+						padding: 4rpx 10rpx;
+						border-radius: 20rpx;
+						font-size: 24rpx;
+						color: $uni-bg-color;
+						background-color: #fce0f5;
+					}
+
+					image {
+						width: 140rpx;
+						height: 140rpx;
+					}
+				}
+			}
 		}
-		
+
 	}
 </style>
 <style lang="scss">
-	.home-page{
+	.home-page {
 		.swiper-box {
 			padding: 20rpx;
 			border-top: 20rpx solid #f5f5f5;
 			border-bottom: 20rpx solid #f5f5f5;
-			
+
 			.swiper {
 				overflow: hidden;
 				height: 180rpx;
-				border-radius:5px;
+				border-radius: 5px;
+
 				image {
 					width: 100%;
 					height: 100%;
 				}
 			}
-			
+
 		}
 	}
 </style>
