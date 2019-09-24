@@ -49,7 +49,7 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.main-title.data-v-217fe568 {
+.main-title.data-v-0a3b1c37 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -60,26 +60,26 @@
   padding: 10rpx 0  20rpx 28rpx;
   border-bottom: 1px solid #f5f5f5;
 }
-.main-title .line.data-v-217fe568 {
+.main-title .line.data-v-0a3b1c37 {
     width: 8rpx;
     font-size: 32rpx;
     height: 32rpx;
     border-radius: 8rpx;
     background-color: #ff0080;
 }
-.main-title .text.data-v-217fe568 {
+.main-title .text.data-v-0a3b1c37 {
     margin-left: 10rpx;
     font-size: 32rpx;
     line-height: 32rpx;
     color: #ff0080;
 }
-.bottom-line.data-v-217fe568 {
+.bottom-line.data-v-0a3b1c37 {
   padding: 50rpx 0 45rpx 0;
   text-align: center;
   font-size: 24rpx;
   color: #999;
 }
-.draw-back textarea.data-v-217fe568 {
+.draw-back textarea.data-v-0a3b1c37 {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   width: 670rpx;
@@ -89,7 +89,7 @@
   background: #f4f4f4;
   border-radius: 5px;
 }
-.order textarea.data-v-217fe568 {
+.order textarea.data-v-0a3b1c37 {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   width: 470rpx;
@@ -102,7 +102,7 @@
   border-radius: 5px;
   color: #333;
 }
-.integral-page .main .top.data-v-217fe568 {
+.integral-page .main .top.data-v-0a3b1c37 {
   height: 80rpx;
   padding: 0 20rpx;
   -webkit-box-pack: justify;
@@ -115,14 +115,14 @@
           align-items: center;
   border-bottom: 1px solid #f5f5f5;
 }
-.integral-page .main .top text.data-v-217fe568 {
+.integral-page .main .top text.data-v-0a3b1c37 {
     color: #666;
     font-size: 28rpx;
 }
-.integral-page .main .top .dark-color.data-v-217fe568 {
+.integral-page .main .top .dark-color.data-v-0a3b1c37 {
     color: #ff0080;
 }
-.integral-page .main .item.data-v-217fe568 {
+.integral-page .main .item.data-v-0a3b1c37 {
   padding: 20rpx;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
@@ -134,19 +134,19 @@
           align-items: center;
   border-bottom: 20rpx solid #f5f5f5;
 }
-.integral-page .main .item .left.data-v-217fe568 {
+.integral-page .main .item .left.data-v-0a3b1c37 {
     color: #666;
     -webkit-box-align: center;
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
 }
-.integral-page .main .item .left image.data-v-217fe568 {
+.integral-page .main .item .left image.data-v-0a3b1c37 {
       width: 200rpx;
       height: 150rpx;
       margin-right: 20rpx;
 }
-.integral-page .main .item .left .detail.data-v-217fe568 {
+.integral-page .main .item .left .detail.data-v-0a3b1c37 {
       min-height: 150rpx;
       display: -webkit-box;
       display: -webkit-flex;
@@ -162,29 +162,29 @@
               justify-content: space-around;
       width: 240rpx;
 }
-.integral-page .main .item .left .detail .title.data-v-217fe568 {
+.integral-page .main .item .left .detail .title.data-v-0a3b1c37 {
         font-size: 28rpx;
 }
-.integral-page .main .item .left .detail .bottom.data-v-217fe568 {
+.integral-page .main .item .left .detail .bottom.data-v-0a3b1c37 {
         -webkit-box-pack: justify;
         -webkit-justify-content: space-between;
             -ms-flex-pack: justify;
                 justify-content: space-between;
 }
-.integral-page .main .item .left .detail .bottom text.data-v-217fe568 {
+.integral-page .main .item .left .detail .bottom text.data-v-0a3b1c37 {
           font-size: 20rpx;
           color: #999;
 }
-.integral-page .main .item .right.data-v-217fe568 {
+.integral-page .main .item .right.data-v-0a3b1c37 {
     color: #666;
 }
-.integral-page .main .item .right .money.data-v-217fe568 {
+.integral-page .main .item .right .money.data-v-0a3b1c37 {
       font-size: 24rpx;
 }
-.integral-page .main .item .right .money .num.data-v-217fe568 {
+.integral-page .main .item .right .money .num.data-v-0a3b1c37 {
         font-size: 32rpx;
 }
-.integral-page .main .item .right .btn.data-v-217fe568 {
+.integral-page .main .item .right .btn.data-v-0a3b1c37 {
       width: 140rpx;
       height: 45rpx;
       margin-top: 20rpx;

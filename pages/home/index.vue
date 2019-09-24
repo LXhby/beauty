@@ -41,8 +41,7 @@
 						￥10.00
 					</view>
 				</view>
-				<text class="word-black">美白美金美白美金</text><br />
-				<text class="word-red">倒计时：3天18小时56秒</text>
+				<view class="word-black">美白美金美白美金</view>
 			</view>
 			<view class="uni-flex uni-column goods-right">
 				<view class="top">
@@ -54,12 +53,12 @@
 							</view>
 						</view>
 						<view class="money">
-							拼团 388元 / 盒
+							88元 / 盒
 						</view>
 					</view>
 					<image src="../../static/cp01.png" mode="aspectFit"></image>
 				</view>
-				<view class="top">
+				<view class="top" style="border-bottom: none;">
 					<view class="top-main">
 						<view class="text">
 							<text class="title">美白黄金</text>
@@ -68,7 +67,7 @@
 							</view>
 						</view>
 						<view class="money">
-							秒杀 388元 / 盒
+							88元 / 盒
 						</view>
 					</view>
 					<image src="../../static/cp01.png" mode="aspectFit"></image>
@@ -107,7 +106,9 @@
 		},
 		data() {
 			return {
-				detailist: ["可提现", "待提现", "产品额度"]
+				detailist: ["可提现", "待提现", "产品额度"],
+				interval: 2000,
+				duration: 1000
 			}
 		},
 		methods: {
@@ -165,7 +166,7 @@
 		.goods-example {
 			border-top: 20rpx solid #f5f5f5;
 			width: 100%;
-
+			height:392rpx;
 			.sub-title {
 				margin-left: 20rpx;
 				font-size: 20rpx;
@@ -174,7 +175,9 @@
 
 			.preferential {
 				width: 50%;
+				height: 100%;
 				position: relative;
+
 
 				.hot-right {
 					position: absolute;
@@ -239,35 +242,37 @@
 						text-align: center;
 						line-height: 106rpx;
 						font-size: 20rpx;
-						color: $uni-bg-color;
+						color: $uni-bg-color-grey;
 					}
 				}
 
 				.word-black {
+					margin-top: 26rpx;
 					margin-left: 16rpx;
-					font-size: 32rpx;
+					font-size: 28rpx;
 					line-height: 32rpx;
-				}
-
-				.word-red {
-					margin-left: 16rpx;
-					color: $uni-bg-color;
-					font-size: 20rpx;
+					color: #333;
 				}
 			}
 
 			.goods-right {
 				width: 50%;
+				height: 100%;
+				border-left: 1px solid #f4f4f4;
 
 				.top {
 					display: flex;
 					justify-content: space-between;
 					padding: 20rpx;
+					height: 50%;
+					box-sizing: border-box;
 					border-bottom: 1px solid #f4f4f4;
 
 					.text {
+						color: #333;
+
 						.title {
-							font-size: 32rpx;
+							font-size: 28rpx;
 							line-height: 32rpx;
 						}
 
@@ -280,11 +285,13 @@
 
 					.money {
 						margin-top: 40rpx;
-						padding: 4rpx 10rpx;
+						height: 40rpx;
+						line-height: 40rpx;
+						padding: 0 16rpx;
 						border-radius: 20rpx;
-						font-size: 24rpx;
-						color: $uni-bg-color;
-						background-color: #fce0f5;
+						font-size: 20rpx;
+						color: $uni-bg-color-grey;
+						background: #fce0f5;
 					}
 
 					image {

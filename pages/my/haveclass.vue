@@ -8,7 +8,7 @@
 			</view>
 			<view class="main-content">
 				<view class="list">
-					<view class="item uni-flex uni-row">
+					<view class="item uni-flex uni-row" @click="gopage">
 						<view class="left uni-flex uni-column">
 							<view class="title">第一期某某课程某某课程某某课程</view>
 							<view class="bottom-box uni-flex uni-row">
@@ -83,6 +83,13 @@
 			return {
 				detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
 			};
+		},
+		methods:{
+			gopage(){
+				uni.navigateTo({
+					url:'/pages/benefits/courseinfo'
+				})
+			}
 		}
 	};
 </script>
