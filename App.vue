@@ -8,6 +8,14 @@
 		},
 		onHide: function() {
 			console.log('App Hide')
+		},
+		methods:{
+			
+		},
+		data(){
+			return{
+				baseURL:'http://api.krtamall.yiidev.cn/v1/'
+			}
 		}
 	}
 </script>
