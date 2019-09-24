@@ -7,7 +7,7 @@
 			<navTab ref="navTab" :tabTitle="tabTitle" @changeTab='changeTab'></navTab>
 		</view>
 		<!-- swiper切换 swiper-item表示一页 scroll-view表示滚动视窗 -->
-		<swiper style="min-height: 100vh;" :current="currentTab" @change="swiperTab">
+		<swiper style="min-height: 100vh;" :current="tabCurrentIndex" @change="swiperTab">
 			<swiper-item v-for="(listItem,listIndex) in list" :key="listIndex">
 				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation :scroll-into-view="toView">
 					<view class='content'>
