@@ -44,7 +44,7 @@ globalInterceptor.request.use(config => {
                 };
                 store.getters.token
             }
-
+			console.log(config)
     return config;
     // return false;
     // return Promise.reject('is error')
