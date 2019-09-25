@@ -2,7 +2,6 @@
 	export default {
 		onLaunch: function() {
 			this.getconfig();
-			this.geto();
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -16,21 +15,10 @@
 					url: 'config/get-all',
 					method: 'get',
 				}).then(res=>{
-					
+					this.$store.commit("user/setconfig",res.data);
+					console.log(this.$store)
 				});
 			},
-			geto(){
-				this.$http.request({
-					url: 'memberships',
-					method: 'get',
-					params:{
-						"MembershipSearch[is_default]":1,
-						"per-page":1
-					}
-				}).then(res=>{
-					
-				});
-			}
 		},
 		data(){
 			return{

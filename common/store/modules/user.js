@@ -3,7 +3,8 @@ const state = {
         headimgurl: "http://thirdwx.qlogo.cn/mmopen/vi_32/oSFOkm2TX3cIepOvPI9Ox6pFXhUvicsC5CTagypSPwBqRLEOzzXL3Iqvfh2jrS9FlG2ydpgQ5J7MaRObdxTk9hA/132",
         id: 1
     },
-    token: '0ab538e92c6db78d10b1694e645f3625'
+    token: '0ab538e92c6db78d10b1694e645f3625',
+	config:{}
 }
 
 const mutations = {
@@ -15,6 +16,9 @@ const mutations = {
         console.log('setToken', token);
         state.token = token
     },
+	setconfig:(state,info)=>{
+		state.config = info;
+	}
 }
 
 const actions = {
