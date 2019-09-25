@@ -133,12 +133,11 @@
 					<text class="iconfont arow">&#xe610;</text>
 				</view>
 			</navigator>
-			<view class="all-item">
+			<view class="all-item" @click="getcall">
 				<view class="item-left">
 					<text class="iconfont" :style="{color:'#ff8db7'}" style="font-size: 44rpx;">&#xe61b;</text>
 					<text class="nav-text">客服电话</text>
 				</view>
-				<view class="arow">后台设置电话</view>
 			</view>
 		</view>
 	</view>
@@ -150,6 +149,7 @@
 	import uniGridItem from "@/components/uni-grid-item/uni-grid-item.vue";
 	import uniList from '@/components/uni-list/uni-list.vue'
 	import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
+	import { mapGetters } from "vuex";
 	export default {
 		components: {
 			topBar,
@@ -158,6 +158,9 @@
 			uniList,
 			uniListItem
 		},
+		computed: {
+		    ...mapGetters(['config'])
+		  },
 		data() {
 			return {
 				detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
@@ -177,6 +180,9 @@
 				}
 				
 			},
+			getcall(){
+				window.location.href = `tel:${this.config.service_phone}`;
+			}
 		}
 	};
 </script>

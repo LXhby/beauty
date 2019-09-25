@@ -6,19 +6,23 @@
         <view class="line"></view>
         <text class="text">关于我们</text>
       </view>
-      <view class="main-content">后台设置</view>
+      <view class="main-content" v-html="config.about_us"></view>
     </view>
-    <view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
+    <view class="bottom-line">-- 我是有底线的{{config.app_name}} --</view>
   </view>
 </template>
 
 
 <script>
 import topBar from "@/components/account/index1.vue";
+import { mapGetters } from "vuex";
 export default {
   components: {
     topBar
   },
+  computed: {
+      ...mapGetters(['config'])
+    },
   data() {
     return {
       detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
