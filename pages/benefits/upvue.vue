@@ -150,7 +150,7 @@
 	}
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 	.vip-page{
 		position:relative;
 		.bg-box{

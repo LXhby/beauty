@@ -110,7 +110,7 @@
 										</view>
 									</view>
 								</view>
-								
+
 								<view class="right">
 									<text class="dark-color">限时价</text>
 									<view class="money">
@@ -131,7 +131,7 @@
 				</scroll-view>
 			</swiper-item>
 		</swiper>
-		
+
 		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 	</view>
 </template>
@@ -179,7 +179,7 @@
 							icon: 'none',
 							title: `请求第${that.currentTab + 1 }个导航栏的第${that.pages[that.currentTab]}页数据成功`
 						})
-						let newData = ['新数据1','新数据2','新数据3']
+						let newData = ['新数据1', '新数据2', '新数据3']
 						resolve(newData)
 					}, 1000)
 				})
@@ -187,20 +187,20 @@
 			// swiper 滑动
 			swiperTab: function(e) {
 				var index = e.detail.current //获取索引
-				if(this.tabTitle.length<=5){
+				if (this.tabTitle.length <= 5) {
 					this.$refs.navTab.navClick(index)
-				}else{
+				} else {
 					this.$refs.navTab.longClick(index)
 				}
 			},
 			// 加载更多 util.throttle为防抖函数
 			lower1: util.throttle(function(e) {
-			console.log(`加载${this.currentTab}`)//currentTab表示当前所在页数 根据当前所在页数发起请求并带上page页数
-			uni.showLoading({
-				title: '加载中',
-				mask:true
-			})
-				this.isRequest().then((res)=>{
+				console.log(`加载${this.currentTab}`) //currentTab表示当前所在页数 根据当前所在页数发起请求并带上page页数
+				uni.showLoading({
+					title: '加载中',
+					mask: true
+				})
+				this.isRequest().then((res) => {
 					let tempList = this.list
 					tempList[this.currentTab] = tempList[this.currentTab].concat(res)
 					console.log(tempList)
@@ -212,20 +212,20 @@
 			refreshStart(e) {
 				this.$refs.refresh.refreshStart(e);
 			},
-			refreshMove(e){
+			refreshMove(e) {
 				this.$refs.refresh.refreshMove(e);
 			},
 			refreshEnd(e) {
 				this.$refs.refresh.refreshEnd(e);
 			},
-			isRefresh(){
-					setTimeout(() => {
-						uni.showToast({
-							icon: 'success',
-							title: '刷新成功'
-						})
-						this.$refs.refresh.endAfter() //刷新结束调用
-					}, 1000)
+			isRefresh() {
+				setTimeout(() => {
+					uni.showToast({
+						icon: 'success',
+						title: '刷新成功'
+					})
+					this.$refs.refresh.endAfter() //刷新结束调用
+				}, 1000)
 			},
 			goPage(event) {
 				var index = event.detail.index;
@@ -411,52 +411,61 @@
 				}
 			}
 		}
-		
-		.item{
+
+		.item {
 			padding: 20rpx;
 			justify-content: space-between;
 			align-items: center;
-			border-bottom:20rpx solid $uni-border-color;
-			.left{
-				color:$uni-text-color;
-				
-				image{
+			border-bottom: 20rpx solid $uni-border-color;
+
+			.left {
+				color: $uni-text-color;
+
+				image {
 					width: 200rpx;
 					height: 150rpx;
-					margin-right:20rpx;
+					margin-right: 20rpx;
 				}
-				.detail{
-					width:240rpx;
-					
-					.title{
+
+				.detail {
+					width: 240rpx;
+
+					.title {
 						font-size: 28rpx;
 					}
-					.bottom{
-						margin-top:26rpx;
-						text{
+
+					.bottom {
+						margin-top: 26rpx;
+
+						text {
 							font-size: 22rpx;
 							color: $uni-bg-color;
 						}
 					}
 				}
 			}
-			.right{
+
+			.right {
 				text-align: center;
-				color:$uni-text-color;
-				.dark-color{
+				color: $uni-text-color;
+
+				.dark-color {
 					color: $uni-bg-color;
 					font-size: 24rpx;
 				}
-				.money{
+
+				.money {
 					font-size: 24rpx;
-					.num{
+
+					.num {
 						font-size: 32rpx;
 					}
 				}
-				.btn{
+
+				.btn {
 					width: 140rpx;
 					height: 45rpx;
-					margin-top:8rpx;
+					margin-top: 8rpx;
 					border-radius: 45rpx;
 					background: $uni-bg-color;
 					text-align: center;
@@ -489,6 +498,7 @@
 
 		}
 	}
+
 	.navbar {
 		.navTabBox {
 			.shortTab {
@@ -499,6 +509,6 @@
 				}
 			}
 		}
-		
+
 	}
 </style>

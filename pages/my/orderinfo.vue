@@ -15,9 +15,9 @@
 					<text class="iconfont">&#xe642;</text>
 				</view>
 				<view class="header-right">
-					<!-- <button class="friend-pay btn" type="primary" size="mini">朋友代付</button>
-					<button class="me-pay btn" type="primary" size="mini">立即付款</button> -->
-					<button class="me-pay btn" type="primary" size="mini">提醒发货</button>
+					<button class="friend-pay btn" type="primary" size="mini">朋友代付</button>
+					<button class="me-pay btn" type="primary" size="mini" @click="goPay">立即付款</button>
+					<!-- <button class="me-pay btn" type="primary" size="mini">提醒发货</button> -->
 				</view>
 			</view>
 			<view class="store-content">
@@ -177,7 +177,14 @@
 			uniPopup
 		},
 		mounted(){
-			this.$refs.popups.open()
+			// this.$refs.popups.open()
+		},
+		methods:{
+			goPay(){
+				uni.navigateTo({
+					url:'/pages/my/toPay'
+				})
+			}
 		}
 	}
 </script>

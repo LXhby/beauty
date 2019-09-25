@@ -24,35 +24,35 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.top-account.data-v-66170b92 {
+.top-account.data-v-7b227847 {
   padding: 20rpx;
 }
-.top-account .top-content.data-v-66170b92 {
+.top-account .top-content.data-v-7b227847 {
     overflow: hidden;
     position: relative;
     width: 100%;
     height: 320rpx;
     border-radius: 4px;
 }
-.top-account .top-content .bg-img.data-v-66170b92 {
+.top-account .top-content .bg-img.data-v-7b227847 {
       width: 100%;
       height: 100%;
 }
-.top-account .top-content .bg-weave.data-v-66170b92 {
+.top-account .top-content .bg-weave.data-v-7b227847 {
       position: absolute;
       left: 0px;
       bottom: 0px;
       width: 100%;
       height: 100%;
 }
-.top-account .top-content .real.data-v-66170b92 {
+.top-account .top-content .real.data-v-7b227847 {
       position: absolute;
       bottom: 0px;
       right: 0;
       width: 76rpx;
       height: 61.4rpx;
 }
-.top-account .top-content .top-main.data-v-66170b92 {
+.top-account .top-content .top-main.data-v-7b227847 {
       position: absolute;
       top: 0px;
       left: 0px;
@@ -61,27 +61,27 @@
       z-index: 3;
       color: #fff;
 }
-.top-account .top-content .top-main .top-detail.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail.data-v-7b227847 {
         height: 94rpx;
         margin-left: 28rpx;
         margin-top: 40rpx;
 }
-.top-account .top-content .top-main .top-detail .account-img.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .account-img.data-v-7b227847 {
           position: relative;
           width: 94rpx;
           height: 94rpx;
 }
-.top-account .top-content .top-main .top-detail .account-img image.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .account-img image.data-v-7b227847 {
             width: 94rpx;
             height: 94rpx;
 }
-.top-account .top-content .top-main .top-detail .account-img .icon-vip.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .account-img .icon-vip.data-v-7b227847 {
             position: absolute;
             top: -10rpx;
             right: 0rpx;
             color: #f4ea2a;
 }
-.top-account .top-content .top-main .top-detail .shop-detail.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-detail.data-v-7b227847 {
           max-width: 342rpx;
           height: 100%;
           margin-left: 18rpx;
@@ -89,17 +89,17 @@
               -ms-flex-pack: distribute;
                   justify-content: space-around;
 }
-.top-account .top-content .top-main .top-detail .shop-detail .shop-name.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-detail .shop-name.data-v-7b227847 {
             font-size: 32rpx;
 }
-.top-account .top-content .top-main .top-detail .shop-detail .shop-busis.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-detail .shop-busis.data-v-7b227847 {
             font-size: 24rpx;
             white-space: nowrap;
             overflow: hidden;
             -o-text-overflow: ellipsis;
                text-overflow: ellipsis;
 }
-.top-account .top-content .top-main .top-detail .shop-right.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-right.data-v-7b227847 {
           display: -webkit-box;
           display: -webkit-flex;
           display: -ms-flexbox;
@@ -113,27 +113,27 @@
               -ms-flex-pack: distribute;
                   justify-content: space-around;
 }
-.top-account .top-content .top-main .top-detail .shop-right .time.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-right .time.data-v-7b227847 {
             padding-left: 26rpx;
             text-align: center;
             font-size: 20rpx;
             vertical-align: middle;
 }
-.top-account .top-content .top-main .top-detail .shop-right .time text.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-right .time text.data-v-7b227847 {
               vertical-align: middle;
 }
-.top-account .top-content .top-main .top-detail .shop-right .time .text.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-right .time .text.data-v-7b227847 {
               font-size: 24rpx;
               vertical-align: middle;
               font-weight: 600;
 }
-.top-account .top-content .top-main .top-detail .shop-right .shop-nav.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-right .shop-nav.data-v-7b227847 {
             width: 252rpx;
             border-radius: 26rpx;
             height: 52rpx;
             background-color: #ff87cf;
 }
-.top-account .top-content .top-main .top-detail .shop-right .shop-nav .start.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-right .shop-nav .start.data-v-7b227847 {
               display: -webkit-box;
               display: -webkit-flex;
               display: -ms-flexbox;
@@ -153,32 +153,32 @@
               overflow: hidden;
               background-color: #ff72d3;
 }
-.top-account .top-content .top-main .top-detail .shop-right .shop-nav .text.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-right .shop-nav .text.data-v-7b227847 {
               margin-left: 8rpx;
               font-size: 28rpx;
 }
-.top-account .top-content .top-main .top-detail .shop-right .shop-nav .text .right.data-v-66170b92 {
+.top-account .top-content .top-main .top-detail .shop-right .shop-nav .text .right.data-v-7b227847 {
                 font-size: 20rpx;
                 margin-left: 8rpx;
 }
-.top-account .top-content .example-body.data-v-66170b92 {
+.top-account .top-content .example-body.data-v-7b227847 {
       position: absolute;
       width: 100%;
       bottom: 6px;
 }
-.top-account .top-content .example-body .text-one.data-v-66170b92 {
+.top-account .top-content .example-body .text-one.data-v-7b227847 {
         margin-bottom: 10rpx;
         color: #fff;
         font-size: 32rpx;
 }
-.top-account .top-content .example-body .text.data-v-66170b92 {
+.top-account .top-content .example-body .text.data-v-7b227847 {
         color: #fff;
         font-size: 28rpx;
 }
-.my-page .active-nav.data-v-66170b92 {
+.my-page .active-nav.data-v-7b227847 {
   border-bottom: 20rpx solid #f5f5f5;
 }
-.my-page .active-nav .nav-title.data-v-66170b92 {
+.my-page .active-nav .nav-title.data-v-7b227847 {
     padding: 10rpx 20rpx 20rpx 20rpx;
     -webkit-box-pack: justify;
     -webkit-justify-content: space-between;
@@ -190,51 +190,51 @@
             align-items: center;
     border-bottom: 1px solid #f5f5f5;
 }
-.my-page .active-nav .nav-title .nav-left .iconfont.data-v-66170b92 {
+.my-page .active-nav .nav-title .nav-left .iconfont.data-v-7b227847 {
       color: #ff87cf;
       line-height: 32rpx;
       margin-right: 8rpx;
 }
-.my-page .active-nav .nav-title .nav-left text.data-v-66170b92 {
+.my-page .active-nav .nav-title .nav-left text.data-v-7b227847 {
       font-size: 32rpx;
       line-height: 32rpx;
 }
-.my-page .active-nav .nav-title .order-nav text.data-v-66170b92 {
+.my-page .active-nav .nav-title .order-nav text.data-v-7b227847 {
       font-size: 24rpx;
       line-height: 24rpx;
 }
-.my-page .active-nav .nav-title .order-nav .iconfont.data-v-66170b92 {
+.my-page .active-nav .nav-title .order-nav .iconfont.data-v-7b227847 {
       font-size: 20rpx;
       line-height: 24rpx;
 }
-.my-page .active-nav .my-list text.data-v-66170b92 {
+.my-page .active-nav .my-list text.data-v-7b227847 {
     font-size: 24rpx;
     color: #000;
 }
-.my-page .active-nav .my-list image.data-v-66170b92 {
+.my-page .active-nav .my-list image.data-v-7b227847 {
     width: 60rpx;
     height: 60rpx;
     margin-bottom: 10rpx;
 }
-.my-page .all-list.data-v-66170b92 {
+.my-page .all-list.data-v-7b227847 {
   padding: 0 42rpx;
 }
-.my-page .all-list .all-item.data-v-66170b92 {
+.my-page .all-list .all-item.data-v-7b227847 {
     position: relative;
     height: 86rpx;
     border-bottom: 1px solid #f5f5f5;
 }
-.my-page .all-list .all-item .item-left .iconfont.data-v-66170b92 {
+.my-page .all-list .all-item .item-left .iconfont.data-v-7b227847 {
       font-size: 40rpx;
       line-height: 86rpx;
 }
-.my-page .all-list .all-item .item-left .font1.data-v-66170b92 {
+.my-page .all-list .all-item .item-left .font1.data-v-7b227847 {
       font-size: 28rpx;
 }
-.my-page .all-list .all-item .item-left .font-40.data-v-66170b92 {
+.my-page .all-list .all-item .item-left .font-40.data-v-7b227847 {
       font-size: 44rpx;
 }
-.my-page .all-list .all-item .item-left .nav-text.data-v-66170b92 {
+.my-page .all-list .all-item .item-left .nav-text.data-v-7b227847 {
       position: absolute;
       height: 100%;
       left: 36px;
@@ -242,7 +242,7 @@
       font-size: 32rpx;
       color: #c2c2c2;
 }
-.my-page .all-list .all-item .arow.data-v-66170b92 {
+.my-page .all-list .all-item .arow.data-v-7b227847 {
       position: absolute;
       top: 0px;
       bottom: 0px;

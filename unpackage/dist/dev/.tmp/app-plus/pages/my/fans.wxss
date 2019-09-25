@@ -49,7 +49,7 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.main-title.data-v-5a5607a0 {
+.main-title.data-v-7a02b64a {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -60,26 +60,26 @@
   padding: 10rpx 0  20rpx 28rpx;
   border-bottom: 1px solid #f5f5f5;
 }
-.main-title .line.data-v-5a5607a0 {
+.main-title .line.data-v-7a02b64a {
     width: 8rpx;
     font-size: 32rpx;
     height: 32rpx;
     border-radius: 8rpx;
     background-color: #ff0080;
 }
-.main-title .text.data-v-5a5607a0 {
+.main-title .text.data-v-7a02b64a {
     margin-left: 10rpx;
     font-size: 32rpx;
     line-height: 32rpx;
     color: #ff0080;
 }
-.bottom-line.data-v-5a5607a0 {
+.bottom-line.data-v-7a02b64a {
   padding: 50rpx 0 45rpx 0;
   text-align: center;
   font-size: 24rpx;
   color: #999;
 }
-.draw-back textarea.data-v-5a5607a0 {
+.draw-back textarea.data-v-7a02b64a {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   width: 670rpx;
@@ -89,7 +89,7 @@
   background: #f4f4f4;
   border-radius: 5px;
 }
-.order textarea.data-v-5a5607a0 {
+.order textarea.data-v-7a02b64a {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   width: 470rpx;
@@ -102,41 +102,41 @@
   border-radius: 5px;
   color: #333;
 }
-.fans-page .main-content.data-v-5a5607a0 {
+.fans-page .main-content.data-v-7a02b64a {
   padding: 0 36rpx;
 }
-.fans-page .main-content .fans-item.data-v-5a5607a0 {
+.fans-page .main-content .fans-item.data-v-7a02b64a {
     line-height: 32rpx;
     padding: 30rpx 0 20rpx 0;
     border-bottom: 1px solid #f5f5f5;
     color: #666;
 }
-.fans-page .main-content .fans-item .account-img.data-v-5a5607a0 {
+.fans-page .main-content .fans-item .account-img.data-v-7a02b64a {
       position: relative;
       width: 94rpx;
       height: 94rpx;
       margin-left: 12rpx;
 }
-.fans-page .main-content .fans-item .account-img image.data-v-5a5607a0 {
+.fans-page .main-content .fans-item .account-img image.data-v-7a02b64a {
         width: 94rpx;
         height: 94rpx;
 }
-.fans-page .main-content .fans-item .account-img .icon-vip.data-v-5a5607a0 {
+.fans-page .main-content .fans-item .account-img .icon-vip.data-v-7a02b64a {
         position: absolute;
         top: -10rpx;
         right: 0rpx;
         color: #f4ea2a;
 }
-.fans-page .main-content .fans-item .item-text.data-v-5a5607a0 {
+.fans-page .main-content .fans-item .item-text.data-v-7a02b64a {
       width: 100%;
       margin-left: 16rpx;
       padding-right: 12rpx;
 }
-.fans-page .main-content .fans-item .item-text .uni-flex.data-v-5a5607a0 {
+.fans-page .main-content .fans-item .item-text .uni-flex.data-v-7a02b64a {
         width: 100%;
         font-size: 24rpx;
 }
-.fans-page .main-content .fans-item .item-text .uni-flex .role.data-v-5a5607a0 {
+.fans-page .main-content .fans-item .item-text .uni-flex .role.data-v-7a02b64a {
           color: #ff0080;
 }
 

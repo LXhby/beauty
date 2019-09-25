@@ -2,17 +2,21 @@
 	<view class="to-pay">
 		<view class="user-info">
 			<view class="user-word">
-				<text class="iconfont">&#xe853;</text>
-				<view class="user-order">
-					<view class="users">
-						<text class="user-name">收件人：王晓文</text>
-						<text class="num">1869536545</text>
+				<view class="users uni-flex uni-row">
+					<text class="user-name">收件人：王晓文</text>
+					<text class="num">1869536545</text>
+				</view>
+				<view class="user-order uni-flex uni-row">
+					<view class="icon">
+						<text class="iconfont">&#xe657;</text>
 					</view>
-					<view class="address">
-						<text>收货地址：北京市 北京市 朝阳区 花园路甲22号建国路甲13号215室</text>
+					<view class="address uni-flex">
+						<text class="detail">收货地址：北京市北京市朝阳区花园路甲号建国路甲13号215室</text>
+					<view class="icon icon-right">
 						<text class="iconfont">&#xe642;</text>
 					</view>
-
+					</view>
+					
 				</view>
 			</view>
 			<image class="bg-bottom" src="../../static/add_bg.jpg"></image>
@@ -41,10 +45,7 @@
 									<text class="num">￥1288</text>
 									<text class="send">赠送128个金币</text>
 								</view>
-								<text>x1</text>
-							</view>
-							<view class="number-box">
-								<uni-number-box :min="1"></uni-number-box>
+								<text class="total-num">x1</text>
 							</view>
 						</view>
 					</view>
@@ -64,6 +65,9 @@
 				<text>留言</text>
 				<input class="uni-input" placeholder-style="color:#999;" placeholder="选填:请留下您的要求" />
 			</view>
+		</view>
+		<view class="height-box">
+
 		</view>
 		<view class="handle-bottom ">
 			<view class="shop-bottom uni-flex uni-row">
@@ -93,18 +97,34 @@
 </script>
 
 <style lang="scss" scoped>
+	page{
+		height: 100%;
+	}
 	.to-pay {
+		height: 100%;
 		background-color: #f4f4f4;
 
 		.user-info {
-			margin-bottom: 30rpx;
+			margin-bottom: 20rpx;
 			background-color: $uni-text-color-inverse;
 
+			.users {
+				justify-content: space-between;
+				padding: 35rpx 80rpx 20rpx 80rpx;
+
+				.user-name {
+					font-size: 28rpx;
+				}
+
+				.num {
+					font-size: 28rpx;
+				}
+			}
+
 			.user-word {
-				display: flex;
 				align-items: center;
-				padding: 20rpx 20rpx 0rpx 30rpx;
-				color: $uni-text-color-grey;
+				justify-content: space-between;
+				color: #333;
 
 				.iconfont {
 
@@ -113,28 +133,21 @@
 				}
 
 				.user-order {
-					margin-left: 30rpx;
-					letter-spacing: 3rpx;
-
-					.users {
-						margin: 10rpx 0;
-
-						.user-name {
-							margin-right: 30rpx;
-							font-size: 28rpx;
-							font-weight: bold;
-						}
-
-						.num {
-							font-size: 28rpx;
+					align-items:center;
+					.icon {
+						width: 80rpx;
+						text-align: center;
+					}
+					.address {
+						flex: 1;
+						.detail{
+							flex: 1;
 						}
 					}
-
-					.address {
-						display: flex;
-
-						.iconfont {
-							margin-left: 20rpx;
+					.icon-right{
+						.iconfont{
+							color: #999;
+							font-size: 32rpx;
 						}
 					}
 				}
@@ -150,8 +163,7 @@
 			overflow: scroll;
 			box-sizing: border-box;
 			width: 100%;
-			height: calc(100% - 90rpx);
-
+			
 			.goods-item {
 				border-radius: 5px;
 				background-color: #fff;
@@ -186,14 +198,14 @@
 					padding: 30rpx 0;
 					margin: 0 30rpx;
 					border-bottom: 1px solid $uni-border-color;
-					align-items: flex-start;
+					align-items: center;
 
 					.left {
 						margin-right: 20rpx;
 
 						image {
-							width: 150rpx;
-							height: 150rpx;
+							width: 140rpx;
+							height: 140rpx;
 							margin-left: 10rpx;
 						}
 					}
@@ -203,7 +215,8 @@
 						font-size: 24rpx;
 
 						.name {
-							font-size: 24rpx;
+							font-size: 28rpx;
+							color: #333;
 						}
 
 						.size {
@@ -211,9 +224,8 @@
 							margin: 2rpx 0;
 							height: 40rpx;
 							line-height: 40rpx;
-							font-size: 22rpx;
+							font-size: 24rpx;
 							color: $uni-text-color-grey;
-							background: #f9f9f9;
 						}
 
 						.bottom {
@@ -234,41 +246,50 @@
 
 								.money {
 									.num {
+										font-size: 28rpx;
 										color: $uni-bg-color;
 									}
 
 									.send {
 										color: $uni-text-color-grey;
 										font-size: 20rpx;
-										margin-left: 10rpx;
+										margin-left: 20rpx;
 									}
 								}
+								.total-num{
+									font-size: 32rpx;
+									color:#333;
+								}
 
-							}
-
-							.number-box {
-								flex: 1;
-								text-align: right;
 							}
 						}
 					}
 				}
 			}
 		}
-		
+
 		.pay-method {
-			margin-top: 30rpx;
+			margin-top: 20rpx;
+			padding: 10rpx 0 28rpx 0;
 			background-color: $uni-text-color-inverse;
+
 			.uni-flex {
-				padding: 20rpx;
+				margin:0 30rpx;
+				height: 80rpx;
 				align-items: center;
 				justify-content: space-between;
 				border-bottom: 1px solid #f4f4f4;
+				color:#333;
 				.uni-input {
 					color: $uni-text-color-grey;
 				}
 			}
 		}
+
+		.height-box {
+			height: 90rpx;
+		}
+
 		.handle-bottom {
 			position: fixed;
 			bottom: 0px;
@@ -285,11 +306,12 @@
 
 				.all-left {
 					margin-left: 20rpx;
-					
+
 					.word-grey {
 						color: $uni-text-color-grey;
 						font-size: $uni-font-size-sm;
 					}
+
 					text {
 						color: $uni-bg-color;
 						font-size: 20rpx;
@@ -306,15 +328,25 @@
 					}
 
 					.count-box {
+						width: 70rpx;
+						display: flex;
+						align-items: center;
+						flex-direction: column;
+						text-align: left;
+						align-items: center;
 						margin-right: 20rpx;
+						vertical-align:top;
 
 						.count-num {
+							text-align: left;
 							color: $uni-bg-color;
 							font-size: 28rpx;
+							line-height:20rpx;
 						}
 
 						.gray-color {
 							font-size: 20rpx;
+							height:20rpx;
 							color: $uni-text-color-grey;
 						}
 					}
@@ -325,13 +357,18 @@
 						justify-content: center;
 						width: 212rpx;
 						height: 58rpx;
+						line-height: 58rpx;
+						padding: 0;
 						border-radius: 58rpx;
 						font-size: 28rpx;
 						background-color: $uni-bg-color;
+						&:after{
+							border: none;
+						}
 					}
 				}
 			}
 		}
-	
+
 	}
 </style>

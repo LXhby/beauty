@@ -9,7 +9,7 @@
 		<!-- swiper切换 swiper-item表示一页 scroll-view表示滚动视窗 -->
 		<swiper style="min-height: 100vh;" :current="tabCurrentIndex" @change="swiperTab">
 			<swiper-item v-for="(listItem,listIndex) in list" :key="listIndex">
-				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation :scroll-into-view="toView">
+				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation>
 					<view class='content'>
 						<!-- 订单列表 -->
 						<view v-for="(item,index) in list" :key="index" class="order-item">
@@ -99,6 +99,7 @@
 		},
 		data() {
 			return {
+				userId: 1,
 				tabCurrentIndex: 0,
 				currentPage: 'index',
 				tabTitle: ['全部', '待付款', '待发货', '待收货', '待评价'], //导航栏格式 --导航栏组件
@@ -166,24 +167,32 @@
 				]
 			}
 		},
-// 		onLoad(options) {
-// 			/**
-// 			 * 修复app端点击除全部订单外的按钮进入时不加载数据的问题
-// 			 * 替换onLoad下代码即可
-// 			 */
-// 			console.log('tabCurrentIndex', this.tabCurrentIndex)
-// 			console.log('options.state', options.state)
-// 			this.tabCurrentIndex = +options.state;
-// 			// #ifndef MP
-// 			this.loadData()
-// 			// #endif
-// 			// #ifdef MP
-// 			if (options.state == 0) {
-// 				this.loadData()
-// 			}
-// 			// #endif
-// 
-// 		},
+		// 		onLoad(options) {
+		// 			/**
+		// 			 * 修复app端点击除全部订单外的按钮进入时不加载数据的问题
+		// 			 * 替换onLoad下代码即可
+		// 			 */
+		// 			console.log('tabCurrentIndex', this.tabCurrentIndex)
+		// 			console.log('options.state', options.state)
+		// 			this.tabCurrentIndex = +options.state;
+		// 			// #ifndef MP
+		// 			this.loadData()
+		// 			// #endif
+		// 			// #ifdef MP
+		// 			if (options.state == 0) {
+		// 				this.loadData()
+		// 			}
+		// 			// #endif
+		// 
+		// 		},
+		onLoad() {
+			uni.request({
+				url: 'http://api.krtamall.yiidev.cn/v1/order?OrderSearch[user_id]=' + this.userId, //仅为示例，并非真实接口地址。
+				success: (res) => {
+					console.log(res.data);
+				}
+			});
+		},
 		methods: {
 			changeTab(index) {
 				this.tabCurrentIndex = index
@@ -199,7 +208,7 @@
 							icon: 'none',
 							title: `请求第${that.currentTab + 1 }个导航栏的第${that.pages[that.currentTab]}页数据成功`
 						})
-						let newData = ['新数据1','新数据2','新数据3']
+						let newData = ['新数据1', '新数据2', '新数据3']
 						resolve(newData)
 					}, 1000)
 				})
@@ -207,20 +216,20 @@
 			// swiper 滑动
 			swiperTab: function(e) {
 				var index = e.detail.current //获取索引
-				if(this.tabTitle.length<=5){
+				if (this.tabTitle.length <= 5) {
 					this.$refs.navTab.navClick(index)
-				}else{
+				} else {
 					this.$refs.navTab.longClick(index)
 				}
 			},
 			// 加载更多 util.throttle为防抖函数
 			lower1: util.throttle(function(e) {
-			console.log(`加载${this.currentTab}`)//currentTab表示当前所在页数 根据当前所在页数发起请求并带上page页数
-			uni.showLoading({
-				title: '加载中',
-				mask:true
-			})
-				this.isRequest().then((res)=>{
+				console.log(`加载${this.currentTab}`) //currentTab表示当前所在页数 根据当前所在页数发起请求并带上page页数
+				uni.showLoading({
+					title: '加载中',
+					mask: true
+				})
+				this.isRequest().then((res) => {
 					let tempList = this.list
 					tempList[this.currentTab] = tempList[this.currentTab].concat(res)
 					console.log(tempList)
@@ -232,108 +241,108 @@
 			refreshStart(e) {
 				this.$refs.refresh.refreshStart(e);
 			},
-			refreshMove(e){
+			refreshMove(e) {
 				this.$refs.refresh.refreshMove(e);
 			},
 			refreshEnd(e) {
 				this.$refs.refresh.refreshEnd(e);
 			},
-			isRefresh(){
-					setTimeout(() => {
-						uni.showToast({
-							icon: 'success',
-							title: '刷新成功'
-						})
-						this.$refs.refresh.endAfter() //刷新结束调用
-					}, 1000)
+			isRefresh() {
+				setTimeout(() => {
+					uni.showToast({
+						icon: 'success',
+						title: '刷新成功'
+					})
+					this.$refs.refresh.endAfter() //刷新结束调用
+				}, 1000)
 			},
-// 			godetail() {
-// 				uni.navigateTo({
-// 					url: '/pages/my/orderinfo'
-// 				})
-// 			},
-// 			//获取订单列表
-// 			loadData(source) {
-// 				//这里是将订单挂载到tab列表下
-// 				let index = this.tabCurrentIndex;
-// 				let navItem = this.navList[index];
-// 				let state = navItem.state;
-// 				console.log(navItem)
-// 				if (source === 'tabChange' && navItem.loaded === true) {
-// 					//tab切换只有第一次需要加载数据
-// 					return;
-// 				}
-// 				if (navItem.loadingType === 'loading') {
-// 					//防止重复加载
-// 					return;
-// 				}
-// 
-// 				navItem.loadingType = 'loading';
-// 
-// 				setTimeout(() => {
-// 					let orderList = this.menuLists.filter(item => {
-// 						//演示数据所以自己进行状态筛选
-// 						if (state === 0) {
-// 							//0为全部订单
-// 							return item;
-// 						}
-// 						return item.state === state
-// 					});
-// 					orderList.forEach(item => {
-// 						navItem.orderList.push(item);
-// 					})
-// 					console.log(navItem)
-// 					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
-// 					this.$set(navItem, 'loaded', true);
-// 
-// 					//判断是否还有数据， 有改为 more， 没有改为noMore 
-// 					navItem.loadingType = 'more';
-// 				}, 600);
-// 			},
-// 
-// 			//swiper 切换
-// 			// changeTab(e) {
-// 			// 	this.tabCurrentIndex = e.target.current;
-// 			// 	this.loadData('tabChange');
-// 			// },
-// 			//顶部tab点击
-// 			tabClick(index) {
-// 				this.tabCurrentIndex = index;
-// 			},
-// 			//删除订单
-// 			deleteOrder(index) {
-// 				uni.showLoading({
-// 					title: '请稍后'
-// 				})
-// 				setTimeout(() => {
-// 					this.navList[this.tabCurrentIndex].orderList.splice(index, 1);
-// 					uni.hideLoading();
-// 				}, 600)
-// 			},
-// 			//取消订单
-// 			cancelOrder(item) {
-// 				uni.showLoading({
-// 					title: '请稍后'
-// 				})
-// 				setTimeout(() => {
-// 					let {
-// 						stateTip,
-// 						stateTipColor
-// 					} = this.orderStateExp(9);
-// 					item = Object.assign(item, {
-// 						state: 9,
-// 						stateTip,
-// 						stateTipColor
-// 					})
-// 
-// 					//取消订单后删除待付款中该项
-// 					let list = this.navList[1].orderList;
-// 					let index = list.findIndex(val => val.id === item.id);
-// 					index !== -1 && list.splice(index, 1);
-// 
-// 					uni.hideLoading();
-// 				}, 600)
-// 			},
+			// 			godetail() {
+			// 				uni.navigateTo({
+			// 					url: '/pages/my/orderinfo'
+			// 				})
+			// 			},
+			// 			//获取订单列表
+			// 			loadData(source) {
+			// 				//这里是将订单挂载到tab列表下
+			// 				let index = this.tabCurrentIndex;
+			// 				let navItem = this.navList[index];
+			// 				let state = navItem.state;
+			// 				console.log(navItem)
+			// 				if (source === 'tabChange' && navItem.loaded === true) {
+			// 					//tab切换只有第一次需要加载数据
+			// 					return;
+			// 				}
+			// 				if (navItem.loadingType === 'loading') {
+			// 					//防止重复加载
+			// 					return;
+			// 				}
+			// 
+			// 				navItem.loadingType = 'loading';
+			// 
+			// 				setTimeout(() => {
+			// 					let orderList = this.menuLists.filter(item => {
+			// 						//演示数据所以自己进行状态筛选
+			// 						if (state === 0) {
+			// 							//0为全部订单
+			// 							return item;
+			// 						}
+			// 						return item.state === state
+			// 					});
+			// 					orderList.forEach(item => {
+			// 						navItem.orderList.push(item);
+			// 					})
+			// 					console.log(navItem)
+			// 					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
+			// 					this.$set(navItem, 'loaded', true);
+			// 
+			// 					//判断是否还有数据， 有改为 more， 没有改为noMore 
+			// 					navItem.loadingType = 'more';
+			// 				}, 600);
+			// 			},
+			// 
+			// 			//swiper 切换
+			// 			// changeTab(e) {
+			// 			// 	this.tabCurrentIndex = e.target.current;
+			// 			// 	this.loadData('tabChange');
+			// 			// },
+			// 			//顶部tab点击
+			// 			tabClick(index) {
+			// 				this.tabCurrentIndex = index;
+			// 			},
+			// 			//删除订单
+			// 			deleteOrder(index) {
+			// 				uni.showLoading({
+			// 					title: '请稍后'
+			// 				})
+			// 				setTimeout(() => {
+			// 					this.navList[this.tabCurrentIndex].orderList.splice(index, 1);
+			// 					uni.hideLoading();
+			// 				}, 600)
+			// 			},
+			// 			//取消订单
+			// 			cancelOrder(item) {
+			// 				uni.showLoading({
+			// 					title: '请稍后'
+			// 				})
+			// 				setTimeout(() => {
+			// 					let {
+			// 						stateTip,
+			// 						stateTipColor
+			// 					} = this.orderStateExp(9);
+			// 					item = Object.assign(item, {
+			// 						state: 9,
+			// 						stateTip,
+			// 						stateTipColor
+			// 					})
+			// 
+			// 					//取消订单后删除待付款中该项
+			// 					let list = this.navList[1].orderList;
+			// 					let index = list.findIndex(val => val.id === item.id);
+			// 					index !== -1 && list.splice(index, 1);
+			// 
+			// 					uni.hideLoading();
+			// 				}, 600)
+			// 			},
 
 		}
 	}

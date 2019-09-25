@@ -27,7 +27,8 @@
     "pages/my/serverule",
     "pages/about/index",
     "pages/benefits/PaySuccess",
-    "pages/my/drawback"
+    "pages/my/drawback",
+    "pages/my/toPay"
   ],
   "window": {
     "navigationBarTextStyle": "black",
