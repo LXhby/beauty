@@ -13,15 +13,13 @@ export const globalInterceptor = {
  * header 中`content-type`设置特殊参数 或 配置其他会导致触发 跨域 问题，出现跨域会直接进入响应拦截器的catch函数中
  */
 export const config = {
-	baseURL: 'http://api.krtamall.yiidev.cn/v1/',
-	// dataType: 'json',
-	// responseType: 'text',
-	header: {
-		// uid: 'xxxx',
-		Authorization: 'Basic MGFiNTM4ZTkyYzZkYjc4ZDEwYjE2OTRlNjQ1ZjM2MjU6',
-		contentType: 'application/x-www-form-urlencoded'
-		//'Content-Type': 'application/json'
-	}
+    baseURL: 'http://api.krtamall.yiidev.cn/v1/',
+    // dataType: 'json',
+    // responseType: 'text',
+    header: {
+        // uid: 'xxxx',
+        'Content-Type': 'application/json'
+    }
 }
 
 
@@ -38,17 +36,13 @@ export const config = {
  * @param {Object} config 发送请求的配置数据
  */
 globalInterceptor.request.use(config => {
-	if (store.getters.token) {
-		config.auth = {
-			username: store.getters.token,
-			password: ''
-		};
-		store.getters.token
-	}
-	console.log(config)
-	return config;
-	// return false;
-	// return Promise.reject('is error')
+    if (store.getters.token) {
+				config.header.Authorization = 'Basic ' + btoa(store.getters.token + ':');
+            }
+
+    return config;
+    // return false;
+    // return Promise.reject('is error')
 }, err => {
 	console.error('is global fail request interceptor: ', err);
 	return false;
