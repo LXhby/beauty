@@ -1,7 +1,7 @@
 <script>
 	export default {
 		onLaunch: function() {
-			console.log('App Launch')
+			this.getconfig();
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -10,7 +10,14 @@
 			console.log('App Hide')
 		},
 		methods:{
-			
+			getconfig(){
+				this.$http.request({
+					url: 'config/get-all',
+					method: 'get',
+				}).then(res=>{
+					
+				});
+			}
 		},
 		data(){
 			return{
