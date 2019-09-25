@@ -12,7 +12,7 @@
 				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation>
 					<view class='content'>
 						<!-- 订单列表 -->
-						<view v-for="(item,index) in list" :key="index" class="order-item">
+						<view v-for="(item,index) in listItem" :key="index" class="order-item">
 							<view class="top uni-flex uni-row">
 								<view class="left">
 									<text class="iconfont">&#xe608;</text>
@@ -190,7 +190,8 @@
 				url: 'order?OrderSearch[user_id]=' + this.userId,
 				method: 'get',
 			}).then(res=>{
-				console.log(res)
+				this.list[0] = res.data.items
+				console.log(this.list)
 			}).catch(console.log)
 		},
 		methods: {

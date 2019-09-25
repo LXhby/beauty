@@ -2,8 +2,8 @@ import Interceptor from './core/interceptor';
 import Request from './index';
 import store from "../../../common/store/index"
 export const globalInterceptor = {
-    request: new Interceptor(),
-    response: new Interceptor()
+	request: new Interceptor(),
+	response: new Interceptor()
 }
 
 /**
@@ -13,14 +13,15 @@ export const globalInterceptor = {
  * header 中`content-type`设置特殊参数 或 配置其他会导致触发 跨域 问题，出现跨域会直接进入响应拦截器的catch函数中
  */
 export const config = {
-    baseURL: 'http://api.krtamall.yiidev.cn/v1/',
-    // dataType: 'json',
-    // responseType: 'text',
-    header: {
-        // uid: 'xxxx',
-        contentType: 'application/x-www-form-urlencoded'
-        // 'Content-Type': 'application/json'
-    }
+	baseURL: 'http://api.krtamall.yiidev.cn/v1/',
+	// dataType: 'json',
+	// responseType: 'text',
+	header: {
+		// uid: 'xxxx',
+		Authorization: 'Basic MGFiNTM4ZTkyYzZkYjc4ZDEwYjE2OTRlNjQ1ZjM2MjU6',
+		contentType: 'application/x-www-form-urlencoded'
+		//'Content-Type': 'application/json'
+	}
 }
 
 
@@ -37,20 +38,20 @@ export const config = {
  * @param {Object} config 发送请求的配置数据
  */
 globalInterceptor.request.use(config => {
-    if (store.getters.token) {
-                config.auth = {
-                    username: store.getters.token,
-                    password: ''
-                };
-                store.getters.token
-            }
-			console.log(config)
-    return config;
-    // return false;
-    // return Promise.reject('is error')
+	if (store.getters.token) {
+		config.auth = {
+			username: store.getters.token,
+			password: ''
+		};
+		store.getters.token
+	}
+	console.log(config)
+	return config;
+	// return false;
+	// return Promise.reject('is error')
 }, err => {
-    console.error('is global fail request interceptor: ', err);
-    return false;
+	console.error('is global fail request interceptor: ', err);
+	return false;
 });
 
 // 支持添加多个请求、响应拦截器
@@ -78,46 +79,53 @@ globalInterceptor.request.use(config => {
  * @return {Object|Boolean|Promise<reject>}
  */
 globalInterceptor.response.use((res, config) => {
-    console.log('is global response interceptor');
+	console.log('is global response interceptor');
 
-    // 回传数据中没有携带 code
-    if (!(res.data && res.data.code)) {
-        return res;
-    }
+	// 回传数据中没有携带 code
+	if (!(res.data && res.data.code)) {
+		return res;
+	}
 
-    // 用code模拟http状态码
-    const code = parseInt(res.data.code);
+	// 用code模拟http状态码
+	const code = parseInt(res.data.code);
 
-    // 20x ~ 30x
-    if (200 <= code && code < 400) {
-        return res;
-    } else if (code == 401 && config.count === 0) {
-        config.count++;
-        return getApiToken(24603927534).then(saveToken).then(() => Request().request(config));
-    } else {
-        return Promise.reject(res, config);
-    }
+	// 20x ~ 30x
+	if (200 <= code && code < 400) {
+		return res;
+	} else if (code == 401 && config.count === 0) {
+		config.count++;
+		return getApiToken(24603927534).then(saveToken).then(() => Request().request(config));
+	} else {
+		return Promise.reject(res, config);
+	}
 
-    // return false;
-    // return Promise.reject('is error')
+	// return false;
+	// return Promise.reject('is error')
 }, (err, config) => {
-    console.error('is global response fail interceptor');
-    console.error('err: ', err)
-    console.error('config: ', config)
-    const { errMsg, data } = err;
+	console.error('is global response fail interceptor');
+	console.error('err: ', err)
+	console.error('config: ', config)
+	const {
+		errMsg,
+		data
+	} = err;
 
-    return Promise.reject({ errMsg, data, config });
+	return Promise.reject({
+		errMsg,
+		data,
+		config
+	});
 });
 
 // 重新请求更新获取 token
 
 
 // 获取 localStorage 中的 token
-function getToken () {
-    return uni.getStorageSync('token');
+function getToken() {
+	return uni.getStorageSync('token');
 }
 
 // 保存 token 到 localStorage
-function saveToken (token) {
-    uni.setStorageSync('token', token);
+function saveToken(token) {
+	uni.setStorageSync('token', token);
 }
