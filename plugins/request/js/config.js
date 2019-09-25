@@ -18,8 +18,7 @@ export const config = {
     // responseType: 'text',
     header: {
         // uid: 'xxxx',
-        contentType: 'application/x-www-form-urlencoded'
-        // 'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
     }
 }
 
@@ -38,13 +37,9 @@ export const config = {
  */
 globalInterceptor.request.use(config => {
     if (store.getters.token) {
-                config.auth = {
-                    username: store.getters.token,
-                    password: ''
-                };
-                store.getters.token
+				config.header.Authorization = 'Basic ' + btoa(store.getters.token + ':');
             }
-			console.log(config)
+
     return config;
     // return false;
     // return Promise.reject('is error')
