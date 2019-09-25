@@ -186,12 +186,12 @@
 		// 
 		// 		},
 		onLoad() {
-			uni.request({
-				url: 'http://api.krtamall.yiidev.cn/v1/order?OrderSearch[user_id]=' + this.userId, //仅为示例，并非真实接口地址。
-				success: (res) => {
-					console.log(res.data);
-				}
-			});
+			this.$http.request({
+				url: 'order?OrderSearch[user_id]=' + this.userId,
+				method: 'get',
+			}).then(res=>{
+				console.log(res)
+			}).catch(console.log)
 		},
 		methods: {
 			changeTab(index) {
