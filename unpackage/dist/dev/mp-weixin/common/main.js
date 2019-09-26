@@ -70,25 +70,34 @@ __webpack_require__.r(__webpack_exports__);
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
   onLaunch: function onLaunch() {
-    console.log('App Launch');
-
+    this.getconfig();
   },
   onShow: function onShow() {
-    console.log('App Show');
+    console.log("App Show");
     console.log(window);
     console.log(window.location.href);
     console.log(window.location);
     console.log(document.URL);
   },
   onHide: function onHide() {
-    console.log('App Hide');
+    console.log("App Hide");
   },
-  methods: {},
+  methods: {
+    getconfig: function getconfig() {var _this = this;
+      this.$http.
+      request({
+        url: "config/get-all",
+        method: "get" }).
 
+      then(function (res) {
+        _this.$store.commit("user/setconfig", res.data);
+        console.log(_this.$store);
+      });
+    } },
 
   data: function data() {
     return {
-      baseURL: 'http://api.krtamall.yiidev.cn/v1/' };
+      baseURL: "http://api.krtamall.yiidev.cn/v1/" };
 
   } };exports.default = _default;
 

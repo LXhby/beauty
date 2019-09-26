@@ -6,22 +6,38 @@
         <view class="line"></view>
         <text class="text">服务条款</text>
       </view>
-      <view class="main-content">后台设置</view>
+      <view class="main-content" v-html="config.member_rights">后台设置</view>
     </view>
-    <view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
+    <view class="bottom-line">-- 我是有底线的{{config.app_name}} --</view>
   </view>
 </template>
 
 
 <script>
 import topBar from "@/components/account/index1.vue";
+import { mapGetters } from "vuex";
 export default {
   components: {
     topBar
   },
+  computed: {
+      ...mapGetters(['config'])
+    },
   data() {
     return {
-      detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
+      detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
+	  items: [
+	          { title: "会员通知", value: "member.order.create" },
+	          { title: "报名通知", value: "forum.order.create" },
+	          { title: "会议提醒", value: "forum.order.notify" },
+	          { title: "会议签到通知", value: "forum.siginin.notify" },
+	          { title: "签到成功通知", value: "forum.siginedin.notify" },
+	          { title: "推荐成功通知", value: "user.commend.success" },
+	          { title: "收益到账提醒", value: "income.repay.notify" },
+	          { title: "提现申请通知", value: "income.settle.create" },
+	          { title: "提现审核受理通知", value: "income.settle.approved" },
+	          { title: "提现成功通知", value: "income.settle.success" },
+	        ],
     };
   }
 };

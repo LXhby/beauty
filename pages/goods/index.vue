@@ -85,7 +85,6 @@
 				showipt:false,
 				interval:2000,
 				duration:1000,
-				toView: '', //回到顶部id
 				tabTitle: ['全部', '分类1', '分类2', '分类3'], //导航栏格式 --导航栏组件
 				currentTab: 0, //sweiper所在页
 				pages: [1, 1, 1, 1], //第几个swiper的第几页

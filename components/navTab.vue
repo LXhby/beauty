@@ -13,7 +13,7 @@
 		</view>
 		<!-- 标题数量大于5 开启长导航栏模式 -->
 		<view class="longTab" v-if="tabTitle.length>5">
-			<scroll-view scroll-x="true" style="white-space: nowrap; display: flex" scroll-with-animation :scroll-into-view="toView">
+			<scroll-view scroll-x="true" style="white-space: nowrap; display: flex" scroll-with-animation>
 				<view class="longItem" :data-index="index" :class="index===tabClick?'click':''" v-for="(item,index) in tabTitle" :key="index" :id="'id'+index" @click="longClick(index)">{{item}}</view>
 				<view class="underlineBox" :style='"transform:translateX("+isLeft+"px);"'>
 					<view class="underline"></view>
@@ -39,7 +39,6 @@
 				tabClick: 0, //导航栏被点击
 				isLeft: 0, //导航栏下划线位置
 				isWidth: 0, //每个导航栏占位
-				toView:'',
 				isLongWidth:0
 			};
 		},
@@ -52,7 +51,6 @@
 					that.isLongWidth = e.windowWidth / 5 
 				}
 			})
-			this.toView = 'id0'
 		},
 		methods: {
 			// 导航栏点击
@@ -65,7 +63,6 @@
 			longClick(index){
 				    var tempIndex = index - 2
 					tempIndex = tempIndex<=0 ? 0 : tempIndex 
-					this.toView = `id${tempIndex}` //动画滚动,滚动至中心位置
 					this.tabClick = index //设置导航点击了哪一个
 					this.isLeft = index * this.isLongWidth //设置下划线位置
 					this.$emit('changeTab', index);//设置swiper的第几页

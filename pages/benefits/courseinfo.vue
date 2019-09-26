@@ -10,13 +10,14 @@
 
 		<view class="course-show">
 			<view class="course-name">
-				<view class="title">某某课程名称</view>
+				<view class="title">{{forum.name}}</view>
 				<view class="course-content">
 					<view class="course-list uni-flex uni-row">
 						<view class="icon-btn">
 							<text class="iconfont">&#xe60c;</text>
 						</view>
-						<swiper class="swiper" :indicator-dots="false" :autoplay="false" :interval="interval" :duration="duration" :circular="true">
+						<swiper class="swiper" :indicator-dots="false" :autoplay="false" :interval="interval" :duration="duration"
+						 :circular="true">
 							<swiper-item>
 								<view class="item-box uni-flex uni-row">
 									<view class="item one">
@@ -42,7 +43,7 @@
 							<swiper-item>
 								<image src="../../static/chuke.jpg" mode=""></image>
 							</swiper-item>
-							
+
 						</swiper>
 						<view class="icon-btn">
 							<text class="iconfont">&#xe60d;</text>
@@ -51,20 +52,20 @@
 					<view class="course-position">
 						<view class="uni-flex uni-row">
 							<text class="iconfont">&#xe608;</text>
-							<text>2019年7月16号 至 2019年7月19号</text>
+							<text>{{forum.start_date}} 至 {{forum.end_date}}</text>
 						</view>
 						<view class="uni-flex uni-row">
 							<text class="iconfont">&#xe602;</text>
-							<text>北京·九华山庄宾馆楼</text>
+							<text>{{forum.address}}</text>
 						</view>
 						<view class="uni-flex uni-row">
 							<text class="iconfont">&#xe63f;</text>
-							<text>200人</text>
+							<text>{{forum.max_count}}人</text>
 						</view>
 						<view class="uni-flex uni-row">
 							<text class="iconfont">&#xe675;</text>
 							<text>
-								课程简介课程简介课程简介课程简介
+								{{forum.summary}}
 							</text>
 						</view>
 					</view>
@@ -75,19 +76,17 @@
 					<view class="line"></view>
 					<text class="text">课程详情</text>
 				</view>
-				<view class="course-word">
-					课程详情
-				</view>
+				<view class="course-word" v-html="forum.detail"></view>
 			</view>
 
 		</view>
 		<view class="couse-money">
-			<text class="new-price">￥ 5800元</text>
-			<text class="old-price">原价: ￥ 12800元</text>
+			<text class="new-price">￥ {{forum.price}}元</text>
+			<text class="old-price">原价: ￥ {{forum.original_price}}元</text>
 			<button class="btn" type="primary">立即报名</button>
 		</view>
 		<view class="height-box">
-			
+
 		</view>
 		<view class="bottom">
 			<button class="btn" type="primary">报名成功</button>
@@ -102,7 +101,18 @@
 			uniBadge
 		},
 		data() {
-			return {}
+			return {
+				forum: null, // 课程信息
+				bundleId: 3, // 系列标识
+			}
+		},
+		onLoad() {
+			this.$http.request({
+				url: 'forum?ForumSearch[bundle_id]=' + this.bundleId,
+				method: 'get',
+			}).then(res => {
+				this.forum = res.data.items[0]
+			}).catch(console.log)
 		}
 	}
 </script>
@@ -119,7 +129,7 @@
 			height: 420rpx;
 			left: 0;
 			top: 0;
-		
+
 			image {
 				width: 100%;
 				position: absolute;
@@ -127,7 +137,7 @@
 				left: 0;
 				height: 420rpx;
 			}
-		
+
 			.shop-car {
 				position: absolute;
 				top: 20rpx;
@@ -137,13 +147,14 @@
 				border-radius: 50%;
 				background: rgba(0, 0, 0, 0.3);
 				text-align: center;
-		
+
 				.iconfont {
 					line-height: 60rpx;
 					color: #fff;
 					font-size: 36rpx;
 				}
-				.shopcar-badge{
+
+				.shopcar-badge {
 					position: absolute;
 					top: -16rpx;
 					right: -10rpx;
@@ -161,7 +172,8 @@
 				margin-bottom: 20rpx;
 				border-radius: $uni-border-radius-base;
 				background-color: #fff;
-				.title{
+
+				.title {
 					height: 70rpx;
 					margin-left: 10rpx;
 					line-height: 70rpx;
@@ -169,58 +181,72 @@
 					border-bottom: 1px solid $uni-border-color;
 					color: #333;
 				}
+
 				.course-content {
 					padding: 20rpx;
-					.course-list{
-						justify-content:space-between;
-						align-items:center;
-						.icon-btn{
+
+					.course-list {
+						justify-content: space-between;
+						align-items: center;
+
+						.icon-btn {
 							width: 40rpx;
-							.iconfont{
+
+							.iconfont {
 								font-size: 38rpx;
-								
+
 							}
 						}
-						.swiper{
+
+						.swiper {
 							flex: 1;
-							height:60rpx;
-							.item-box{
-								.item{
+							height: 60rpx;
+
+							.item-box {
+								.item {
 									display: flex;
 									flex-direction: column;
 									justify-content: center;
 									width: 180rpx;
 									height: 60rpx;
-									color:#fff;
+									color: #fff;
 									text-align: center;
-									border-radius:3px;
-									.phase{
+									border-radius: 3px;
+
+									.phase {
 										font-size: 24rpx;
 										line-height: 24rpx;
 									}
-									text{
+
+									text {
 										font-size: 20rpx;
 										line-height: 24rpx;
 									}
-									&:first-child{
+
+									&:first-child {
 										margin-right: 20rpx;
 									}
-									&:nth-child(2){
+
+									&:nth-child(2) {
 										margin-right: 20rpx;
 									}
 								}
-								.one{
+
+								.one {
 									background: #ca26a9;
 								}
-								.two{
+
+								.two {
 									background: #e36dcb;
 								}
-								.third{
+
+								.third {
 									background: #eee;
 								}
 							}
 						}
 					}
+
 					.course-position {
 						color: $uni-text-color;
 						font-size: 28rpx;
@@ -229,7 +255,8 @@
 							align-items: center;
 							padding: 18rpx 0;
 							border-bottom: 1px solid $uni-border-color;
-							.iconfont{
+
+							.iconfont {
 								margin-right: 20rpx;
 							}
 						}
@@ -242,29 +269,37 @@
 			padding: 20rpx 0;
 			background-color: #fff;
 			border-radius: $uni-border-radius-base;
-			.course-title{
+
+			.course-title {
 				display: flex;
 				align-content: center;
-				padding:10rpx 0  20rpx 28rpx;
-				border-bottom:1px solid $uni-border-color;
-				.line{
+				padding: 10rpx 0 20rpx 28rpx;
+				border-bottom: 1px solid $uni-border-color;
+
+				.line {
 					width: 8rpx;
 					font-size: 32rpx;
 					height: 32rpx;
 					border-radius: 8rpx;
-					background-color: $uni-bg-color ;
+					background-color: $uni-bg-color;
 				}
-				.text{
+
+				.text {
 					margin-left: 10rpx;
 					font-size: 32rpx;
 					line-height: 32rpx;
 					color: $uni-bg-color;
 				}
 			}
-			.course-word{
+
+			.course-word {
 				padding: 20rpx;
 				font-size: 28rpx;
 				color: $uni-text-color;
+
+				img {
+					width: 100%;
+				}
 			}
 		}
 
@@ -274,29 +309,34 @@
 			padding: 20rpx;
 			margin-bottom: 20rpx;
 			background-color: #fff;
+
 			.new-price {
 				color: $uni-bg-color;
 				font-size: 32rpx;
 			}
+
 			.old-price {
 				margin: 0 30rpx 0 20rpx;
-				text-decoration:line-through;
+				text-decoration: line-through;
 				font-size: 28rpx;
 				color: $uni-text-color-grey;
 			}
+
 			.btn {
 				width: 292rpx;
 				height: 60rpx;
 				padding: 0;
 				line-height: 60rpx;
-				
+
 				font-size: 32rpx;
 				background-color: $uni-bg-color;
 			}
 		}
-		.height-box{
+
+		.height-box {
 			height: 100rpx;
 		}
+
 		.bottom {
 			position: fixed;
 			display: flex;
@@ -306,7 +346,7 @@
 			box-sizing: border-box;
 			width: 100%;
 			height: 100rpx;
-			
+
 			background-color: #fff;
 
 			.btn {
@@ -316,10 +356,18 @@
 				line-height: 60rpx;
 				font-size: 32rpx;
 				background-color: #6dd900;
-				&:after{
+
+				&:after {
 					border: none;
 				}
 			}
+		}
+	}
+</style>
+<style lang="scss">
+	.course-word {
+		image {
+			width: 100% !important;
 		}
 	}
 </style>

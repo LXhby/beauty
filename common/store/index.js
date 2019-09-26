@@ -16,9 +16,6 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 const store = new Vuex.Store({
     modules,
     getters,
-    // plugins: [createPersistedState({
-    //     storage: window.sessionStorage
-    // })]
 })
 
 export default store

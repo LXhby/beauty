@@ -105,7 +105,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var topBar = function topBar() {return __webpack_require__.e(/*! import() | components/account/index1 */ "components/account/index1").then(__webpack_require__.bind(null, /*! @/components/account/index1.vue */ 257));};var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
@@ -122,13 +122,29 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
+var _vuex = __webpack_require__(/*! vuex */ 14);function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var topBar = function topBar() {return __webpack_require__.e(/*! import() | components/account/index1 */ "components/account/index1").then(__webpack_require__.bind(null, /*! @/components/account/index1.vue */ 257));};var _default =
 {
   components: {
     topBar: topBar },
 
+  computed: _objectSpread({},
+  (0, _vuex.mapGetters)(['config'])),
+
   data: function data() {
     return {
-      detailist: ["可提现", "待提现", "产品额度", "粉丝量"] };
+      detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
+      items: [
+      { title: "会员通知", value: "member.order.create" },
+      { title: "报名通知", value: "forum.order.create" },
+      { title: "会议提醒", value: "forum.order.notify" },
+      { title: "会议签到通知", value: "forum.siginin.notify" },
+      { title: "签到成功通知", value: "forum.siginedin.notify" },
+      { title: "推荐成功通知", value: "user.commend.success" },
+      { title: "收益到账提醒", value: "income.repay.notify" },
+      { title: "提现申请通知", value: "income.settle.create" },
+      { title: "提现审核受理通知", value: "income.settle.approved" },
+      { title: "提现成功通知", value: "income.settle.success" }] };
+
 
   } };exports.default = _default;
 

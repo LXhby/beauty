@@ -58,7 +58,7 @@
 					</view>
 					<image src="../../static/cp01.png" mode="aspectFit"></image>
 				</view>
-				<view class="top" style="border-bottom: none;">
+				<view class="top">
 					<view class="top-main">
 						<view class="text">
 							<text class="title">美白黄金</text>
@@ -90,16 +90,62 @@
 			</swiper>
 		</view>
 
+		<view class="navbar">
+			<!-- 导航栏 agents导航栏标题 -->
+			<navTab ref="navTab" :tabTitle="tabTitle" @changeTab='changeTab'></navTab>
+		</view>
+		<!-- swiper切换 swiper-item表示一页 scroll-view表示滚动视窗 -->
+		<swiper style="min-height: 100vh;" :current="tabCurrentIndex" @change="swiperTab">
+			<swiper-item v-for="(listItem,listIndex) in list" :key="listIndex">
+				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation>
+					<view class='content'>
+						<view v-for="(item, index) in list" :key="index" class="news-item" @click="navToDetails(item)">
+							<view class="item uni-flex uni-row">
+								<view class="left uni-flex uni-row">
+									<image src="../../static/ad3.jpg" mode="aspectFill"></image>
+									<view class="detail">
+										<text class="title">美白黄金美白黄金美白黄金美白黄金</text>
+										<view class="bottom ">
+											<text>限时购：3天18小时45秒</text>
+										</view>
+									</view>
+								</view>
+
+								<view class="right">
+									<text class="dark-color">限时价</text>
+									<view class="money">
+										<text class="num">20600</text>
+										<text>积分</text>
+									</view>
+									<view class="btn">
+										+购物车
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class='noCard' v-if="listItem.length===0">
+						暂无信息
+					</view>
+					<view style="width: 100%;height: 100upx;opacity:0;">底部占位盒子</view>
+				</scroll-view>
+			</swiper-item>
+		</swiper>
+
 		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 	</view>
 </template>
 
 <script>
+	const util = require('@/util/util.js');
+	import refresh from '@/components/refresh.vue';
+	import navTab from '@/components/navTab.vue';
 	import topBar from "@/components/account/index1.vue";
 	import uniGrid from '@/components/uni-grid/uni-grid.vue'
 	import uniGridItem from '@/components/uni-grid-item/uni-grid-item.vue'
 	export default {
 		components: {
+			navTab,
 			topBar,
 			uniGrid,
 			uniGridItem
@@ -107,11 +153,80 @@
 		data() {
 			return {
 				detailist: ["可提现", "待提现", "产品额度"],
-				interval: 2000,
-				duration: 1000
+				tabCurrentIndex: 0,
+				currentPage: 'index',
+				tabTitle: ['全部商品', '促销活动'], //导航栏格式 --导航栏组件
+				currentTab: 0, //sweiper所在页
+				pages: [1, 1, 1, 1], //第几个swiper的第几页
+				list: [
+					[1, 2, 3, 4, 5, 6],
+					['a', 'b', 'c', 'd', 'e', 'f']
+				], //数据格式
 			}
 		},
 		methods: {
+			changeTab(index) {
+				this.tabCurrentIndex = index
+			},
+			// 其他请求事件 当然刷新和其他请求可以写一起 多一层判断。
+			isRequest(pages) {
+				return new Promise((resolve, reject) => {
+					this.pages[this.currentTab]++
+					var that = this
+					setTimeout(() => {
+						uni.hideLoading()
+						uni.showToast({
+							icon: 'none',
+							title: `请求第${that.currentTab + 1 }个导航栏的第${that.pages[that.currentTab]}页数据成功`
+						})
+						let newData = ['新数据1', '新数据2', '新数据3']
+						resolve(newData)
+					}, 1000)
+				})
+			},
+			// swiper 滑动
+			swiperTab: function(e) {
+				var index = e.detail.current //获取索引
+				if (this.tabTitle.length <= 5) {
+					this.$refs.navTab.navClick(index)
+				} else {
+					this.$refs.navTab.longClick(index)
+				}
+			},
+			// 加载更多 util.throttle为防抖函数
+			lower1: util.throttle(function(e) {
+				console.log(`加载${this.currentTab}`) //currentTab表示当前所在页数 根据当前所在页数发起请求并带上page页数
+				uni.showLoading({
+					title: '加载中',
+					mask: true
+				})
+				this.isRequest().then((res) => {
+					let tempList = this.list
+					tempList[this.currentTab] = tempList[this.currentTab].concat(res)
+					console.log(tempList)
+					this.list = tempList
+					this.$forceUpdate() //二维数组，开启强制渲染
+				})
+			}, 300),
+			// 刷新touch监听
+			refreshStart(e) {
+				this.$refs.refresh.refreshStart(e);
+			},
+			refreshMove(e) {
+				this.$refs.refresh.refreshMove(e);
+			},
+			refreshEnd(e) {
+				this.$refs.refresh.refreshEnd(e);
+			},
+			isRefresh() {
+				setTimeout(() => {
+					uni.showToast({
+						icon: 'success',
+						title: '刷新成功'
+					})
+					this.$refs.refresh.endAfter() //刷新结束调用
+				}, 1000)
+			},
 			goPage(event) {
 				var index = event.detail.index;
 				switch (index) {
@@ -166,7 +281,7 @@
 		.goods-example {
 			border-top: 20rpx solid #f5f5f5;
 			width: 100%;
-			height:392rpx;
+
 			.sub-title {
 				margin-left: 20rpx;
 				font-size: 20rpx;
@@ -175,9 +290,8 @@
 
 			.preferential {
 				width: 50%;
-				height: 100%;
 				position: relative;
-
+				border-right: 1px solid #f4f4f4;
 
 				.hot-right {
 					position: absolute;
@@ -257,15 +371,11 @@
 
 			.goods-right {
 				width: 50%;
-				height: 100%;
-				border-left: 1px solid #f4f4f4;
 
 				.top {
 					display: flex;
 					justify-content: space-between;
 					padding: 20rpx;
-					height: 50%;
-					box-sizing: border-box;
 					border-bottom: 1px solid #f4f4f4;
 
 					.text {
@@ -302,6 +412,70 @@
 			}
 		}
 
+		.item {
+			padding: 20rpx;
+			justify-content: space-between;
+			align-items: center;
+			border-bottom: 20rpx solid $uni-border-color;
+
+			.left {
+				color: $uni-text-color;
+
+				image {
+					width: 200rpx;
+					height: 150rpx;
+					margin-right: 20rpx;
+				}
+
+				.detail {
+					width: 240rpx;
+
+					.title {
+						font-size: 28rpx;
+					}
+
+					.bottom {
+						margin-top: 26rpx;
+
+						text {
+							font-size: 22rpx;
+							color: $uni-bg-color;
+						}
+					}
+				}
+			}
+
+			.right {
+				text-align: center;
+				color: $uni-text-color;
+
+				.dark-color {
+					color: $uni-bg-color;
+					font-size: 24rpx;
+				}
+
+				.money {
+					font-size: 24rpx;
+
+					.num {
+						font-size: 32rpx;
+					}
+				}
+
+				.btn {
+					width: 140rpx;
+					height: 45rpx;
+					margin-top: 8rpx;
+					border-radius: 45rpx;
+					background: $uni-bg-color;
+					text-align: center;
+					color: #fff;
+					line-height: 45rpx;
+					font-size: 24rpx;
+				}
+			}
+		}
+
 	}
 </style>
 <style lang="scss">
@@ -323,5 +497,18 @@
 			}
 
 		}
+	}
+
+	.navbar {
+		.navTabBox {
+			.shortTab {
+				.underlineBox {
+					.underline {
+						width: 200rpx;
+					}
+				}
+			}
+		}
+
 	}
 </style>

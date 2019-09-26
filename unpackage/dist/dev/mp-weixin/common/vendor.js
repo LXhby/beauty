@@ -11,11 +11,11 @@
 /* WEBPACK VAR INJECTION */(function(createApp) {__webpack_require__(/*! uni-pages */ 4);
 var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 5));
-var _index = _interopRequireDefault(__webpack_require__(/*! ./common/store/index.js */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
-_vue.default.config.productionTip = false;
+var _index = _interopRequireDefault(__webpack_require__(/*! ./common/store/index.js */ 13));
 
+var _index2 = _interopRequireDefault(__webpack_require__(/*! ./plugins/request/js/index */ 97));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}_vue.default.config.productionTip = false;
 _App.default.mpType = 'app';
-
+_vue.default.prototype.$http = (0, _index2.default)();
 var app = new _vue.default(_objectSpread({
   store: _index.default },
 _App.default));
@@ -1501,6 +1501,130 @@ uni$1;exports.default = _default;
 
 /***/ }),
 
+/***/ 101:
+/*!**********************************************************************************!*\
+  !*** /Users/hubingyu/Documents/hy/beauty/plugins/request/js/core/interceptor.js ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var handlers = Symbol();
+
+// 拦截器
+var Interceptor = /*#__PURE__*/function () {
+  function Interceptor() {_classCallCheck(this, Interceptor);
+    this[handlers] = [];
+  }
+
+  /**
+     * 添加 拦截器
+     * @param {Function} fulfilled Promise.resolve里运行的函数
+     * @param {Function} rejected  Promise.reject里运行的函数
+     * @return {Number} 拦截器队列中注册的下标id
+     */_createClass(Interceptor, [{ key: "use", value: function use(
+    fulfilled, rejected) {
+      this[handlers].push({
+        fulfilled: fulfilled,
+        rejected: rejected });
+
+
+      return this[handlers].length - 1;
+    }
+
+    /**
+       * 注销 拦截器
+       * @param {Number} id 在拦截器队列中的下标id
+       */ }, { key: "eject", value: function eject(
+    id) {
+      this[handlers][id] && (this[handlers][id] = null);
+    }
+
+    /**
+       * 遍历所有的拦截器
+       * @param {Function} fn 
+       */ }, { key: "forEach", value: function forEach(
+    fn) {
+      this[handlers].forEach(function (item) {
+        item && fn(item);
+      });
+    } }]);return Interceptor;}();var _default =
+
+
+Interceptor;exports.default = _default;
+
+/***/ }),
+
+/***/ 102:
+/*!**********************************************************************************!*\
+  !*** /Users/hubingyu/Documents/hy/beauty/plugins/request/js/core/mergeConfig.js ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _tools = _interopRequireDefault(__webpack_require__(/*! ../tools */ 391));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance");}function _iterableToArray(iter) {if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;}}
+
+function mergeConfig(defaultConfig) {var instanceConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var CONFIG_KEY_LIST = ['url', 'method', 'data', 'dataType', 'responseType', 'params', 'isProxy'];
+  var CONFIG_MERGE_DEEP_KEY_LIST = ['header'];
+  var CONFIG_OPTIONAL_KEY_LIST = ['baseURL'];
+  var CONFIG_ALL_KEY_LIST = [].concat(CONFIG_KEY_LIST, CONFIG_MERGE_DEEP_KEY_LIST, CONFIG_OPTIONAL_KEY_LIST);
+  var ARGS_ALL_KEY_LIST = _toConsumableArray(new Set([].concat(_toConsumableArray(Object.keys(instanceConfig)), _toConsumableArray(Object.keys(defaultConfig)))));
+  var REMAINDER_KEY_LIST = ARGS_ALL_KEY_LIST.filter(function (key) {return !CONFIG_ALL_KEY_LIST.includes(key);});
+  var newConfig = {};
+
+  // 必要参数
+  CONFIG_KEY_LIST.forEach(function (prop) {
+    var val = instanceConfig[prop] || defaultConfig[prop];
+
+    !_tools.default.isType('Undefined', val) && (newConfig[prop] = val);
+  });
+
+  // 必要深拷贝参数
+  CONFIG_MERGE_DEEP_KEY_LIST.forEach(function (prop) {
+    var defaultVal = defaultConfig[prop];
+    var instanceVal = instanceConfig[prop];
+
+    if (_tools.default.isType('Object', instanceVal)) {
+      newConfig[prop] = _tools.default.deepCopy(defaultVal, instanceVal);
+    } else if (_tools.default.isType('Object', defaultVal)) {
+      newConfig[prop] = _tools.default.deepCopy(defaultVal);
+    }
+  });
+
+  // 配置文件中可选参数
+  CONFIG_OPTIONAL_KEY_LIST.forEach(function (prop) {
+    var val = defaultConfig[prop];
+
+    if (!_tools.default.isType('Undefined', val)) {
+      newConfig[prop] = defaultConfig[prop];
+    }
+  });
+
+  // 合并未出现在上述列表中的参数
+  REMAINDER_KEY_LIST.forEach(function (prop) {
+    var defaultVal = defaultConfig[prop];
+    var instanceVal = instanceConfig[prop];
+
+    if (!_tools.default.isType('Undefined', instanceVal)) {
+      newConfig[prop] = instanceVal;
+    } else if (!_tools.default.isType('Undefined', defaultVal)) {
+      newConfig[prop] = defaultVal;
+    }
+  });
+
+  newConfig.url = _tools.default.getFullURL(newConfig.baseURL, newConfig.url);
+  newConfig.url = _tools.default.paramsToURL(newConfig);
+  newConfig.header = _tools.default.adapterContentType(defaultConfig.header, instanceConfig.header, newConfig.header);
+
+  return newConfig;
+}var _default =
+
+mergeConfig;exports.default = _default;
+
+/***/ }),
+
 /***/ 103:
 /*!**************************************************************************************!*\
   !*** /Users/hubingyu/Documents/hy/beauty/main.js?{"page":"pages%2Fshopcar%2Findex"} ***!
@@ -1733,11 +1857,8 @@ var modules = modulesFiles.keys().reduce(function (modules, modulePath) {
 
 var store = new _vuex.default.Store({
   modules: modules,
-  getters: _getters.default
-  // plugins: [createPersistedState({
-  //     storage: window.sessionStorage
-  // })]
-});var _default =
+  getters: _getters.default });var _default =
+
 
 store;exports.default = _default;
 
@@ -2737,7 +2858,9 @@ createPage(_shipment.default);
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var getters = {
-  userInfo: function userInfo(state) {return state.user.userInfo;} };var _default =
+  userInfo: function userInfo(state) {return state.user.userInfo;},
+  token: function token(state) {return state.user.token;},
+  config: function config(state) {return state.user.config;} };var _default =
 
 getters;exports.default = _default;
 
@@ -2841,7 +2964,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     headimgurl: "http://thirdwx.qlogo.cn/mmopen/vi_32/oSFOkm2TX3cIepOvPI9Ox6pFXhUvicsC5CTagypSPwBqRLEOzzXL3Iqvfh2jrS9FlG2ydpgQ5J7MaRObdxTk9hA/132",
     id: 1 },
 
-  token: '0ab538e92c6db78d10b1694e645f3625' };
+  token: '0ab538e92c6db78d10b1694e645f3625',
+  config: {} };
 
 
 var mutations = {
@@ -2852,6 +2976,9 @@ var mutations = {
   setToken: function setToken(state, token) {
     console.log('setToken', token);
     state.token = token;
+  },
+  setconfig: function setconfig(state, info) {
+    state.config = info;
   } };
 
 
@@ -23297,6 +23424,187 @@ areaData;exports.default = _default;
 
 /***/ }),
 
+/***/ 391:
+/*!***********************************************************************!*\
+  !*** /Users/hubingyu/Documents/hy/beauty/plugins/request/js/tools.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}var $ = {};
+
+/**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * 类型判断
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @param {String} type 值的类型
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @param {Any} val 需要判断的值
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * @return {Boolean} 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
+$.isType = function (type, val) {
+  return Object.prototype.toString.call(val) === "[object ".concat(type, "]");
+};
+
+/**
+    * 简单对象的深拷贝
+    * @param {Array<Any>} args 参数列表
+    * @return {Object<Any>}
+    */
+$.deepCopy = function () {
+  var res = {};for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {args[_key] = arguments[_key];}
+
+  args.forEach(function (arg) {
+    for (var key in arg) {
+      res = assginValue(key, arg[key], res, $.deepCopy);
+    }
+  });
+
+  return res;
+};
+
+var assginValue = function assginValue(key, val, container, callback) {
+  var vType = typeof val === 'object';
+  var cType = typeof container[key] === 'object';
+
+  if (cType && vType) {
+    container[key] = callback(container[key], val);
+  } else if (vType) {
+    container[key] = callback({}, val);
+  } else {
+    container[key] = val;
+  }
+
+  return container;
+};
+
+/**
+    * 扩展对象的属性或方法
+    * @param {Object} a 需要扩展的对象
+    * @param {Object} b 被拷贝对象
+    * @param {Object} args 扩展函数继承的对象
+    * @return {Object}
+    */
+$.extend = function (a, b, args) {
+  for (var key in b) {
+    var val = b[key];
+
+    if (args && $.isType('Function', val)) {
+      a[key] = val.bind(args);
+    } else {
+      a[key] = val;
+    }
+  }
+
+  return a;
+};
+
+/**
+    * 获取完整的URL
+    * @param {String|Undefined} baseURL 基地址
+    * @param {String} requestURL 相对地址
+    * @return {String}
+    */
+$.getFullURL = function (baseURL, requestURL) {
+  if (baseURL && !isAbsoluteURL(requestURL)) {
+    return composeURL(baseURL, requestURL);
+  }
+
+  return requestURL;
+};
+
+/**
+    * 组合成绝对地址的 URL (基地址+相对地址)
+    * @param {String} baseURL 基地址
+    * @param {String} relativeURL 相对地址
+    * @return {String}
+    */
+var composeURL = function composeURL(baseURL, relativeURL) {
+  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL;
+};
+
+/**
+    * 判断是否是绝对地址 (有 `://`或 `//` 就算是绝对地址)
+    * @param {String} url
+    * @return {Boolean}
+    */
+var isAbsoluteURL = function isAbsoluteURL(url) {
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+};
+
+/**
+    * url添加params参数
+    * @param {Object} o config
+    * @param {Object} o.url
+    * @param {Object} o.method
+    * @param {Object} o.data
+    * @param {Object} o.params
+    * @return {String}
+    */
+$.paramsToURL = function (_ref) {var url = _ref.url,method = _ref.method,data = _ref.data,params = _ref.params;
+  var newParams = params;
+  var newURL = url + (!~url.indexOf('?') ? '?' : '&');
+
+  if (method.toLowerCase() === 'get') {
+    newParams = data || params;
+  }var _arr =
+
+  Object.entries(newParams || {});for (var _i = 0; _i < _arr.length; _i++) {var _arr$_i = _slicedToArray(_arr[_i], 2),key = _arr$_i[0],val = _arr$_i[1];
+    newURL += "".concat(key, "=").concat(val, "&");
+  }
+
+  return newURL.substring(0, newURL.length - 1);
+};
+
+/**
+    * `content-type` 适配器
+    * @param {Object} defaultHeader [{}]
+    * @param {Object} instanceHeader [{}]
+    * @param {Object} configHeader
+    * @return {Object}
+    */
+$.adapterContentType = function () {var defaultHeader = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};var instanceHeader = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};var configHeader = arguments.length > 2 ? arguments[2] : undefined;
+  var LIST = ['content-type', 'Content-type', 'Content-Type', 'contentType', 'ContentType'];
+  var newConfigHeader = $.deepCopy(configHeader);
+  var val;var _arr2 =
+
+  Object.keys(defaultHeader);for (var _i2 = 0; _i2 < _arr2.length; _i2++) {var KEY = _arr2[_i2];
+    if (LIST.includes(KEY)) {
+      val = defaultHeader[KEY];
+      delete newConfigHeader[KEY];
+      break;
+    }
+  }var _arr3 =
+
+  Object.keys(instanceHeader);for (var _i3 = 0; _i3 < _arr3.length; _i3++) {var _KEY = _arr3[_i3];
+    if (LIST.includes(_KEY)) {
+      val = instanceHeader[_KEY];
+      delete newConfigHeader[_KEY];
+      break;
+    }
+  }
+
+  val && (newConfigHeader['content-type'] = val);
+
+  return newConfigHeader;
+};
+
+// 停止promise的链式操作
+$.breakPromise = function () {
+  return new Promise(function () {});
+};
+
+// 转换为 JSON 格式
+$.toJSON = function (anyVal) {
+  try {
+    return JSON.parse(anyVal);
+  } catch (e) {
+    return anyVal;
+  }
+};var _default =
+
+$;exports.default = _default;
+
+/***/ }),
+
 /***/ 4:
 /*!******************************************************!*\
   !*** /Users/hubingyu/Documents/hy/beauty/pages.json ***!
@@ -23306,6 +23614,225 @@ areaData;exports.default = _default;
 
 "use strict";
 
+
+/***/ }),
+
+/***/ 428:
+/*!******************************************************************************!*\
+  !*** /Users/hubingyu/Documents/hy/beauty/plugins/request/js/core/network.js ***!
+  \******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.download = exports.upload = exports.xhr = void 0;var _tools = _interopRequireDefault(__webpack_require__(/*! ../tools */ 391));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+// 普通请求
+var xhr = function xhr(config) {
+  var promise, instance;
+
+  promise = new Promise(function (resolve, reject) {
+    instance = uni.request(_objectSpread({},
+    config, {
+      success: resolve,
+      fail: reject }));
+
+  });
+
+  promise.__proto__.example = instance;
+
+  return promise;
+};
+
+// 上传
+exports.xhr = xhr;var upload = function upload(config) {
+  var taskList = ['onProgressUpdate', 'onHeadersReceived', 'offProgressUpdate', 'offHeadersReceived'];
+  var promise, instance;
+
+  promise = new Promise(function (resolve, reject) {
+    instance = uni.uploadFile(_objectSpread({},
+    config, {
+      success: function success(res) {
+        res.data = _tools.default.toJSON(res.data);
+
+        resolve(res);
+      },
+      fail: reject }));
+
+
+    taskList.forEach(function (task) {
+      var fn = config[task];
+
+      typeof fn === 'function' && instance[task](fn);
+    });
+  });
+
+  promise.__proto__.example = instance;
+
+  return promise;
+};
+
+// 下载
+exports.upload = upload;var download = function download(config) {
+  var taskList = ['onProgressUpdate', 'onHeadersReceived', 'offProgressUpdate', 'offHeadersReceived'];
+  var promise, instance;
+
+  promise = new Promise(function (resolve, reject) {
+    instance = uni.downloadFile(_objectSpread({},
+    config, {
+      success: resolve,
+      fail: reject }));
+
+
+    taskList.forEach(function (task) {
+      var fn = config[task];
+
+      typeof fn === 'function' && instance[task](fn);
+    });
+  });
+
+  promise.__proto__.example = instance;
+
+  return promise;
+};exports.download = download;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 429:
+/*!************************************************************************!*\
+  !*** /Users/hubingyu/Documents/hy/beauty/plugins/request/js/config.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.config = exports.globalInterceptor = void 0;var _interceptor = _interopRequireDefault(__webpack_require__(/*! ./core/interceptor */ 101));
+var _index = _interopRequireDefault(__webpack_require__(/*! ./index */ 97));
+var _index2 = _interopRequireDefault(__webpack_require__(/*! ../../../common/store/index */ 13));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+var globalInterceptor = {
+  request: new _interceptor.default(),
+  response: new _interceptor.default()
+
+
+  /**
+                                        * 全局配置
+                                        * 只能配置 静态数据
+                                        * `content-type` 默认为 application/json
+                                        * header 中`content-type`设置特殊参数 或 配置其他会导致触发 跨域 问题，出现跨域会直接进入响应拦截器的catch函数中
+                                        */ };exports.globalInterceptor = globalInterceptor;
+var config = {
+  baseURL: 'http://api.krtamall.yiidev.cn/v1/',
+  // dataType: 'json',
+  // responseType: 'text',
+  header: {
+    // uid: 'xxxx',
+    'Content-Type': 'application/json' }
+
+
+
+
+
+
+  /**
+                                          * 全局 请求拦截器
+                                          * 例如: 配置token
+                                          * 
+                                          * `return config` 继续发送请求
+                                          * `return false` 会停止发送请求，不会进入错误数据拦截，也不会进入请求对象中的catch函数中
+                                          * `return Promise.reject('xxxxx')` 停止发送请求, 会错误数据拦截，也会进入catch函数中
+                                          * 
+                                          * @param {Object} config 发送请求的配置数据
+                                          */ };exports.config = config;
+globalInterceptor.request.use(function (config) {
+  if (_index2.default.getters.token) {
+    config.header.Authorization = 'Basic ' + btoa(_index2.default.getters.token + ':');
+  }
+
+  return config;
+  // return false;
+  // return Promise.reject('is error')
+}, function (err) {
+  console.error('is global fail request interceptor: ', err);
+  return false;
+});
+
+// 支持添加多个请求、响应拦截器
+// globalInterceptor.request.use(config => {
+//     console.log('is global request interceptor 2');
+//     return config;
+// }, err => {
+//     console.error('global request: ', err);
+//     return false;
+// });
+
+
+
+
+/**
+ * 全局 响应拦截器
+ * 例如: 根据状态码选择性拦截、过滤转换数据
+ * 
+ * `return res` 继续返回数据
+ * `return false` 停止返回数据，不会进入错误数据拦截，也不会进入catch函数中
+ * `return Promise.reject('xxxxx')` 返回错误信息, 会错误数据拦截，也会进入catch函数中
+ * 
+ * @param {Object} res 请求返回的数据
+ * @param {Object} config 发送请求的配置数据
+ * @return {Object|Boolean|Promise<reject>}
+ */
+globalInterceptor.response.use(function (res, config) {
+  console.log('is global response interceptor');
+
+  // 回传数据中没有携带 code
+  if (!(res.data && res.data.code)) {
+    return res;
+  }
+
+  // 用code模拟http状态码
+  var code = parseInt(res.data.code);
+
+  // 20x ~ 30x
+  if (200 <= code && code < 400) {
+    return res;
+  } else if (code == 401 && config.count === 0) {
+    config.count++;
+    return getApiToken(24603927534).then(saveToken).then(function () {return (0, _index.default)().request(config);});
+  } else {
+    return Promise.reject(res, config);
+  }
+
+  // return false;
+  // return Promise.reject('is error')
+}, function (err, config) {
+  console.error('is global response fail interceptor');
+  console.error('err: ', err);
+  console.error('config: ', config);var
+
+  errMsg =
+
+  err.errMsg,data = err.data;
+
+  return Promise.reject({
+    errMsg: errMsg,
+    data: data,
+    config: config });
+
+});
+
+// 重新请求更新获取 token
+
+
+// 获取 localStorage 中的 token
+function getToken() {
+  return uni.getStorageSync('token');
+}
+
+// 保存 token 到 localStorage
+function saveToken(token) {
+  uni.setStorageSync('token', token);
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 
@@ -24217,6 +24744,177 @@ var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
 var _upvue = _interopRequireDefault(__webpack_require__(/*! ./pages/benefits/upvue.vue */ 96));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 createPage(_upvue.default);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["createPage"]))
+
+/***/ }),
+
+/***/ 97:
+/*!***********************************************************************!*\
+  !*** /Users/hubingyu/Documents/hy/beauty/plugins/request/js/index.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+
+
+
+
+
+
+
+
+
+
+var _index = _interopRequireDefault(__webpack_require__(/*! ./core/index */ 98));
+var _tools = _interopRequireDefault(__webpack_require__(/*! ./tools */ 391));
+var _config = __webpack_require__(/*! ./config */ 429);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /*
+                                                                                                                                 * @Description: uniapp request请求库 v2.0.3
+                                                                                                                                 * @Author: pocky
+                                                                                                                                 * @Email 2460392754@qq.com
+                                                                                                                                 * @Date: 2019-05-31 19:18:48
+                                                                                                                                 * @LastEditTime: 2019-09-25 20:36:50
+                                                                                                                                 * @instruction: https://www.yuque.com/pocky/aaeyux/pdik23
+                                                                                                                                 * @github: https://github.com/2460392754/uniapp-tools/tree/master/request
+                                                                                                                                 * @dcloud: https://ext.dcloud.net.cn/plugin?id=468
+                                                                                                                                 */function createInstance(defaultConfig) {var ctx = new _index.default(defaultConfig);var instance;instance = _index.default.prototype.request.bind(ctx);instance = _tools.default.extend(instance, _index.default.prototype, ctx);instance = _tools.default.extend(instance, ctx);
+  return instance;
+}
+
+function create() {
+  return createInstance(_config.config);
+}var _default =
+
+create;exports.default = _default;
+
+/***/ }),
+
+/***/ 98:
+/*!****************************************************************************!*\
+  !*** /Users/hubingyu/Documents/hy/beauty/plugins/request/js/core/index.js ***!
+  \****************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _interceptor = _interopRequireDefault(__webpack_require__(/*! ./interceptor */ 101));
+var _mergeConfig = _interopRequireDefault(__webpack_require__(/*! ./mergeConfig */ 102));
+var _tools = _interopRequireDefault(__webpack_require__(/*! ../tools */ 391));
+var Network = _interopRequireWildcard(__webpack_require__(/*! ./network */ 428));
+var _config = __webpack_require__(/*! ../config */ 429);function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;} else {var newObj = {};if (obj != null) {for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {};if (desc.get || desc.set) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}}newObj.default = obj;return newObj;}}function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}
+
+function MyRequest(defaultConfig) {
+  this.defaultConfig = defaultConfig;
+  this.interceptors = {
+    scoped: {
+      request: new _interceptor.default(),
+      response: new _interceptor.default() },
+
+    global: _config.globalInterceptor };
+
+}
+
+/**
+   * 通用请求
+   * 支持请求格式 `request('example/url'[, config])`
+   * @param {Object} config [{}] 配置信息
+   */
+MyRequest.prototype.request = function () {var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  if (typeof config === 'string') {
+    config = arguments[1] || {};
+    config.url = arguments[0];
+  }
+
+  // 设置默认 config.method
+  if (!config.method && !this.defaultConfig.method) {
+    config.method = 'get';
+  }
+
+  var newConfig = (0, _mergeConfig.default)(this.defaultConfig, config);
+  var method = config.method.toLowerCase();
+  var networkType = ['upload', 'download'].includes(method) ? method : 'xhr';
+
+  var chain = [];
+  var promise = Promise.resolve(newConfig);
+
+  this.interceptors.global.request.forEach(function (interceptor) {
+    chain.push({ then: interceptor.fulfilled }, { catch: interceptor.rejected });
+  });
+
+  this.interceptors.scoped.request.forEach(function (interceptor) {
+    chain.push({ then: interceptor.fulfilled }, { catch: interceptor.rejected });
+  });
+
+  chain.push({ then: Network[networkType] });
+
+  this.interceptors.global.response.forEach(function (interceptor) {
+    chain.push({ then: interceptor.fulfilled }, { catch: interceptor.rejected });
+  });
+
+  this.interceptors.scoped.response.forEach(function (interceptor) {
+    chain.push({ then: interceptor.fulfilled }, { catch: interceptor.rejected });
+  });
+
+  /**
+       * 链式合并
+       * 合并顺序格式
+       * `Promise.resolve()`
+       * `.then(global_Request)`
+       * `    .catch(global_Request)`
+       * `.then(scoped_Request)`
+       * `    .catch(scoped_Request)`
+       * `.then(发送请求)`
+       * `    .catch(请求错误、超时)`
+       * `.then(global_Response)`
+       * `    .catch(global_Response)`
+       * `.then(scoped_Response)`
+       * `    .catch(scoped_Response)`
+       * `.then(获取请求的返回值)`
+       * `    .catch(拦截异常的返回值)`
+       */
+  chain.forEach(function (item) {var _Object$entries =
+    Object.entries(item),_Object$entries2 = _slicedToArray(_Object$entries, 1),_Object$entries2$ = _slicedToArray(_Object$entries2[0], 2),type = _Object$entries2$[0],fn = _Object$entries2$[1];
+
+    if (typeof fn !== 'function') return true;
+
+    promise = promise[type](function (obj) {
+      var ret = fn(obj, config);
+
+      // return false 就会跳出promise的链式函数
+      if (ret === false) {
+        return _tools.default.breakPromise();
+      }
+
+      // return config(Object类型) 或 return Promise.reject('xx') 才会继续发送请求或回传数据
+      if (_tools.default.isType('Object', ret) || _tools.default.isType('Promise', ret)) {
+        return ret;
+      }
+    });
+  });
+
+  return promise;
+};
+
+// 在 MyRequest 的原型上添加其他方法
+var arr1 = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'upload', 'download'].forEach(function (method) {
+  MyRequest.prototype[method] = function (url) {var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var newConfig = _tools.default.deepCopy(config, {
+      url: url,
+      method: method });
+
+
+    return this.request(newConfig);
+  };
+});
+
+// 中断 发送中的请求
+MyRequest.prototype.abort = function (instance) {
+  try {
+    instance.example.abort();
+  } catch (e) {}
+};var _default =
+
+MyRequest;exports.default = _default;
 
 /***/ })
 

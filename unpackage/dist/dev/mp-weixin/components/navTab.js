@@ -146,7 +146,6 @@ var _default =
       tabClick: 0, //导航栏被点击
       isLeft: 0, //导航栏下划线位置
       isWidth: 0, //每个导航栏占位
-      toView: '',
       isLongWidth: 0 };
 
   },
@@ -159,7 +158,6 @@ var _default =
         that.isLongWidth = e.windowWidth / 5;
       } });
 
-    this.toView = 'id0';
   },
   methods: {
     // 导航栏点击
@@ -172,7 +170,6 @@ var _default =
     longClick: function longClick(index) {
       var tempIndex = index - 2;
       tempIndex = tempIndex <= 0 ? 0 : tempIndex;
-      this.toView = "id".concat(tempIndex); //动画滚动,滚动至中心位置
       this.tabClick = index; //设置导航点击了哪一个
       this.isLeft = index * this.isLongWidth; //设置下划线位置
       this.$emit('changeTab', index); //设置swiper的第几页

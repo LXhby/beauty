@@ -206,6 +206,7 @@ var util = __webpack_require__(/*! @/util/util.js */ 125);var refresh = function
 
   data: function data() {
     return {
+      userId: 1,
       tabCurrentIndex: 0,
       currentPage: 'index',
       tabTitle: ['全部', '待付款', '待发货', '待收货', '待评价'], //导航栏格式 --导航栏组件
@@ -291,15 +292,24 @@ var util = __webpack_require__(/*! @/util/util.js */ 125);var refresh = function
   //
   // 
   // 		},
+  onLoad: function onLoad() {var _this = this;
+    this.$http.request({
+      url: 'order?OrderSearch[user_id]=' + this.userId,
+      method: 'get' }).
+    then(function (res) {
+      _this.list[0] = res.data.items;
+      console.log(_this.list);
+    }).catch(console.log);
+  },
   methods: {
     changeTab: function changeTab(index) {
       this.tabCurrentIndex = index;
     },
     // 其他请求事件 当然刷新和其他请求可以写一起 多一层判断。
-    isRequest: function isRequest(pages) {var _this = this;
+    isRequest: function isRequest(pages) {var _this2 = this;
       return new Promise(function (resolve, reject) {
-        _this.pages[_this.currentTab]++;
-        var that = _this;
+        _this2.pages[_this2.currentTab]++;
+        var that = _this2;
         setTimeout(function () {
           uni.hideLoading();
           uni.showToast({
@@ -321,18 +331,18 @@ var util = __webpack_require__(/*! @/util/util.js */ 125);var refresh = function
       }
     },
     // 加载更多 util.throttle为防抖函数
-    lower1: util.throttle(function (e) {var _this2 = this;
+    lower1: util.throttle(function (e) {var _this3 = this;
       console.log("\u52A0\u8F7D".concat(this.currentTab)); //currentTab表示当前所在页数 根据当前所在页数发起请求并带上page页数
       uni.showLoading({
         title: '加载中',
         mask: true });
 
       this.isRequest().then(function (res) {
-        var tempList = _this2.list;
-        tempList[_this2.currentTab] = tempList[_this2.currentTab].concat(res);
+        var tempList = _this3.list;
+        tempList[_this3.currentTab] = tempList[_this3.currentTab].concat(res);
         console.log(tempList);
-        _this2.list = tempList;
-        _this2.$forceUpdate(); //二维数组，开启强制渲染
+        _this3.list = tempList;
+        _this3.$forceUpdate(); //二维数组，开启强制渲染
       });
     }, 300),
     // 刷新touch监听
@@ -345,13 +355,13 @@ var util = __webpack_require__(/*! @/util/util.js */ 125);var refresh = function
     refreshEnd: function refreshEnd(e) {
       this.$refs.refresh.refreshEnd(e);
     },
-    isRefresh: function isRefresh() {var _this3 = this;
+    isRefresh: function isRefresh() {var _this4 = this;
       setTimeout(function () {
         uni.showToast({
           icon: 'success',
           title: '刷新成功' });
 
-        _this3.$refs.refresh.endAfter(); //刷新结束调用
+        _this4.$refs.refresh.endAfter(); //刷新结束调用
       }, 1000);
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

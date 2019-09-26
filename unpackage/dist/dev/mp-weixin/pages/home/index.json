@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "辰风生物·卜瑞塔美妆",
   "usingComponents": {
+    "nav-tab": "/components/navTab",
     "top-bar": "/components/account/index1",
     "uni-grid": "/components/uni-grid/uni-grid",
     "uni-grid-item": "/components/uni-grid-item/uni-grid-item"
