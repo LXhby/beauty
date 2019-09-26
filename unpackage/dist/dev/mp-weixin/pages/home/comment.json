@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "更多评论",
+  "usingComponents": {
+    "uni-badge": "/components/uni-badge/uni-badge"
+  }
+}

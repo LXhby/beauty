@@ -14,6 +14,19 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 @font-face {
 	font-family: uniicons;
 	font-weight: normal;
@@ -1656,8 +1669,8 @@ radio-group label, checkbox-group label{
 @font-face {
   font-family: 'iconfont';
   /* project id 1377410 */
-  src: url("https://at.alicdn.com/t/font_1377503_wk4mbv1sumf.eot");
-  src: url("https://at.alicdn.com/t/font_1377503_on63jn93awp.ttf") format("truetype");
+  src: url("https://at.alicdn.com/t/font_1377410_q6oz88gwvn.eot");
+  src: url("https://at.alicdn.com/t/font_1377410_q6oz88gwvn.ttf") format("truetype");
 }
 .iconfont {
   font-family: iconfont !important;

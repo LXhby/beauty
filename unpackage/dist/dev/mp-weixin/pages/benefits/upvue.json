@@ -1,6 +1,8 @@
 {
   "navigationBarTitleText": "升级VIP",
   "usingComponents": {
-    "commom-top": "/pages/benefits/index"
+    "uni-grid": "/components/uni-grid/uni-grid",
+    "uni-grid-item": "/components/uni-grid-item/uni-grid-item",
+    "uni-popup": "/components/uni-popup/uni-popup"
   }
 }

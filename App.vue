@@ -2,9 +2,14 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			
 		},
 		onShow: function() {
 			console.log('App Show')
+			console.log(window)
+				console.log(window.location.href)
+				console.log(window.location)
+				console.log(document.URL)
 		},
 		onHide: function() {
 			console.log('App Hide')
