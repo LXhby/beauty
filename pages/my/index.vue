@@ -2,7 +2,7 @@
 	<view class="my-page">
 		<top-bar rightText="实名认证" :detailist="detailist" :isreal="false"></top-bar>
 		<view class="active-nav">
-			<navigator url="/pages/my/orderinfo">
+			<navigator url="/pages/my/order">
 				<view class="uni-flex uni-row nav-title">
 					<view class="nav-left">
 						<text class="iconfont">&#xe643;</text>

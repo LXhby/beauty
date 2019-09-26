@@ -16,9 +16,9 @@
 							<view class="top uni-flex uni-row">
 								<view class="left">
 									<text class="iconfont">&#xe608;</text>
-									<text class="time">2019-09-02 15:00</text>
+									<text class="time">{{item.created_at}}</text>
 								</view>
-								<text class="status">交易成功</text>
+								<text class="status" v-if="item.status === '已支付'">交易成功</text>
 							</view>
 							<view class="item-main uni-flex uni-row">
 								<view class="left uni-flex uni-row">
@@ -57,15 +57,15 @@
 									<text>个金币</text>
 								</view>
 								<view class="total-num uni-flex uni-row">
-									<text class="heji">共2件商品</text>
+									<text class="heji">共{{item.quantity}}件商品</text>
 									<view class="">
 										<text>合计：</text>
-										<text class="dark-color">￥128.00</text>
+										<text class="dark-color">￥{{item.amount}}</text>
 									</view>
 								</view>
 							</view>
 							<view class="btn-list uni-flex uni-row">
-								<button type="primary" class="detail" @click="godetail">订单详情</button>
+								<button type="primary" class="detail" @click="godetail(item.id)">订单详情</button>
 								<view class="right-btn uni-flex uni-row">
 									<button type="primary" class="blue btn1">申请退款</button>
 									<button type="primary" class="dark">立即付款</button>
@@ -106,11 +106,11 @@
 				currentTab: 0, //sweiper所在页
 				pages: [1, 1, 1, 1], //第几个swiper的第几页
 				list: [
-					[1, 2, 3, 4, 5, 6],
-					['a', 'b', 'c', 'd', 'e', 'f'],
 					[],
-					['2233', '4234', '13144', '324244'],
-					['2233', '4234', '13144', '324244']
+					[],
+					[],
+					[],
+					[]
 				], //数据格式
 				navList: [{
 						state: 0,
@@ -186,11 +186,19 @@
 		// 
 		// 		},
 		onLoad() {
+			this.changeTab(this.$route.query.state++)
 			this.$http.request({
 				url: 'order?OrderSearch[user_id]=' + this.userId,
 				method: 'get',
-			}).then(res=>{
+			}).then(res => {
 				this.list[0] = res.data.items
+				res.data.items.forEach(ele => {
+					if (ele.status === '未支付') {
+						this.list[1].push(ele)
+					} else if (ele.status === '已支付') {
+						this.list[2].push(ele)
+					}
+				})
 				console.log(this.list)
 			}).catch(console.log)
 		},
@@ -215,7 +223,8 @@
 				})
 			},
 			// swiper 滑动
-			swiperTab: function(e) {
+			swiperTab(e) {
+				console.log(e)
 				var index = e.detail.current //获取索引
 				if (this.tabTitle.length <= 5) {
 					this.$refs.navTab.navClick(index)
@@ -257,11 +266,11 @@
 					this.$refs.refresh.endAfter() //刷新结束调用
 				}, 1000)
 			},
-			// 			godetail() {
-			// 				uni.navigateTo({
-			// 					url: '/pages/my/orderinfo'
-			// 				})
-			// 			},
+			godetail(orderId) {
+				uni.navigateTo({
+					url: '/pages/my/orderinfo?orderId=' + orderId,
+				})
+			},
 			// 			//获取订单列表
 			// 			loadData(source) {
 			// 				//这里是将订单挂载到tab列表下

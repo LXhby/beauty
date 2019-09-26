@@ -179,6 +179,9 @@
 		mounted(){
 			// this.$refs.popups.open()
 		},
+		onLoad(option) {
+			console.log(option)
+		},
 		methods:{
 			goPay(){
 				uni.navigateTo({
