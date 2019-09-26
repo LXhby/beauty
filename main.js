@@ -6,6 +6,7 @@ import Request from './plugins/request/js/index'
 import router from './common/uni-app-router/useRouter.js'
 App.mpType = 'app'
 Vue.prototype.$http = Request();
+Vue.prototype.$baseUrl = 'http://backend.krtamall.yiidev.cn';
 import Moment from 'moment'
 Vue.filter('convertTime', function (data, formatStr) {
   return Moment(data).format(formatStr)

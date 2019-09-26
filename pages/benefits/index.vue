@@ -23,14 +23,8 @@
 		</view>
 		<view class="swiper-box">
 			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="interval" :duration="duration" :circular="true">
-				<swiper-item>
-					<image src="../../static/ad3.jpg" mode=""></image>
-				</swiper-item>
-				<swiper-item>
-					<image src="../../static/chuke.jpg" mode=""></image>
-				</swiper-item>
-				<swiper-item>
-					<image src="../../static/order_bm_bg.jpg" mode=""></image>
+				<swiper-item v-for="(item,index) in bannerList" :key="index">
+					<image :src="url+item.image" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -53,8 +47,25 @@
 			return {
 				detailist: ["可提现", "待提现", "产品额度"],
 				interval: 2000,
-				duration: 500
+				duration: 500,
+				bannerList:[]
 			}
+		},
+		created() {
+			// 获取轮播图
+			this.$http
+			.request({
+				url: "carousels",
+				method: "get",
+				params: {
+				"CarouselSearch[group]": "home"
+				}
+			})
+			.then(res => {
+				this.bannerList = res.data.items;
+				console.log(this.bannerList)
+				this.url = this.$baseUrl;
+			});
 		},
 		methods:{
 			goPage(event){
@@ -82,7 +93,8 @@
 					break;
 				}
 				
-			}
+			},
+
 		}
 	}
 </script>

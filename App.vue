@@ -26,7 +26,7 @@
 		},
 		data() {
 			return {
-				baseURL: "http://api.krtamall.yiidev.cn/v1/"
+				baseURL: ""
 			};
 		}
 	};
