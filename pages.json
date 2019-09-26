@@ -3,7 +3,10 @@
 		{
 			"path": "pages/home/index",
 			"style": {
-				"navigationBarTitleText": "辰风生物·卜瑞塔美妆"
+				"navigationBarTitleText": "辰风生物·卜瑞塔美妆",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
@@ -33,7 +36,10 @@
 		{
 			"path": "pages/benefits/meeting",
 			"style": {
-				"navigationBarTitleText": "会议活动"
+				"navigationBarTitleText": "会议活动",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
@@ -45,19 +51,28 @@
 		{
 			"path": "pages/benefits/preferential",
 			"style": {
-				"navigationBarTitleText": "特实惠"
+				"navigationBarTitleText": "特实惠",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/benefits/integral",
 			"style": {
-				"navigationBarTitleText": "积分购"
+				"navigationBarTitleText": "积分购",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/benefits/upvue",
 			"style": {
-				"navigationBarTitleText": "升级VIP"
+				"navigationBarTitleText": "升级VIP",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{

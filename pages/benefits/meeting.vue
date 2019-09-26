@@ -7,63 +7,83 @@
 				<text class="text">活动预告</text>
 			</view>
 			<view class="list">
-				<view class="item uni-flex uni-row">
+				<view class="item uni-flex uni-row" v-for="(item,index) in forumsList" :key="index">
 					<view class="left uni-flex uni-column">
-						<view class="title">第一期某某课程某某课程某某课程</view>
+						<view class="title">{{item.name}}</view>
 						<view class="bottom-box uni-flex uni-row">
 							<view class="time">
 								<text class="iconfont">&#xe6dd;</text>
-								<text>2019.09.12-2019.09.15</text>
+								<text>{{getTime(item.start_date,item.end_date)}}</text>
 							</view>
 							<view class="address">
-								<text class="iconfont">&#xe853;</text>
-								<text>北京 九华山庄</text>
+								<text class="iconfont">&#xe657;</text>
+								<text>{{item.address}}</text>
 							</view>
 						</view>
 					</view>
-					<view class="right dark">
+					<view :class="[getCount(item.start_date,item.end_date)[1] === '已结束'?'gray':'dark','right']">
 						<view class="num">
-							<text>9</text>天
+							<text v-if="getCount(item.start_date,item.end_date)[0]">{{getCount(item.start_date,item.end_date)[0]}}天</text>
 						</view>
-						<text>倒计时</text>
-					</view>
-				</view>
-				<view class="item uni-flex uni-row">
-					<view class="left uni-flex uni-column">
-						<view class="title">第一期某某课程某某课程某某课程</view>
-						<view class="bottom-box uni-flex uni-row">
-							<view class="time">
-								<text class="iconfont">&#xe6dd;</text>
-								<text>2019.09.12-2019.09.15</text>
-							</view>
-							<view class="address">
-								<text class="iconfont">&#xe853;</text>
-								<text>北京 九华山庄</text>
-							</view>
-						</view>
-					</view>
-					<view class="right gray">
-						<view class="num">
-							<text>9</text>天
-						</view>
-						<text>已结束</text>
+						<text>{{getCount(item.start_date,item.end_date)[1]}}</text>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
+		<view class="bottom-line">-- 我是有底线的{{config.app_name}} --</view>
 	</view>
 </template>
 
 <script>
 	import commomTop from "./index.vue";
+	import { mapGetters } from "vuex";
+	import Moment from 'moment'
 	export default {
 		components: {
 			commomTop,
 		},
+		computed: {
+		    ...mapGetters(['config'])
+		  },
 		data() {
 			return {
-				lightIndex: 0
+				lightIndex: 0,
+				forumsList:[]
+			}
+		},
+		onLoad(){
+			this.$http.request({
+				url:'forums',
+				method:'get'
+			}).then(res=>{
+				this.forumsList = res.data.items;
+			})
+		},
+		methods:{
+			getTime(start,end){
+				if(Moment(start).year() != Moment(end).year()){
+					return Moment(start).format('YYYY年MM月DD日')+"-"+Moment(end).format('YYYY年MM月DD日')
+				}else{
+					if(Moment(start).month() != Moment(end).month()){
+						return Moment(start).format('YYYY年MM月DD日')+"-"+Moment(end).format('MM月DD日')
+					}else{
+						return Moment(start).format('YYYY年MM月DD日')+"-"+Moment(end).format('DD日')
+					}
+				}
+			},
+			getCount(start,end){
+				if(Moment().isBefore(start)){
+					var time =Moment(start).format('X')-Moment().format('X');
+					console.log(time/60/60/24)
+					var str = parseInt(time/60/60/24)
+					return [str,"倒计时"]
+				}else{
+					if(Moment().isAfter(end)){
+						return ["0","已结束"]
+					}else{
+						return [null,"进行中"]
+					}
+				}
 			}
 		}
 	}
@@ -93,12 +113,13 @@
 					border-radius: 5px;
 
 					.left {
-						width: 500rpx;
+						flex: 1;
 						height: 100rpx;
+						margin-right: 10rpx;
 						justify-content: space-between;
 
 						.title {
-							width: 100%;
+							flex: 1;
 							overflow: hidden;
 							white-space: nowrap;
 							text-overflow: ellipsis;
@@ -113,15 +134,31 @@
 							align-items: center;
 
 							.time {
-								font-size: 24rpx;
+								width: 330rpx;
+								overflow: hidden;
+								white-space: nowrap;
+								text-overflow: ellipsis;
+								font-size: 28rpx;
+								vertical-align: middle;
+								text{
+									vertical-align: middle;
+								}
 							}
 
 							.address {
-								font-size: 24rpx;
+								width: 200rpx;
+								margin-left:20rpx ;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
+								font-size: 28rpx;
 							}
 
 							.iconfont {
+								font-size: 32rpx;
+								margin-right:6rpx;
 								color: $uni-text-color;
+								vertical-align: middle;
 							}
 						}
 					}
@@ -146,7 +183,7 @@
 							line-height: 24rpx;
 
 							text {
-								font-size: 28rpx;
+								
 							}
 						}
 					}

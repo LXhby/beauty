@@ -16,6 +16,7 @@ export const config = {
     baseURL: 'http://api.krtamall.yiidev.cn/v1/',
     // dataType: 'json',
     // responseType: 'text',
+	withCredentials: true,
     header: {
         // uid: 'xxxx',
         'Content-Type': 'application/json'

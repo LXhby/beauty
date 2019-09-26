@@ -1,59 +1,57 @@
 <script>
-export default {
-  onLaunch: function() {
-    this.getconfig();
-  },
-  onShow: function() {
-    console.log("App Show");
-    console.log(window);
-    console.log(window.location.href);
-    console.log(window.location);
-    console.log(document.URL);
-  },
-  onHide: function() {
-    console.log("App Hide");
-  },
-  methods: {
-    getconfig() {
-      this.$http
-        .request({
-          url: "config/get-all",
-          method: "get"
-        })
-        .then(res => {
-          this.$store.commit("user/setconfig", res.data);
-          console.log(this.$store);
-        });
-    }
-  },
-  data() {
-    return {
-      baseURL: "http://api.krtamall.yiidev.cn/v1/"
-    };
-  }
-};
+	export default {
+		onLaunch: function() {
+			this.getconfig();
+			
+		},
+		onShow: function() {
+
+		},
+		onHide: function() {
+			console.log("App Hide");
+		},
+		methods: {
+			getconfig() {
+				this.$http
+					.request({
+						url: "config/get-all",
+						method: "get"
+					})
+					.then(res => {
+						this.$store.commit("user/setconfig", res.data);
+					});
+			},
+			
+
+		},
+		data() {
+			return {
+				baseURL: "http://api.krtamall.yiidev.cn/v1/"
+			};
+		}
+	};
 </script>
 
 <style>
-/* #ifndef APP-PLUS-NVUE */
-@import "./common/uni.css";
+	/* #ifndef APP-PLUS-NVUE */
+	@import "./common/uni.css";
 
-/*每个页面公共css */
-/* #endif*/
+	/*每个页面公共css */
+	/* #endif*/
 </style>
 <style lang="scss">
-@font-face {
-  font-family: "iconfont";
-  /* project id 1377410 */
-  src: url("https://at.alicdn.com/t/font_1377410_q6oz88gwvn.eot");
-  src: url("https://at.alicdn.com/t/font_1377410_q6oz88gwvn.ttf")
-    format("truetype");
-}
-.iconfont {
-  font-family: iconfont !important;
-  font-size: 32upx;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+	@font-face {
+		font-family: "iconfont";
+		/* project id 1377410 */
+		src: url("https://at.alicdn.com/t/font_1377410_q6oz88gwvn.eot");
+		src: url("https://at.alicdn.com/t/font_1377410_q6oz88gwvn.ttf") format("truetype");
+	}
+
+	.iconfont {
+		font-family: iconfont !important;
+		font-size: 32upx;
+		font-style: normal;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
 </style>

@@ -44,7 +44,7 @@
 			<image src="../../static/WechatIMG391.png" mode="" class="bg-weave"></image>
 			<image src="../../static/real.png" mode="" class="real" v-if="isreal"></image>
 		</view>
-		<uni-popup ref="popup" type="center" custom="true">
+		<uni-popup ref="popup" type="center" :custom="true">
 			<view class="real-form">
 				<view class="titles">
 					实名认证

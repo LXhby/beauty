@@ -1,6 +1,6 @@
 <template>
 	<view class="home-page">
-		<top-bar rightText="店铺设置" :detailist="detailist" :isreal="false"></top-bar>
+		<top-bar rightText="店铺设置" :detailist="detailist" :isreal="isreal"></top-bar>
 		<view class="active-nav">
 			<uni-grid :column="4" :show-border="false" :square="false" @change="goPage">
 				<uni-grid-item>
@@ -162,6 +162,9 @@
 					[1, 2, 3, 4, 5, 6],
 					['a', 'b', 'c', 'd', 'e', 'f']
 				], //数据格式
+				interval:2000,
+				duration:1000,
+				isreal:false
 			}
 		},
 		methods: {
