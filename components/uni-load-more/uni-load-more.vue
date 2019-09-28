@@ -1,6 +1,16 @@
 <template>
   <view class="uni-load-more">
     <view
+      v-if="iconType==='circle' || iconType==='auto' && platform === 'android'"
+      v-show="status === 'loading' && showIcon"
+      class="uni-load-more__img"
+    >
+      <view
+        :style="{borderColor : color}"
+        class="loader-android" />
+    </view>
+    <view
+      v-else
       v-show="status === 'loading' && showIcon"
       class="uni-load-more__img">
       <view class="load1 load">
@@ -55,6 +65,7 @@
 </template>
 
 <script>
+const platform = uni.getSystemInfoSync().platform
 export default {
   name: 'UniLoadMore',
   props: {
@@ -67,6 +78,10 @@ export default {
       type: Boolean,
       default: true
     },
+		iconType: {
+			type: String,
+			default: 'auto'
+		},
     color: {
       type: String,
       default: '#777777'
@@ -83,7 +98,9 @@ export default {
     }
   },
   data () {
-    return {}
+    return {
+      platform: platform
+    }
   }
 }
 </script>
@@ -102,6 +119,7 @@ export default {
 	}
 
 	&__img {
+    position: relative;
 		height: 24px;
 		width: 24px;
 		margin-right: 10px;
@@ -116,7 +134,7 @@ export default {
 				position: absolute;
 				opacity: 0.2;
 				transform-origin: 50%;
-				animation: load 1.56s ease infinite;
+				animation: load 0.96s ease infinite;
 
 				&:nth-child(1) {
 					transform: rotate(90deg);
@@ -142,6 +160,19 @@ export default {
 				}
 			}
 		}
+
+    & > .loader-android {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      box-sizing: border-box;
+      border: solid 2px #777777;
+      border-radius: 50%;
+      border-bottom-color: transparent !important;
+      animation: loader-android 1s 0s linear infinite;
+    }
 	}
 }
 
@@ -164,47 +195,47 @@ export default {
 }
 
 .load2 .uni-load-view_wrapper:nth-child(1) {
-	animation-delay: 0.13s;
+	animation-delay: 0.08s;
 }
 
 .load3 .uni-load-view_wrapper:nth-child(1) {
-	animation-delay: 0.26s;
+	animation-delay: 0.16s;
 }
 
 .load1 .uni-load-view_wrapper:nth-child(2) {
-	animation-delay: 0.39s;
+	animation-delay: 0.24s;
 }
 
 .load2 .uni-load-view_wrapper:nth-child(2) {
-	animation-delay: 0.52s;
+	animation-delay: 0.32s;
 }
 
 .load3 .uni-load-view_wrapper:nth-child(2) {
-	animation-delay: 0.65s;
+	animation-delay: 0.40s;
 }
 
 .load1 .uni-load-view_wrapper:nth-child(3) {
-	animation-delay: 0.78s;
+	animation-delay: 0.48s;
 }
 
 .load2 .uni-load-view_wrapper:nth-child(3) {
-	animation-delay: 0.91s;
+	animation-delay: 0.56s;
 }
 
 .load3 .uni-load-view_wrapper:nth-child(3) {
-	animation-delay: 1.04s;
+	animation-delay: 0.64s;
 }
 
 .load1 .uni-load-view_wrapper:nth-child(4) {
-	animation-delay: 1.17s;
+	animation-delay: 0.72s;
 }
 
 .load2 .uni-load-view_wrapper:nth-child(4) {
-	animation-delay: 1.3s;
+	animation-delay: 0.80s;
 }
 
 .load3 .uni-load-view_wrapper:nth-child(4) {
-	animation-delay: 1.43s;
+	animation-delay: 0.88s;
 }
 
 @-webkit-keyframes load {
@@ -214,6 +245,16 @@ export default {
 
 	100% {
 		opacity: 0.2;
+	}
+}
+
+@-webkit-keyframes loader-android {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
 	}
 }
 </style>

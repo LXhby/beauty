@@ -30,10 +30,10 @@
 					<text class="text2">销</text>
 				</view>
 				<view class="title">
-					限时特惠
+					店主推荐
 				</view>
 				<text class="sub-title">
-					今日推荐特实惠
+					今日热销产品
 				</text>
 				<view class="image-box uni-flex uni-row">
 					<image src="../../static/cp01.png" class="good-image" mode="widthFix"></image>
@@ -78,14 +78,8 @@
 
 		<view class="swiper-box">
 			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="interval" :duration="duration" :circular="true">
-				<swiper-item>
-					<image src="../../static/ad3.jpg" mode="aspectFill"></image>
-				</swiper-item>
-				<swiper-item>
-					<image src="../../static/chuke.jpg" mode="aspectFill"></image>
-				</swiper-item>
-				<swiper-item>
-					<image src="../../static/order_bm_bg.jpg" mode="aspectFill"></image>
+				<swiper-item v-for="(item,index) in bannerList" :key="index">
+					<image :src="url+item.image" mode="aspectFill"></image>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -153,6 +147,11 @@
 		data() {
 			return {
 				detailist: ["可提现", "待提现", "产品额度"],
+				bannerList:[],
+				allProduct:[],
+				commendList:[],//推荐商品列表
+				hotproduct:[],//热点商品
+				url:'',
 				tabCurrentIndex: 0,
 				currentPage: 'index',
 				tabTitle: ['全部商品', '促销活动'], //导航栏格式 --导航栏组件
@@ -167,7 +166,57 @@
 				isreal:false
 			}
 		},
+		onLoad() {
+			uni.showLoading({
+			  title: "加载中"
+			});
+				// 获取轮播图
+				this.$http
+				.request({
+					url: "carousels",
+					method: "get",
+					params: {
+					"CarouselSearch[group]": "home"
+					}
+				})
+				.then(res => {
+					this.bannerList = res.data.items;
+					this.url = this.$baseUrl;
+					this.getAllProduct();
+				});
+		},
 		methods: {
+			// 获取所有商品
+			getAllProduct(){
+				this.$http
+				.request({
+					url: "products",
+					method: "get"
+				})
+				.then(res => {
+					this.allProduct = res.data.items;
+					this.getcommentList();
+					uni.hideLoading();
+				});	
+			},
+			// 获取推荐商品
+			getcommentList(){
+				if(this.allProduct.length){
+					this.commendList = this.allProduct.filter((item)=>{
+						return item.commend == '推荐'
+					})
+					this.hotproduct = this.allProduct.filter((item)=>{
+						return item.commend == '热点'
+					})
+					if(!this.commendList.length){
+						this.commendList = [this.allProduct[0],this.allProduct[1]];
+					}
+					if(!this.hotproduct.length){
+						this.hotproduct = [this.allProduct[0]]
+					}
+				}
+				
+			},
 			changeTab(index) {
 				this.tabCurrentIndex = index
 			},

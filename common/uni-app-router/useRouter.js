@@ -8,7 +8,7 @@ const router = new Router({
 			path: "/pages/home/index",
 			name: 'tabbar-1'
 		}, {
-			path: '/pages/goods/index',
+			path: '/pages/goods/info',
 			name: 'tabbar-2'
 		}, {
 			path: '/pages/home/detail',
@@ -116,7 +116,7 @@ const router = new Router({
 		{
 			path: '/pages/my/toPay',
 			name: 'toPay'
-		}
+		},
 	]
 });
 

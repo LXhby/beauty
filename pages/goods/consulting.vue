@@ -1,7 +1,7 @@
 <template>
 	<view class="info-page">
 		<view class="banner">
-			<image src="../../static/37d52be5170e1b25d30ff44db4b0791c.jpg" mode="aspectFill"></image>
+			<image :src="url+info.image" mode="aspectFill"></image>
 			<view class="shop-car">
 				<text class="iconfont">&#xe603;</text>
 				<uni-badge text="9" type="error" class="shopcar-badge" />
@@ -10,13 +10,13 @@
 		<view class="main">
 			<view class="main-box">
 				<view class="title">
-					2019中国互联网大会：阿里巴巴将亮相
+					{{info.title}}
 				</view>
 				<view class="main-content">
 					<view class="sub-detail uni-flex uni-row">
 						<view class="gray-color">
 							<text>来源：某公众号</text>
-							<text>时间：2019-07-09</text>
+							<text>时间：{{info.created_at | convertTime('YYYY-MM-DD')}}</text>
 						</view>
 						<text class="hot">热度 3980℃</text>
 					</view>
@@ -54,15 +54,10 @@
 						</view>
 					</view>
 					<view class="article">
-						<view class="article-text">
-							姚明加油。中国球迷永远是你坚强的后盾。//@东土大唐三俗和尚:
-							做篮协主席，和他其他各种身份相比来说，绝对是最吃力不讨好的事情，尤其姚明是个聪明且精明的人，之所以还愿意做，我想不出除了真的热爱篮球、特别是热爱中国篮球事业之外，还有其他原因
+						<view class="article-text" v-html="info.content">
+							
 						</view>
-						<image src="../../static/deccf025gy1g6szgrnfmcj21900u0b2j.jpg" mode="widthFix"></image>
-						<view class="aarticle-text">
-							姚明加油。中国球迷永远是你坚强的后盾。//@东土大唐三俗和尚:
-							做篮协主席，和他其他各种身份相比来说，绝对是最吃力不讨好的事情，尤其姚明是个聪明且精明的人，之所以还愿意做，我想不出除了真的热爱篮球、特别是热爱中国篮球事业之外，还有其他原因
-						</view>
+						
 					</view>
 				</view>
 			</view>
@@ -132,7 +127,31 @@
 			uniBadge
 		},
 		data() {
-			return {}
+			return {
+				id:null,
+				url:'',
+				info:{}
+			}
+		},
+		onLoad() {
+			this.id = this.$route.query.id;
+			this.getInfo();
+		},
+		methods:{
+			getInfo(){
+				uni.showLoading({
+					title:'加载中'
+				})
+				this.$http.request({
+					url: "articles/"+this.id,
+					method: "get",
+				})
+				.then(res => {
+					uni.hideLoading();
+					this.info = res.data;
+					this.url = this.$baseUrl;
+				});	
+			}
 		}
 	}
 </script>
@@ -194,7 +213,6 @@
 				background: #fff;
 
 				.title {
-					height: 76rpx;
 					margin: 0 10rpx;
 					padding-left: 10rpx;
 					border-bottom: 1px solid $uni-border-color;
