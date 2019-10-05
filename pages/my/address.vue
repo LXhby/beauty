@@ -15,17 +15,17 @@
         </view>
       </view>
       <view class="main-content">
-        <view class="item-box">
+        <view class="item-box" v-for="item in addressList">
           <view class="item">
             <view class="user">
-              <text class="name">王晓文</text>
-              <text>18676766667</text>
+              <text class="name">{{item.receiver}}</text>
+              <text>{{item.mobile}}</text>
             </view>
-            <text class="address">北京市平昌区回龙观镇东村家园物业写字楼205室</text>
+            <text class="address">{{item.address}}</text>
           </view>
           <view class="edit uni-flex uni-row">
             <label class="radio">
-              <radio value="r1" checked="true" color="#ff0080" style="transform:scale(0.7)" />设置默认
+              <radio value="r1" :checked="item.is_default" color="#ff0080" style="transform:scale(0.7)" />设置默认
             </label>
             <view class="uni-flex uni-row handle-box">
               <view class>
@@ -47,15 +47,29 @@
 
 
 <script>
+import { mapGetters } from "vuex";
 import topBar from "@/components/account/index1.vue";
 export default {
   components: {
     topBar
   },
+  computed: {
+      ...mapGetters(["userInfo"])
+    },
   data() {
     return {
-      detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
+      detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
+	  addressList: [],
     };
+  },
+  onLoad() {
+	  console.log(this.userInfo)
+	  this.$http.request({
+	  	url: 'address?addressSearch[user_id]' + this.userInfo.id,
+	  	method: 'get',
+	  }).then(res => {
+	  	this.addressList = res.data.items
+	  }).catch(console.log)
   }
 };
 </script>

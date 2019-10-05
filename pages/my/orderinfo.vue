@@ -2,9 +2,11 @@
 	<view class="order">
 		<view class="header">
 			<image src="../../static/order_top_bg.jpg" mode="widthFix"></image>
-			<!-- <text>待付款：订单倒计时30分钟，订单取消</text> -->
 			<view class="text uni-flex uni-row">
-				<text>待发货</text>
+				<text v-if="orderInfo.status === '待付款'">{{orderInfo.status}}：订单倒计时30分钟，订单取消</text>
+				<text v-if="orderInfo.status === '待发货'">{{orderInfo.status}}：仓库正在紧张发货中</text>
+				<text v-if="orderInfo.status === '待收货'">{{orderInfo.status}}：系统将在X天后自动确认收货</text>
+				<text v-if="orderInfo.status === '待评价'">{{orderInfo.status}}：评价有奖哦！</text>
 			</view>
 		</view>
 		<view class="store-name">
@@ -15,21 +17,23 @@
 					<text class="iconfont">&#xe642;</text>
 				</view>
 				<view class="header-right">
-					<button class="friend-pay btn" type="primary" size="mini">朋友代付</button>
-					<button class="me-pay btn" type="primary" size="mini" @click="goPay">立即付款</button>
-					<!-- <button class="me-pay btn" type="primary" size="mini">提醒发货</button> -->
+					<button v-if="orderInfo.status === '待付款'" class="friend-pay btn" type="primary" size="mini">朋友代付</button>
+					<button v-if="orderInfo.status === '待付款'" class="me-pay btn" type="primary" size="mini" @click="goPay">立即付款</button>
+					<button v-if="orderInfo.status === '待发货'" class="me-pay btn" type="primary" size="mini" @click="sendGoods">提醒发货</button>
+					<button v-if="orderInfo.status === '待收货'" class="me-pay btn" type="primary" size="mini" @click="getGoods">确认收货</button>
+					<button v-if="orderInfo.status === '待评价'" class="me-pay btn" type="primary" size="mini" @click="goAssess">立即评价</button>
 				</view>
 			</view>
 			<view class="store-content">
-				<view class="goods-info" v-for="o in 2">
-					<image src="../../static/006tlvijgy1g6ldbo6anuj30e20e2wjb.jpg"></image>
+				<view class="goods-info" v-for="item in orderInfo.orderProducts">
+					<image :src="'http://backend.krtamall.yiidev.cn' + item.product.image"></image>
 					<view class="goods-src">
-						<p>护肤的第一步就是做好面部清洁工作，敏感肌肤应该选择水润</p>
+						<p>{{item.product.name}}</p>
 						<text>套装护肤+洁面</text>
 					</view>
 					<view class="goods-price">
-						<p>￥99.9</p>
-						<text>x1</text>
+						<p>￥{{item.price}}</p>
+						<text>x{{item.quantity}}</text>
 					</view>
 				</view>
 			</view>
@@ -39,11 +43,11 @@
 				<text class="iconfont">&#xe853;</text>
 				<view class="user-order">
 					<view>
-						<text class="user-name">叶小天</text>
-						<text class="num">1869536545</text>
+						<text class="user-name">{{orderInfo.receiver}}</text>
+						<text class="num">{{orderInfo.mobile}}</text>
 					</view>
 					<view>
-						北京市 北京市 朝阳区 花园路甲22号建国路甲13号215室
+						{{orderInfo.address}}
 					</view>
 
 				</view>
@@ -52,30 +56,32 @@
 		</view>
 		<view class="order-info">
 			<p class="to-pay">
-				<text>待付金额:</text>
-				<text class="money">￥19.9</text>
+				<text v-if="orderInfo.status === '待付款'">待付金额:</text>
+				<text v-else>实付金额:</text>
+				<text class="money">￥{{orderInfo.amount}}</text>
 			</p>
 			<p>
-				<text>待赠金币:</text>
+				<text v-if="orderInfo.status === '待付款'">待赠金币:</text>
+				<text v-else>实赠金币:</text>
 				<text>100个金币</text>
 			</p>
 			<p>
 				<text>订单编号:</text>
-				<text>201803150002625365445</text>
+				<text>{{orderInfo.id}}</text>
 			</p>
 			<p>
 				<text>付款时间:</text>
-				<text>2018-07-15 15:30:23</text>
+				<text>{{orderInfo.pay_at}}</text>
 			</p>
 			<p>
 				<text>发货时间:</text>
 				<text>2018-07-15 15:30:23</text>
 			</p>
 		</view>
-		<view class="progress" v-if="0">
+		<view class="progress" v-if="orderInfo.status === '待收货' || orderInfo.status === '待评价'">
 			<view class="title">
-				中通快递单号：38947394587023
-			</view>
+				{{orderInfo.express_com}}快递单号：{{orderInfo.express_sn}}
+				</view>
 			<view class="progress-detail uni-flex uni-row">
 				<view class="flow-li">
 					<view class="flow-bor"></view>
@@ -132,7 +138,8 @@
 					<text class="iconfont">&#xe623;</text>
 					<text class="iconfont">&#xe623;</text>
 				</view>
-				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f4f4f4;" placeholder="" value="非常好" />
+				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f4f4f4;" placeholder=""
+				 value="非常好" />
 				<view class="upload uni-flex uni-row">
 					<view class="up-image">
 						<text class="iconfont">&#xe64a;</text>
@@ -176,18 +183,46 @@
 		components: {
 			uniPopup
 		},
+		data() {
+			return {
+				orderInfo: '',
+				orderId: ''
+			}
+		},
 		mounted(){
 			// this.$refs.popups.open()
 		},
 		onLoad(option) {
-			console.log(option)
+			this.orderId = option.orderId
+			this.$http.request({
+				url: 'orders/' + option.orderId,
+				method: 'get',
+				params: {
+					'expand': 'orderProducts,orderProducts.product'
+				}
+			}).then(res => {
+				this.orderInfo = res.data
+			}).catch(console.log)
 		},
 		methods:{
+			// 立即付款
 			goPay(){
 				uni.navigateTo({
-					url:'/pages/my/toPay'
+					url: '/pages/my/toPay?orderId=' + this.orderId,
 				})
-			}
+			},
+			// 提醒发货
+			sendGoods() {
+				this.$refs.popups.open()
+			},
+			// 确认收货
+			getGoods() {
+				this.$refs.popup.open()
+			},
+			// 立即评价
+			goAssess() {
+				this.$refs.popup.open()
+			},
 		}
 	}
 </script>

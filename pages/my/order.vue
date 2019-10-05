@@ -18,36 +18,28 @@
 									<text class="iconfont">&#xe608;</text>
 									<text class="time">{{item.created_at}}</text>
 								</view>
-								<text class="status" v-if="item.status === '已支付'">交易成功</text>
+								<view class="right">
+									<text class="status" v-if="item.status === '待付款'">待付款</text>
+									<text class="status" style="margin-right: 10rpx;padding-right: 10rpx;border-right: 1px solid #f5f5f5;" v-if="item.status === '待发货'">待发货</text>
+									<text class="status" style="margin-right: 10rpx;padding-right: 10rpx;border-right: 1px solid #f5f5f5;" v-if="item.status === '待收货'">待确认</text>
+									<text class="status" v-if="item.status === '待评价'">待评价</text>
+									<text class="status" v-if="item.status === '已评价'">交易成功</text>
+									<image v-if="item.status === '待收货' || item.status === '待发货'" src="../../static/car.png" mode="widthFix"></image>
+								</view>
 							</view>
-							<view class="item-main uni-flex uni-row">
+							<view class="item-main uni-flex uni-row" v-for="product in item.orderProducts">
 								<view class="left uni-flex uni-row">
-									<image src="../../static/006tlvijgy1g6ldbo6anuj30e20e2wjb.jpg" mode="aspectFill"></image>
+									<image :src="'http://backend.krtamall.yiidev.cn' + product.product.image" mode="aspectFill"></image>
 									<view class="item-title">
 										<view class="name">
-											家收到货氨基酸考得好发送加快速度哈弗
+											{{product.product.name}}
 										</view>
 										<text>套装产品加乳液</text>
 									</view>
 								</view>
 								<view class="right">
-									<view class="money">￥99</view>
-									<text class="num">X1</text>
-								</view>
-							</view>
-							<view class="item-main uni-flex uni-row">
-								<view class="left uni-flex uni-row">
-									<image src="../../static/006tlvijgy1g6ldbo6anuj30e20e2wjb.jpg" mode="aspectFill"></image>
-									<view class="item-title">
-										<view class="name">
-											家收到货氨基酸考得好发送加快速度哈弗
-										</view>
-										<text>套装产品加乳液</text>
-									</view>
-								</view>
-								<view class="right">
-									<view class="money">￥99</view>
-									<text class="num">X1</text>
+									<view class="money">￥{{product.price}}</view>
+									<text class="num">X{{product.quantity}}</text>
 								</view>
 							</view>
 							<view class="total uni-flex uni-row">
@@ -66,9 +58,21 @@
 							</view>
 							<view class="btn-list uni-flex uni-row">
 								<button type="primary" class="detail" @click="godetail(item.id)">订单详情</button>
-								<view class="right-btn uni-flex uni-row">
-									<button type="primary" class="blue btn1">申请退款</button>
-									<button type="primary" class="dark">立即付款</button>
+								<view v-if="item.status === '待付款'" class="right-btn uni-flex uni-row">
+									<button type="primary" class="blue btn1">朋友代付</button>
+									<button type="primary" class="dark" @click="goPay(item.id)">立即付款</button>
+								</view>
+								<view v-if="item.status === '待发货'" class="right-btn uni-flex uni-row">
+									<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
+									<button type="primary" class="dark">提醒发货</button>
+								</view>
+								<view v-if="item.status === '待收货'" class="right-btn uni-flex uni-row">
+									<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
+									<button type="primary" class="dark">确认发货</button>
+								</view>
+								<view v-if="item.status === '待评价'" class="right-btn uni-flex uni-row">
+									<button type="primary" class="blue btn1">再来一单</button>
+									<button type="primary" class="dark">评价有奖</button>
 								</view>
 							</view>
 
@@ -88,6 +92,9 @@
 
 <script>
 	const util = require('@/util/util.js');
+	import {
+		mapGetters
+	} from "vuex";
 	import refresh from '@/components/refresh.vue';
 	import navTab from '@/components/navTab.vue';
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
@@ -96,6 +103,9 @@
 			uniLoadMore,
 			navTab,
 			refresh
+		},
+		computed: {
+			...mapGetters(["userInfo"])
 		},
 		data() {
 			return {
@@ -186,23 +196,41 @@
 		// 
 		// 		},
 		onLoad() {
-			this.changeTab(this.$route.query.state++)
+			this.changeTab(this.$route.query.state)
 			this.$http.request({
-				url: 'order?OrderSearch[user_id]=' + this.userId,
+				url: 'order?OrderSearch[user_id]=' + this.userInfo.id,
 				method: 'get',
+				params: {
+					'expand': 'orderProducts,orderProducts.product'
+				}
 			}).then(res => {
 				this.list[0] = res.data.items
 				res.data.items.forEach(ele => {
-					if (ele.status === '未支付') {
+					if (ele.status === '待付款') {
 						this.list[1].push(ele)
-					} else if (ele.status === '已支付') {
+					} else if (ele.status === '待发货') {
 						this.list[2].push(ele)
+					} else if (ele.status === '待收货') {
+						this.list[3].push(ele)
+					} else if (ele.status === '待评价') {
+						this.list[4].push(ele)
 					}
 				})
-				console.log(this.list)
 			}).catch(console.log)
 		},
 		methods: {
+			// 立即付款
+			goPay(orderId) {
+				uni.navigateTo({
+					url: '/pages/my/toPay?orderId=' + orderId,
+				})
+			},
+			// 申请退款
+			drawBack(orderId) {
+				uni.navigateTo({
+					url: '/pages/my/drawback?orderId=' + orderId,
+				})
+			},
 			changeTab(index) {
 				this.tabCurrentIndex = index
 			},
@@ -432,10 +460,19 @@
 						line-height: 74rpx;
 					}
 				}
-
-				.status {
-					color: $uni-bg-color;
+				.right {
+					display: flex;
+					align-items: center;
+					image {
+						width: 60rpx;
+						height: 40rpx;
+					}
+					.status {
+						color: $uni-bg-color;
+					}
 				}
+
+				
 			}
 
 			.item-main {

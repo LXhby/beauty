@@ -30,7 +30,7 @@
           </view>
           <view class="uni-form-item uni-column">
             <label>
-              <checkbox value="checkbox1" color="#ff0080" />设置默认收货地址
+              <checkbox value="checkbox" color="#ff0080" />设置默认收货地址
             </label>
           </view>
           <view class="uni-btn-v">
@@ -65,11 +65,14 @@ export default {
       themeColor: "#ff0080",
       pickerText: "",
       cityPickerValueDefault: [0, 0, 1],
-      detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
+      detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
+	  city: '',
     };
   },
   methods: {
-    formSubmit() {},
+    formSubmit(e) {
+		console.log(e.detail.value)
+	},
     // 三级联动选择
     showMulLinkageThreePicker() {
       this.$refs.mpvueCityPicker.show();

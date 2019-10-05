@@ -170,8 +170,9 @@
 			navTo(url){
 				console.log(url)
 				if(url.detail.index !=4){
+					url.detail.index++
 					uni.navigateTo({
-						url:'/pages/my/order?state='+url.detail.index
+						url:'/pages/my/order?state='+ url.detail.index
 					})   
 				}else{
 					uni.navigateTo({

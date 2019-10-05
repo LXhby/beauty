@@ -1,7 +1,7 @@
 <template>
 	<view class="course">
 		<view class="banner">
-			<image src="../../static/37d52be5170e1b25d30ff44db4b0791c.jpg" mode="aspectFill"></image>
+			<image :src="'http://backend.krtamall.yiidev.cn' + forum.banner" mode="aspectFill"></image>
 			<view class="shop-car">
 				<text class="iconfont">&#xe603;</text>
 				<uni-badge text="9" type="error" class="shopcar-badge" />
@@ -103,15 +103,14 @@
 		data() {
 			return {
 				forum: null, // 课程信息
-				bundleId: 3, // 系列标识
 			}
 		},
-		onLoad() {
+		onLoad(option) {
 			this.$http.request({
-				url: 'forum?ForumSearch[bundle_id]=' + this.bundleId,
+				url: 'forums/' + option.courseId,
 				method: 'get',
 			}).then(res => {
-				this.forum = res.data.items[0]
+				this.forum = res.data
 			}).catch(console.log)
 		}
 	}

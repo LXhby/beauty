@@ -3,15 +3,15 @@
 		<view class="user-info">
 			<view class="user-word">
 				<view class="users uni-flex uni-row">
-					<text class="user-name">收件人：王晓文</text>
-					<text class="num">1869536545</text>
+					<text class="user-name">收件人：{{orderInfo.receiver}}</text>
+					<text class="num">{{orderInfo.mobile}}</text>
 				</view>
 				<view class="user-order uni-flex uni-row">
 					<view class="icon">
 						<text class="iconfont">&#xe657;</text>
 					</view>
 					<view class="address uni-flex">
-						<text class="detail">收货地址：北京市北京市朝阳区花园路甲号建国路甲13号215室</text>
+						<text class="detail">收货地址：{{orderInfo.address}}</text>
 					<view class="icon icon-right">
 						<text class="iconfont">&#xe642;</text>
 					</view>
@@ -30,22 +30,22 @@
 					</view>
 					<text class="iconfont right">&#xe642;</text>
 				</view>
-				<view class="detail uni-flex uni-row" v-for="o in 2">
+				<view class="detail uni-flex uni-row" v-for="item in orderInfo.orderProducts">
 					<view class="left uni-flex uni-row" style="align-items: center;">
-						<image src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90" mode="aspectFill"></image>
+						<image :src="'http://backend.krtamall.yiidev.cn' + item.product.image" mode="aspectFill"></image>
 					</view>
 					<view class="right">
-						<view class="name">包图新款女式化妆护肤防晒霜 长效保湿安全护肤</view>
+						<view class="name">{{item.product.name}}</view>
 						<view class="size">
 							商品规格
 						</view>
 						<view class="bottom  uni-flex uni-row">
 							<view class="num-box" style="overflow: hidden;">
 								<view class="money">
-									<text class="num">￥1288</text>
+									<text class="num">￥{{item.price}}</text>
 									<text class="send">赠送128个金币</text>
 								</view>
-								<text class="total-num">x1</text>
+								<text class="total-num">x{{item.quantity}}</text>
 							</view>
 						</view>
 					</view>
@@ -79,7 +79,7 @@
 					<text class="combined">合计</text>
 					<view>
 						<view class="count-box">
-							<view class="count-num">￥256</view>
+							<view class="count-num">￥{{orderInfo.amount}}</view>
 							<!-- 大于7位数 弹窗-->
 							<text class="gray-color">
 								省256元
@@ -94,6 +94,25 @@
 </template>
 
 <script>
+	export default {
+	  data() {
+	    return {
+	      orderInfo: '',
+	    };
+	  },
+		onLoad(option) {
+			this.$http.request({
+				url: 'orders/' + option.orderId,
+				method: 'get',
+				params: {
+					'expand': 'orderProducts,orderProducts.product'
+				}
+			}).then(res => {
+				this.orderInfo = res.data
+				console.log(this.orderInfo)
+			}).catch(console.log)
+		}
+	 }
 </script>
 
 <style lang="scss" scoped>
