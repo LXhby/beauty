@@ -12,7 +12,7 @@ const router = new Router({
 			name: 'tabbar-2'
 		}, {
 			path: '/pages/home/detail',
-			name: 'goodsdetail'
+			name: "product-view"
 		}, {
 			path: '/pages/home/comment',
 			name: 'comment'

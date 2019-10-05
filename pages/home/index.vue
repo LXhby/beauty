@@ -23,8 +23,9 @@
 		</view>
 		<!-- 限时特惠 -->
 		<view class="goods-example uni-flex uni-row">
-			<view class="preferential" @click="goDetail">
-				<view class="hot-right">
+			<view class="preferential" @click="goDetail(adverList[0])">
+				<image :src="url+adverList[0].image" mode="widthFix" v-if="adverList.length" class="adver-img"></image>
+				<!-- <view class="hot-right">
 					<text class="iconfont">&#xe6c6;</text>
 					<text class="text1">热</text>
 					<text class="text2">销</text>
@@ -41,11 +42,12 @@
 						￥10.00
 					</view>
 				</view>
-				<view class="word-black">美白美金美白美金</view>
+				<view class="word-black">美白美金美白美金</view> -->
 			</view>
 			<view class="uni-flex uni-column goods-right">
-				<view class="top">
-					<view class="top-main">
+				<view class="top" @click="goDetail(adverList[1])">
+					<image :src="url+adverList[1].image" mode="widthFix" class="adver-img"></image>
+					<!-- <view class="top-main">
 						<view class="text">
 							<text class="title">美白黄金</text>
 							<view class="subtitle">
@@ -56,10 +58,11 @@
 							88元 / 盒
 						</view>
 					</view>
-					<image src="../../static/cp01.png" mode="aspectFit"></image>
+					<image src="../../static/cp01.png" mode="aspectFit"></image> -->
 				</view>
-				<view class="top">
-					<view class="top-main">
+				<view class="top" @click="goDetail(adverList[2])">
+					<image :src="url+adverList[2].image" mode="widthFix" v-if="adverList.length" class="adver-img"></image>
+					<!-- <view class="top-main">
 						<view class="text">
 							<text class="title">美白黄金</text>
 							<view class="subtitle">
@@ -70,7 +73,7 @@
 							88元 / 盒
 						</view>
 					</view>
-					<image src="../../static/cp01.png" mode="aspectFit"></image>
+					<image src="../../static/cp01.png" mode="aspectFit"></image> -->
 				</view>
 			</view>
 		</view>
@@ -153,6 +156,7 @@
 				hotproduct:[],//热点商品
 				url:'',
 				tabCurrentIndex: 0,
+				adverList:[],
 				currentPage: 'index',
 				tabTitle: ['全部商品', '促销活动'], //导航栏格式 --导航栏组件
 				currentTab: 0, //sweiper所在页
@@ -183,6 +187,7 @@
 					this.bannerList = res.data.items;
 					this.url = this.$baseUrl;
 					this.getAllProduct();
+					this.getadvertising();
 				});
 		},
 		methods: {
@@ -198,6 +203,17 @@
 					this.getcommentList();
 					uni.hideLoading();
 				});	
+			},
+			// 获取广告
+			getadvertising(){
+				this.$http.request({
+					url:'link',
+					params: {
+					"LinkSearch[group]": "home"
+					}
+				}).then(res=>{
+					this.adverList = res.data.items;
+				})
 			},
 			// 获取推荐商品
 			getcommentList(){
@@ -305,10 +321,12 @@
 				}
 
 			},
-			goDetail() {
-				uni.navigateTo({
-					url: '/pages/home/detail'
-				});
+			goDetail(item) {
+				console.log(item)
+				this.$Router.push({ name: item.route_name, query: { id: item.params_id }})
+				// uni.navigateTo({
+				// 	url: '/pages/home/detail'
+				// });
 			}
 		}
 	}
@@ -344,7 +362,9 @@
 				width: 50%;
 				position: relative;
 				border-right: 1px solid #f4f4f4;
-
+				.adver-img{
+					width: 100%;
+				}
 				.hot-right {
 					position: absolute;
 					right: 0px;
@@ -423,13 +443,15 @@
 
 			.goods-right {
 				width: 50%;
-
+				
 				.top {
 					display: flex;
 					justify-content: space-between;
 					padding: 20rpx;
 					border-bottom: 1px solid #f4f4f4;
-
+					.adver-img{
+						width: 100%;
+					}
 					.text {
 						color: #333;
 
