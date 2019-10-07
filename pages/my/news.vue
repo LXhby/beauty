@@ -12,14 +12,7 @@
 				</view>
 			</view>
 			<view class="main-content">
-				<view class="news-item">
-					<view class="title">
-						<text>【系统消息】</text>
-						<text class="time">2019.08.31 10:23</text>
-					</view>
-					<view class="content">系统将系统将系统将系统将系统将系统将系统将系统将v系统将系统将系统将系统将系统将系统将</view>
-				</view>
-				<view class="news-item">
+				<view class="news-item" v-for="item in newsList">
 					<view class="title">
 						<text>【系统消息】</text>
 						<text class="time">2019.08.31 10:23</text>
@@ -45,7 +38,6 @@
 			return {
 				detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
 				themeColor: '#000000',
-				filterResult: '',
 				page: 1,
 				newsList: [],
 				menuList: [{
@@ -102,39 +94,26 @@
 			};
 		},
 		onLoad() {
-			this.findAllNews()
+			this.findAllNews(null)
 		},
 		methods: {
 			findAllNews(data) {
-				if (data === undefined) {
-					this.$http.request({
-						url: 'wechat-notifications',
-						method: 'get',
-						params: {
-							page: this.page,
-							
-						}
-					}).then(res => {
-						this.newsList = res.data.items
-					}).catch(console.log)
-				} else {
-					this.$http.request({
-						url: 'wechat-notifications',
-						method: 'get',
-						params: {
-							'WechatNotificationSearch[type]': data,
-							page: this.page,
-							"per-page": 10,
-							sort: '-send_at'
-						}
-					}).then(res => {
-						this.newsList = res.data.items
-					}).catch(console.log)
-				}
+				this.$http.request({
+					url: 'wechat-notifications',
+					method: 'get',
+					params: {
+						'WechatNotificationSearch[type]': data,
+						page: this.page,
+						"per-page": 10,
+						sort: '-send_at'
+					}
+				}).then(res => {
+					this.newsList = res.data.items
+				}).catch(console.log)
+
 			},
 			result(val) {
-				this.filterResult = val
-				console.log(this.filterResult)
+				this.findAllNews(val.sort)
 			}
 		}
 	};
