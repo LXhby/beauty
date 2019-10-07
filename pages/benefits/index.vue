@@ -9,7 +9,7 @@
 				</uni-grid-item>
 				<uni-grid-item>
 					<image class="image" src="../../static/promotion.png" mode="widthFix" />
-					<text class="text" :class="{'light-color':lightIndex==1}">特实惠</text>
+					<text class="text" :class="{'light-color':lightIndex==1}">特惠购</text>
 				</uni-grid-item>
 				<uni-grid-item>
 					<image class="image" src="../../static/integral.png" mode="widthFix" />

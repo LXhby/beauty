@@ -19,7 +19,7 @@ const router = new Router({
 		},
 		{
 			path: '/pages/goods/consulting',
-			name: 'consulting'
+			name: 'article-view'
 		},
 		{
 			path: '/pages/benefits/meeting',
@@ -27,7 +27,7 @@ const router = new Router({
 		},
 		{
 			path: '/pages/benefits/courseinfo',
-			name: 'courseinfo'
+			name: 'course-view'
 		},
 		{
 			path: '/pages/benefits/preferential',

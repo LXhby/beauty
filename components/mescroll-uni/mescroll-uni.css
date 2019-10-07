@@ -66,7 +66,7 @@ page {
 .mescroll-upwarp .upwarp-tip,
 .mescroll-upwarp .upwarp-nodata {
 	display: inline-block;
-	font-size: 28upx;
+	font-size: 24upx;
 	color: gray;
 	vertical-align: middle;
 }

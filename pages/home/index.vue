@@ -1,31 +1,36 @@
 <template>
 	<view class="home-page">
-		<top-bar rightText="店铺设置" :detailist="detailist" :isreal="isreal"></top-bar>
-		<view class="active-nav">
-			<uni-grid :column="4" :show-border="false" :square="false" @change="goPage">
-				<uni-grid-item>
-					<image class="image" src="../../static/meeting.png" mode="aspectFill" />
-					<text class="text">会议活动</text>
-				</uni-grid-item>
-				<uni-grid-item>
-					<image class="image" src="../../static/promotion.png" mode="aspectFill" />
-					<text class="text">特实惠</text>
-				</uni-grid-item>
-				<uni-grid-item>
-					<image class="image" src="../../static/integral.png" mode="aspectFill" />
-					<text class="text">积分购</text>
-				</uni-grid-item>
-				<uni-grid-item>
-					<image class="image" src="../../static/vip.png" mode="aspectFill" />
-					<text class="text">升级VIP</text>
-				</uni-grid-item>
-			</uni-grid>
-		</view>
-		<!-- 限时特惠 -->
-		<view class="goods-example uni-flex uni-row">
-			<view class="preferential" @click="goDetail(adverList[0])">
-				<image :src="url+adverList[0].image" mode="widthFix" v-if="adverList.length" class="adver-img"></image>
-				<!-- <view class="hot-right">
+		<tabs-sticky v-if="isShowSticky" v-model="tabIndex" :fixed="true" :tabs="tabs" @change="changeTab"></tabs-sticky>
+
+		<mescroll-uni @down="downCallback" @up="upCallback" :up="upOption" @scroll="scroll" @init="mescrollInit" @topclick="topClick">
+
+
+			<top-bar rightText="店铺设置" :detailist="detailist" :isreal="isreal"></top-bar>
+			<view class="active-nav">
+				<uni-grid :column="4" :show-border="false" :square="false" @change="goPage">
+					<uni-grid-item>
+						<image class="image" src="../../static/meeting.png" mode="aspectFill" />
+						<text class="text">会议活动</text>
+					</uni-grid-item>
+					<uni-grid-item>
+						<image class="image" src="../../static/promotion.png" mode="aspectFill" />
+						<text class="text">特实惠</text>
+					</uni-grid-item>
+					<uni-grid-item>
+						<image class="image" src="../../static/integral.png" mode="aspectFill" />
+						<text class="text">积分购</text>
+					</uni-grid-item>
+					<uni-grid-item>
+						<image class="image" src="../../static/vip.png" mode="aspectFill" />
+						<text class="text">升级VIP</text>
+					</uni-grid-item>
+				</uni-grid>
+			</view>
+			<!-- 限时特惠 -->
+			<view class="goods-example uni-flex uni-row" v-if="adverList.length">
+				<view class="preferential" @click="goDetail(adverList[0])">
+					<image :src="url+adverList[0].image" mode="widthFix" class="adver-img"></image>
+					<!-- <view class="hot-right">
 					<text class="iconfont">&#xe6c6;</text>
 					<text class="text1">热</text>
 					<text class="text2">销</text>
@@ -43,11 +48,11 @@
 					</view>
 				</view>
 				<view class="word-black">美白美金美白美金</view> -->
-			</view>
-			<view class="uni-flex uni-column goods-right">
-				<view class="top" @click="goDetail(adverList[1])">
-					<image :src="url+adverList[1].image" mode="widthFix" class="adver-img"></image>
-					<!-- <view class="top-main">
+				</view>
+				<view class="uni-flex uni-column goods-right">
+					<view class="top" @click="goDetail(adverList[1])">
+						<image :src="url+adverList[1].image" mode="widthFix" class="adver-img"></image>
+						<!-- <view class="top-main">
 						<view class="text">
 							<text class="title">美白黄金</text>
 							<view class="subtitle">
@@ -59,10 +64,10 @@
 						</view>
 					</view>
 					<image src="../../static/cp01.png" mode="aspectFit"></image> -->
-				</view>
-				<view class="top" @click="goDetail(adverList[2])">
-					<image :src="url+adverList[2].image" mode="widthFix" v-if="adverList.length" class="adver-img"></image>
-					<!-- <view class="top-main">
+					</view>
+					<view class="top" @click="goDetail(adverList[2])">
+						<image :src="url+adverList[2].image" mode="widthFix" v-if="adverList.length" class="adver-img"></image>
+						<!-- <view class="top-main">
 						<view class="text">
 							<text class="title">美白黄金</text>
 							<view class="subtitle">
@@ -74,62 +79,45 @@
 						</view>
 					</view>
 					<image src="../../static/cp01.png" mode="aspectFit"></image> -->
+					</view>
 				</view>
 			</view>
-		</view>
 
 
-		<view class="swiper-box">
-			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="interval" :duration="duration" :circular="true">
-				<swiper-item v-for="(item,index) in bannerList" :key="index">
-					<image :src="url+item.image" mode="aspectFill"></image>
-				</swiper-item>
-			</swiper>
-		</view>
+			<view class="swiper-box">
+				<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="interval" :duration="duration" :circular="true">
+					<swiper-item v-for="(item,index) in bannerList" :key="index">
+						<image :src="url+item.image" mode="aspectFill"></image>
+					</swiper-item>
+				</swiper>
+			</view>
 
-		<view class="navbar">
-			<!-- 导航栏 agents导航栏标题 -->
-			<navTab ref="navTab" :tabTitle="tabTitle" @changeTab='changeTab'></navTab>
-		</view>
-		<!-- swiper切换 swiper-item表示一页 scroll-view表示滚动视窗 -->
-		<swiper style="min-height: 100vh;" :current="tabCurrentIndex" @change="swiperTab">
-			<swiper-item v-for="(listItem,listIndex) in list" :key="listIndex">
-				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation>
-					<view class='content'>
-						<view v-for="(item, index) in list" :key="index" class="news-item" @click="navToDetails(item)">
-							<view class="item uni-flex uni-row">
-								<view class="left uni-flex uni-row">
-									<image src="../../static/ad3.jpg" mode="aspectFill"></image>
-									<view class="detail">
-										<text class="title">美白黄金美白黄金美白黄金美白黄金</text>
-										<view class="bottom ">
-											<text>限时购：3天18小时45秒</text>
-										</view>
-									</view>
-								</view>
 
-								<view class="right">
-									<text class="dark-color">限时价</text>
-									<view class="money">
-										<text class="num">20600</text>
-										<text>积分</text>
-									</view>
-									<view class="btn">
-										+购物车
-									</view>
-								</view>
-							</view>
-						</view>
-					</view>
-					<view class='noCard' v-if="listItem.length===0">
-						暂无信息
-					</view>
-					<view style="width: 100%;height: 100upx;opacity:0;">底部占位盒子</view>
-				</scroll-view>
-			</swiper-item>
-		</swiper>
 
-		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
+			<view id="tabInList">
+				<tabs-sticky v-model="tabIndex" :tabs="tabs" @change="changeTab"></tabs-sticky>
+			</view>
+			<!-- 筛选条件 -->
+			<view :class="[{ 'active': isShowSticky }, 'screen-btn','uni-flex','uni-row']"  v-if="tabIndex == 0">
+				<view class="price">
+					<text>价格</text>
+					<text class="iconfont ">&#xe71c;</text>
+				</view>
+				<view class="price">
+					<text>折扣</text>
+					<text class="iconfont ">&#xe71c;</text>
+				</view>
+				<view class="price">
+					<text>销量</text>
+					<text class="iconfont ">&#xe71c;</text>
+				</view>
+				<view class="price all">
+					<sl-filter :independence="true" color="#000000" themeColor="#000000" :menuList.sync="menuList" @result="result" ></sl-filter>
+				</view>
+			</view>
+			<!-- 数据列表 -->
+			<pd-list :list="pdList" :type="tabs[tabIndex].name"></pd-list>
+		</mescroll-uni>
 	</view>
 </template>
 
@@ -140,160 +128,111 @@
 	import topBar from "@/components/account/index1.vue";
 	import uniGrid from '@/components/uni-grid/uni-grid.vue'
 	import uniGridItem from '@/components/uni-grid-item/uni-grid-item.vue'
+	import MescrollUni from "@/components/mescroll-uni/mescroll-uni.vue";
+	import TabsSticky from "@/components/other/tabs-home.vue";
+	import PdList from "@/components/other/home-list.vue";
+	import slFilter from '@/components/sl-filter/sl-filter.vue';
+	import mapGetters from "vuex";
 	export default {
 		components: {
 			navTab,
 			topBar,
 			uniGrid,
-			uniGridItem
+			uniGridItem,
+			MescrollUni,
+			TabsSticky,
+			PdList,
+			slFilter
 		},
 		data() {
 			return {
 				detailist: ["可提现", "待提现", "产品额度"],
-				bannerList:[],
-				allProduct:[],
-				commendList:[],//推荐商品列表
-				hotproduct:[],//热点商品
-				url:'',
-				tabCurrentIndex: 0,
-				adverList:[],
+				bannerList: [],
+				mescroll: null, //mescroll实例对象
+				url: '',
+				adverList: [],
 				currentPage: 'index',
-				tabTitle: ['全部商品', '促销活动'], //导航栏格式 --导航栏组件
-				currentTab: 0, //sweiper所在页
-				pages: [1, 1, 1, 1], //第几个swiper的第几页
-				list: [
-					[1, 2, 3, 4, 5, 6],
-					['a', 'b', 'c', 'd', 'e', 'f']
-				], //数据格式
-				interval:2000,
-				duration:1000,
-				isreal:false
+				tabs: ['全部商品', '积分商品'], //导航栏格式 --导航栏组件
+				tabIndex: 0, // 当前菜单下标
+				navTop: null, // nav距离到顶部的距离 (如计算不准确,可直接写死某个值)
+				isShowSticky: false, // 是否悬浮
+				pdList: [], // 数据列表
+				interval: 2000,
+				duration: 1000,
+				isreal: false,
+				upOption: {
+					noMoreSize: 1,
+					textNoMore: "-- 我是有底线的卡瑞塔 --",
+					onScroll: true, // 是否监听滚动事件, 默认false (配置为true时,可@scroll="scroll"获取到滚动条位置和方向)
+				},
+				menuList: [{
+					'title': '全部商品',
+					'key': 'sort',
+					'isSort': true,
+					'reflexTitle': false,
+					'defaultSelectedIndex': 0,
+					'detailList': [{
+						'title': '全部商品',
+						'value': null
+					}]
+				}]
 			}
 		},
 		onLoad() {
 			uni.showLoading({
-			  title: "加载中"
+				title: "加载中"
 			});
-				// 获取轮播图
-				this.$http
+			// 获取轮播图
+			this.$http
 				.request({
 					url: "carousels",
 					method: "get",
 					params: {
-					"CarouselSearch[group]": "home"
+						"CarouselSearch[group]": "home"
 					}
 				})
 				.then(res => {
 					this.bannerList = res.data.items;
 					this.url = this.$baseUrl;
-					this.getAllProduct();
-					this.getadvertising();
 				});
-		},
-		methods: {
-			// 获取所有商品
-			getAllProduct(){
-				this.$http
+			this.getadvertising();
+			// 获取商品分类
+			this.$http
 				.request({
-					url: "products",
+					url: "product-categories",
 					method: "get"
 				})
 				.then(res => {
-					this.allProduct = res.data.items;
-					this.getcommentList();
-					uni.hideLoading();
-				});	
-			},
-			// 获取广告
-			getadvertising(){
-				this.$http.request({
-					url:'link',
-					params: {
-					"LinkSearch[group]": "home"
+					if (res.data.items.length) {
+						var datalist = res.data.items;
+						datalist.forEach(item => {
+							var obj = {
+								title: item.name,
+								value: item.id
+							}
+							this.menuList[0].detailList.push(obj);
+						})
 					}
-				}).then(res=>{
-					this.adverList = res.data.items;
-				})
-			},
-			// 获取推荐商品
-			getcommentList(){
-				if(this.allProduct.length){
-					this.commendList = this.allProduct.filter((item)=>{
-						return item.commend == '推荐'
-					})
-					this.hotproduct = this.allProduct.filter((item)=>{
-						return item.commend == '热点'
-					})
-					if(!this.commendList.length){
-						this.commendList = [this.allProduct[0],this.allProduct[1]];
-					}
-					if(!this.hotproduct.length){
-						this.hotproduct = [this.allProduct[0]]
-					}
-				}
+
+
+				});
+		},
+		methods: {
+			result(val) {
+				console.log('filter_result:' + JSON.stringify(val));
 				
 			},
-			changeTab(index) {
-				this.tabCurrentIndex = index
-			},
-			// 其他请求事件 当然刷新和其他请求可以写一起 多一层判断。
-			isRequest(pages) {
-				return new Promise((resolve, reject) => {
-					this.pages[this.currentTab]++
-					var that = this
-					setTimeout(() => {
-						uni.hideLoading()
-						uni.showToast({
-							icon: 'none',
-							title: `请求第${that.currentTab + 1 }个导航栏的第${that.pages[that.currentTab]}页数据成功`
-						})
-						let newData = ['新数据1', '新数据2', '新数据3']
-						resolve(newData)
-					}, 1000)
+			// 获取广告
+			getadvertising() {
+				this.$http.request({
+					url: 'link',
+					params: {
+						"LinkSearch[group]": "home"
+					}
+				}).then(res => {
+					uni.hideLoading();
+					this.adverList = res.data.items;
 				})
-			},
-			// swiper 滑动
-			swiperTab: function(e) {
-				var index = e.detail.current //获取索引
-				if (this.tabTitle.length <= 5) {
-					this.$refs.navTab.navClick(index)
-				} else {
-					this.$refs.navTab.longClick(index)
-				}
-			},
-			// 加载更多 util.throttle为防抖函数
-			lower1: util.throttle(function(e) {
-				console.log(`加载${this.currentTab}`) //currentTab表示当前所在页数 根据当前所在页数发起请求并带上page页数
-				uni.showLoading({
-					title: '加载中',
-					mask: true
-				})
-				this.isRequest().then((res) => {
-					let tempList = this.list
-					tempList[this.currentTab] = tempList[this.currentTab].concat(res)
-					console.log(tempList)
-					this.list = tempList
-					this.$forceUpdate() //二维数组，开启强制渲染
-				})
-			}, 300),
-			// 刷新touch监听
-			refreshStart(e) {
-				this.$refs.refresh.refreshStart(e);
-			},
-			refreshMove(e) {
-				this.$refs.refresh.refreshMove(e);
-			},
-			refreshEnd(e) {
-				this.$refs.refresh.refreshEnd(e);
-			},
-			isRefresh() {
-				setTimeout(() => {
-					uni.showToast({
-						icon: 'success',
-						title: '刷新成功'
-					})
-					this.$refs.refresh.endAfter() //刷新结束调用
-				}, 1000)
 			},
 			goPage(event) {
 				var index = event.detail.index;
@@ -323,10 +262,102 @@
 			},
 			goDetail(item) {
 				console.log(item)
-				this.$Router.push({ name: item.route_name, query: { id: item.params_id }})
+				this.$Router.push({
+					name: item.route_name,
+					query: {
+						id: item.params_id
+					}
+				})
 				// uni.navigateTo({
 				// 	url: '/pages/home/detail'
 				// });
+			},
+			// 切换tab
+			mescrollInit(mescroll) {
+				this.mescroll = mescroll;
+			},
+			downCallback(mescroll) {
+				mescroll.resetUpScroll()
+			},
+			upCallback(mescroll) {
+				//联网加载数据
+				if (this.isChangeTab) {
+					mescroll.hideUpScroll(); // 切换菜单,不显示mescroll进度, 显示系统进度条
+					uni.showLoading();
+				}
+				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData) => {
+					//联网成功的回调
+					console.log("mescroll.num=" + mescroll.num + ", mescroll.size=" + mescroll.size + ", curPageData.length=" +
+						curPageData.length);
+
+					//设置列表数据
+					if (mescroll.num == 1) this.pdList = []; //如果是第一页需手动制空列表
+					this.pdList = this.pdList.concat(curPageData); //追加新数据
+					console.log('this.pdList', this.pdList)
+					// 数据渲染完毕再隐藏加载状态
+					this.$nextTick(() => {
+						mescroll.endSuccess(curPageData.length);
+						// 设置nav到顶部的距离 (需根据自身的情况获取navTop的值, 这里放到列表数据渲染完毕之后)
+						// 也可以放到onReady里面,或者菜单顶部的数据(轮播等)加载完毕之后..
+						if (!this.navTop) this.setNavTop()
+						// 保持tab悬浮,列表数据显示第一条
+						if (this.isChangeTab) {
+							this.isChangeTab = false;
+							uni.hideLoading();
+							if (this.isShowSticky) mescroll.scrollTo(this.navTop, 0)
+						}
+					})
+				}, () => {
+					//联网失败的回调,隐藏下拉刷新的状态
+					mescroll.endErr();
+				})
+			},
+			setNavTop() {
+				let view = uni.createSelectorQuery().in(this).select('#tabInList');
+				view.boundingClientRect(data => {
+					console.log('tabInList基本信息 = ' + JSON.stringify(data));
+					this.navTop = data.top // 到屏幕顶部的距离
+				}).exec();
+			},
+			scroll(mescroll) {
+				if (mescroll.getScrollTop() >= this.navTop) {
+					this.isShowSticky = true // 显示悬浮菜单
+				} else {
+					this.isShowSticky = false // 隐藏悬浮菜单
+				}
+			},
+			topClick() {
+				this.isShowSticky = false
+			},
+			changeTab(index) {
+				this.isChangeTab = true;
+				this.mescroll.resetUpScroll()
+			},
+			getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
+
+				try {
+					let listData = []
+					console.log('tabIndex', this.tabIndex)
+					this.$http
+						.request({
+							url: "products",
+							method: "get",
+							params: {
+								"ProductSearch[category_id]": this.tabIndex ? 2 : null,
+								page: pageNum,
+								"per-page": pageSize,
+							}
+						})
+						.then(res => {
+							listData = (res.data.items);
+							successCallback && successCallback(listData);
+						});
+
+				} catch (e) {
+					//联网失败的回调
+					errorCallback && errorCallback();
+				}
+
 			}
 		}
 	}
@@ -362,9 +393,11 @@
 				width: 50%;
 				position: relative;
 				border-right: 1px solid #f4f4f4;
-				.adver-img{
+
+				.adver-img {
 					width: 100%;
 				}
+
 				.hot-right {
 					position: absolute;
 					right: 0px;
@@ -443,15 +476,17 @@
 
 			.goods-right {
 				width: 50%;
-				
+
 				.top {
 					display: flex;
 					justify-content: space-between;
 					padding: 20rpx;
 					border-bottom: 1px solid #f4f4f4;
-					.adver-img{
+
+					.adver-img {
 						width: 100%;
 					}
+
 					.text {
 						color: #333;
 
@@ -486,69 +521,106 @@
 			}
 		}
 
-		.item {
-			padding: 20rpx;
-			justify-content: space-between;
-			align-items: center;
-			border-bottom: 20rpx solid $uni-border-color;
+		// 筛选
+		.active{
+			width:100%;
+			height:80rpx;
+			position: fixed;
+			z-index: 998;
+			top: 80rpx;
+			left: 0;
+			width: 100%;
+		}
+		.screen-btn {
+			justify-content: space-around;
+			height: 80rpx;
+			border-bottom: 20rpx solid #f5f5f5;
+			background: #fff;
+			.price {
+				font-size: 28rpx;
 
-			.left {
-				color: $uni-text-color;
-
-				image {
-					width: 200rpx;
-					height: 150rpx;
-					margin-right: 20rpx;
+				text {
+					line-height: 80rpx;
 				}
 
-				.detail {
-					width: 240rpx;
-
-					.title {
-						font-size: 28rpx;
-					}
-
-					.bottom {
-						margin-top: 26rpx;
-
-						text {
-							font-size: 22rpx;
-							color: $uni-bg-color;
-						}
-					}
+				.iconfont {
+					margin-left: 4rpx;
+					font-size: 22rpx;
+					color: $uni-text-color-grey;
 				}
 			}
 
-			.right {
-				text-align: center;
-				color: $uni-text-color;
-
-				.dark-color {
-					color: $uni-bg-color;
+			.all {
+				.iconfont {
 					font-size: 24rpx;
-				}
-
-				.money {
-					font-size: 24rpx;
-
-					.num {
-						font-size: 32rpx;
-					}
-				}
-
-				.btn {
-					width: 140rpx;
-					height: 45rpx;
-					margin-top: 8rpx;
-					border-radius: 45rpx;
-					background: $uni-bg-color;
-					text-align: center;
-					color: #fff;
-					line-height: 45rpx;
-					font-size: 24rpx;
+					color: $uni-text-color;
 				}
 			}
 		}
+
+		// .item {
+		// 	padding: 20rpx;
+		// 	justify-content: space-between;
+		// 	align-items: center;
+		// 	border-bottom: 20rpx solid $uni-border-color;
+
+		// 	.left {
+		// 		color: $uni-text-color;
+
+		// 		image {
+		// 			width: 200rpx;
+		// 			height: 150rpx;
+		// 			margin-right: 20rpx;
+		// 		}
+
+		// 		.detail {
+		// 			width: 240rpx;
+
+		// 			.title {
+		// 				font-size: 28rpx;
+		// 			}
+
+		// 			.bottom {
+		// 				margin-top: 26rpx;
+
+		// 				text {
+		// 					font-size: 22rpx;
+		// 					color: $uni-bg-color;
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+
+		// 	.right {
+		// 		text-align: center;
+		// 		color: $uni-text-color;
+
+		// 		.dark-color {
+		// 			color: $uni-bg-color;
+		// 			font-size: 24rpx;
+		// 		}
+
+		// 		.money {
+		// 			font-size: 24rpx;
+
+		// 			.num {
+		// 				font-size: 32rpx;
+		// 			}
+		// 		}
+
+		// 		.btn {
+		// 			width: 140rpx;
+		// 			height: 45rpx;
+		// 			margin-top: 8rpx;
+		// 			border-radius: 45rpx;
+		// 			background: $uni-bg-color;
+		// 			text-align: center;
+		// 			color: #fff;
+		// 			line-height: 45rpx;
+		// 			font-size: 24rpx;
+		// 		}
+		// 	}
+		// }
 
 	}
 </style>
@@ -570,6 +642,13 @@
 				}
 			}
 
+		}
+
+		.all {
+			.select-tab-item {
+				width: 100% !important;
+				line-height: 80rpx;
+			}
 		}
 	}
 

@@ -1,10 +1,12 @@
 const state = {
     userInfo: {
-		id:1
-	},
+        id: 1,
+        coin_count: 1,
+		u:1
+    },
     token: '0ab538e92c6db78d10b1694e645f3625',
-	config:{},
-	appurl:null
+    config: {},
+    appurl: null
 }
 
 const mutations = {
@@ -16,12 +18,12 @@ const mutations = {
         console.log('setToken', token);
         state.token = token
     },
-	setconfig:(state,info)=>{
-		state.config = info;
-	},
-	setUrl:(state,url)=>{
-		state.appurl = url;
-	}
+    setconfig: (state, info) => {
+        state.config = info;
+    },
+    setUrl: (state, url) => {
+        state.appurl = url;
+    }
 }
 
 const actions = {

@@ -20,6 +20,8 @@
 				<tabs-sticky v-model="tabIndex" :tabs="tabs" @change="changeTab" @search="searchWord"></tabs-sticky>
 			</view>
 			
+			
+			
 			<!-- 数据列表 -->
 			<pd-list :list="pdList" :type="tabs[tabIndex].name"></pd-list>
 		</mescroll-uni>
@@ -30,7 +32,6 @@
 	import MescrollUni from "@/components/mescroll-uni/mescroll-uni.vue";
 	import TabsSticky from "@/components/other/tabs-sticky.vue";
 	import PdList from "@/components/other/pd-list.vue";
-	import mockData from "@/common/pdlist.js"; // 模拟数据
 	
 	export default {
 		components: {
@@ -47,6 +48,7 @@
 				duration:1000,
 				pdList: [], // 数据列表
 				upOption: {
+					noMoreSize:1,
 					textNoMore:"-- 我是有底线的卜瑞塔 --",
 					onScroll: true, // 是否监听滚动事件, 默认false (配置为true时,可@scroll="scroll"获取到滚动条位置和方向)
 				},
@@ -94,9 +96,6 @@
 			},
 			/*下拉刷新的回调 */
 			downCallback(mescroll) {
-				// 这里加载你想下拉刷新的数据, 比如刷新轮播数据
-				// loadSwiper();
-				// 下拉刷新的回调,默认重置上拉加载列表为第一页 (自动执行 mescroll.num=1, 再触发upCallback方法 )
 				mescroll.resetUpScroll()
 			},
 			/*上拉加载的回调: mescroll携带page的参数, 其中num:当前页 从1开始, size:每页数据条数,默认10 */
@@ -159,12 +158,6 @@
 				this.isChangeTab = true;
 				this.mescroll.resetUpScroll()
 			},
-			
-			/*联网加载列表数据
-			在您的实际项目中,请参考官方写法: http://www.mescroll.com/uni.html#tagUpCallback
-			请忽略getListDataFromNet的逻辑,这里仅仅是在本地模拟分页数据,本地演示用
-			实际项目以您服务器接口返回的数据为准,无需本地处理分页.
-			* */
 			getListDataFromNet(curWord,pageNum,pageSize,successCallback,errorCallback) {
 				
 				try{
