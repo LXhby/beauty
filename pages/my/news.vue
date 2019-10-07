@@ -142,6 +142,7 @@
 			},
 			/*上拉加载的回调: mescroll携带page的参数, 其中num:当前页 从1开始, size:每页数据条数,默认10 */
 			upCallback(mescroll) {
+				console.log(1)
 				//联网加载数据
 				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData, totalSize) => {
 
