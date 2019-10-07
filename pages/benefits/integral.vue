@@ -15,21 +15,21 @@
 					</view>
 
 				</view>
-				<view class="item uni-flex uni-row">
+				<view class="item uni-flex uni-row" v-for="(item,index) in dataList" :key="index">
 					<view class="left uni-flex uni-row">
-						<image src="../../static/ad3.jpg" mode="aspectFill"></image>
+						<image :src="url+item.image" mode="aspectFill"></image>
 						<view class="detail">
-							<text class="title">美白黄金美白黄金美白黄金美白黄金</text>
-							<view class="bottom uni-flex uni-row">
-								<text>已兑换234个</text>
-								<text>剩余31个</text>
+							<text class="title">{{item.name}}</text>
+							<view class="bottom ">
+								<text style="margin-right:10rpx;">已兑换{{item.sold_count}}个</text>
+								<text >剩余{{item.stock}}个</text>
 							</view>
 						</view>
 					</view>
 
 					<view class="right">
 						<view class="money">
-							<text class="num">20600</text>
+							<text class="num">{{item.price}}</text>
 							<text>金币</text>
 						</view>
 						<view class="btn">
@@ -59,6 +59,7 @@
 		data() {
 			return {
 				lightIndex: 2,
+				url: '',
 				upOption: {
 					noMoreSize: 1,
 					textNoMore: "-- 我是有底线的卡瑞塔 --",
@@ -71,7 +72,7 @@
 			}
 		},
 		onLoad() {
-			console.log(this.userInfo)
+			this.url = this.$baseUrl;
 		},
 		methods: {
 			/*下拉刷新的回调 */
@@ -177,14 +178,13 @@
 						display: flex;
 						flex-direction: column;
 						justify-content: space-around;
-						width: 240rpx;
+						width: 300rpx;
 
 						.title {
 							font-size: 28rpx;
 						}
 
 						.bottom {
-							justify-content: space-between;
 
 							// margin-top:20rpx;
 							text {

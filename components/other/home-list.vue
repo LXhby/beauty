@@ -7,7 +7,7 @@
 					<view class="detail uni-flex uni-column">
 						<text class="title">{{item.name}}</text>
 						<view class="bottom ">
-							<text style="margin-right:10rpx;">销量234笔</text>
+							<text style="margin-right:10rpx;">销量2{{item.sold_count}}笔</text>
 							<text>好评96%</text>
 						</view>
 					</view>
@@ -16,7 +16,7 @@
 				<view class="right">
 					<view class="money">
 						<text>￥</text>
-						<text class="num">20600</text>
+						<text class="num">{{item.price}}</text>
 					</view>
 					<view class="btn" @click.stop="addcar(item)">
 						+购物车
