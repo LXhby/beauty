@@ -64,28 +64,82 @@
 								</view>
 								<view v-if="item.status === '待发货'" class="right-btn uni-flex uni-row">
 									<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
-									<button type="primary" class="dark">提醒发货</button>
+									<button type="primary" class="dark" @click="sendGoods">提醒发货</button>
 								</view>
 								<view v-if="item.status === '待收货'" class="right-btn uni-flex uni-row">
 									<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
-									<button type="primary" class="dark">确认发货</button>
+									<button type="primary" class="dark" @click="getGoods">确认发货</button>
 								</view>
 								<view v-if="item.status === '待评价'" class="right-btn uni-flex uni-row">
 									<button type="primary" class="blue btn1">再来一单</button>
-									<button type="primary" class="dark">评价有奖</button>
+									<button type="primary" class="dark" @click="goAssess">评价有奖</button>
 								</view>
 							</view>
 
 
 						</view>
 					</view>
-					<view class='noCard' v-if="listItem.length===0">
+					<view class='noCard' v-if="listItem.length===0" style="padding-top: 50px;text-align: center;">
 						暂无信息
 					</view>
-					<view style="width: 100%;height: 100upx;opacity:0;">底部占位盒子</view>
+					<view class="bottom-line" style="width:100%;height:100upx;line-height:50px;">
+						<text v-if="bottom">-- 我是有底线的卡瑞塔 --</text>
+					</view>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
+		<!-- //评价 -->
+		<uni-popup ref="popup" type="center" custom="true">
+			<view class="coment-form">
+				<view class="shop-image">
+					<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
+				</view>
+				<view class="title">
+					王晓文的店铺
+				</view>
+				<view class="star">
+					<text class="iconfont star dark-color" @click="clickStar(1)">&#xe623;</text>
+					<text class="iconfont star" @click="clickStar(2)">&#xe623;</text>
+					<text class="iconfont star" @click="clickStar(3)">&#xe623;</text>
+					<text class="iconfont star" @click="clickStar(4)">&#xe623;</text>
+					<text class="iconfont star" @click="clickStar(5)">&#xe623;</text>
+				</view>
+				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f4f4f4;" placeholder=""
+				 value="非常好" />
+				<view class="upload uni-flex uni-row">
+					<view class="up-image">
+						<text class="iconfont">&#xe64a;</text>
+					</view>
+					<view class="up-text">
+						<view class="title">
+							上传照片
+						</view>
+						<text>内容丰富的评价更容易成为优质评价哦！</text>
+					</view>
+				</view>
+				<view class="noname">
+					<label>
+						<checkbox value="cb" checked="true" style="transform:scale(0.7)" color="#ff0080" />匿名评价
+					</label>
+				</view>
+				<view class="uni-btnv">
+					<button type="primary">提交评价</button>
+				</view>
+			</view>
+		</uni-popup>
+		
+		<!-- 提醒发货 -->
+		<uni-popup ref="popups" type="center" custom="true">
+			<view class="alert-pop">
+				<view class="shop-image">
+					<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
+				</view>
+				<view class="title">
+					王晓文的店铺
+				</view>
+				<view class="text">亲，我们已收到提醒，将尽快发货！</view>
+			</view>
+		</uni-popup>
 	</view>
 
 </template>
@@ -98,11 +152,13 @@
 	import refresh from '@/components/refresh.vue';
 	import navTab from '@/components/navTab.vue';
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
+	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	export default {
 		components: {
 			uniLoadMore,
 			navTab,
-			refresh
+			refresh,
+			uniPopup
 		},
 		computed: {
 			...mapGetters(["userInfo"])
@@ -114,7 +170,7 @@
 				currentPage: 'index',
 				tabTitle: ['全部', '待付款', '待发货', '待收货', '待评价'], //导航栏格式 --导航栏组件
 				currentTab: 0, //sweiper所在页
-				pages: [1, 1, 1, 1], //第几个swiper的第几页
+				pages: [1, 1, 1, 1, 1], //第几个swiper的第几页
 				list: [
 					[],
 					[],
@@ -122,59 +178,8 @@
 					[],
 					[]
 				], //数据格式
-				navList: [{
-						state: 0,
-						text: '全部',
-						loadingType: 'more',
-						orderList: []
-					},
-					{
-						state: 1,
-						text: '待付款',
-						loadingType: 'more',
-						orderList: []
-					},
-					{
-						state: 2,
-						text: '待发货',
-						loadingType: 'more',
-						orderList: []
-					},
-					{
-						state: 3,
-						text: '待收货',
-						loadingType: 'more',
-						orderList: []
-					},
-					{
-						state: 4,
-						text: '待评价',
-						loadingType: 'more',
-						orderList: []
-					}
-				],
-				menuLists: [{
-						state: 1,
-						time: "2019-01-04"
-					},
-					{
-
-						state: 2,
-						time: "2019-01-04"
-					},
-					{
-						state: 3,
-						time: "2019-01-04"
-					},
-					{
-						state: 4,
-						time: "2019-01-04"
-					},
-					{
-
-						time: "2019-01-04"
-					},
-				]
+				bottom: false,
+				starsNum: 1, // 星星数量
 			}
 		},
 		// 		onLoad(options) {
@@ -197,26 +202,55 @@
 		// 		},
 		onLoad() {
 			this.changeTab(this.$route.query.state)
-			this.$http.request({
-				url: 'order?OrderSearch[user_id]=' + this.userInfo.id,
-				method: 'get',
-				params: {
-					'expand': 'orderProducts,orderProducts.product'
-				}
-			}).then(res => {
-				this.list[0] = res.data.items
-				res.data.items.forEach(ele => {
-					if (ele.status === '待付款') {
-						this.list[1].push(ele)
-					} else if (ele.status === '待发货') {
-						this.list[2].push(ele)
-					} else if (ele.status === '待收货') {
-						this.list[3].push(ele)
-					} else if (ele.status === '待评价') {
-						this.list[4].push(ele)
+			if (this.currentTab != 0) {
+				this.$http.request({
+					url: 'order',
+					method: 'get',
+					params: {
+						'OrderSearch[user_id]': this.userInfo.id,
+						'OrderSearch[status]': this.tabTitle[this.currentTab],
+						'expand': 'orderProducts,orderProducts.product',
+						'page': this.pages[this.currentTab],
+						'per-page': 2
 					}
-				})
-			}).catch(console.log)
+				}).then(res => {
+					res.data.items.forEach(ele => {
+						if (ele.status === '待付款') {
+							this.list[1].push(ele)
+						} else if (ele.status === '待发货') {
+							this.list[2].push(ele)
+						} else if (ele.status === '待收货') {
+							this.list[3].push(ele)
+						} else if (ele.status === '待评价') {
+							this.list[4].push(ele)
+						}
+					})
+				}).catch(console.log)
+			} else {
+				this.$http.request({
+					url: 'order',
+					method: 'get',
+					params: {
+						'OrderSearch[user_id]': this.userInfo.id,
+						'expand': 'orderProducts,orderProducts.product',
+						'page': this.pages[this.currentTab],
+						'per-page': 2
+					}
+				}).then(res => {
+					this.list[0] = res.data.items
+					res.data.items.forEach(ele => {
+						if (ele.status === '待付款') {
+							this.list[1].push(ele)
+						} else if (ele.status === '待发货') {
+							this.list[2].push(ele)
+						} else if (ele.status === '待收货') {
+							this.list[3].push(ele)
+						} else if (ele.status === '待评价') {
+							this.list[4].push(ele)
+						}
+					})
+				}).catch(console.log)
+			}
 		},
 		methods: {
 			// 立即付款
@@ -231,7 +265,34 @@
 					url: '/pages/my/drawback?orderId=' + orderId,
 				})
 			},
+			// 提醒发货
+			sendGoods() {
+				this.$refs.popups.open()
+			},
+			// 确认收货
+			getGoods() {
+				this.$refs.popup.open()
+			},
+			// 立即评价
+			goAssess() {
+				this.$refs.popup.open()
+			},
+			// 点星星
+			clickStar(num) {
+				this.starsNum = num
+				let stars = document.getElementsByClassName("star");
+				for(let i = 1; i <= num; i++) {
+					stars[i].classList.add("dark-color");
+				}
+				while(num < 5) {
+					num++
+					stars[num].classList.remove("dark-color");
+				}
+			},
 			changeTab(index) {
+				if(index != undefined) {
+					this.currentTab = index
+				}
 				this.tabCurrentIndex = index
 			},
 			// 其他请求事件 当然刷新和其他请求可以写一起 多一层判断。
@@ -241,18 +302,41 @@
 					var that = this
 					setTimeout(() => {
 						uni.hideLoading()
-						uni.showToast({
-							icon: 'none',
-							title: `请求第${that.currentTab + 1 }个导航栏的第${that.pages[that.currentTab]}页数据成功`
-						})
-						let newData = ['新数据1', '新数据2', '新数据3']
-						resolve(newData)
+						if (this.currentTab != 0) {
+							this.$http.request({
+								url: 'order',
+								method: 'get',
+								params: {
+									'OrderSearch[user_id]': this.userInfo.id,
+									'OrderSearch[status]': this.tabTitle[this.currentTab],
+									'expand': 'orderProducts,orderProducts.product',
+									'page': this.pages[this.currentTab],
+									'per-page': 2
+								}
+							}).then(res => {
+								let newData = res.data.items
+								resolve(newData)
+							}).catch(console.log)
+						} else {
+							this.$http.request({
+								url: 'order',
+								method: 'get',
+								params: {
+									'OrderSearch[user_id]': this.userInfo.id,
+									'expand': 'orderProducts,orderProducts.product',
+									'page': this.pages[this.currentTab],
+									'per-page': 2
+								}
+							}).then(res => {
+								let newData = res.data.items
+								resolve(newData)
+							}).catch(console.log)
+						}
 					}, 1000)
 				})
 			},
 			// swiper 滑动
 			swiperTab(e) {
-				console.log(e)
 				var index = e.detail.current //获取索引
 				if (this.tabTitle.length <= 5) {
 					this.$refs.navTab.navClick(index)
@@ -268,11 +352,30 @@
 					mask: true
 				})
 				this.isRequest().then((res) => {
-					let tempList = this.list
-					tempList[this.currentTab] = tempList[this.currentTab].concat(res)
-					console.log(tempList)
-					this.list = tempList
-					this.$forceUpdate() //二维数组，开启强制渲染
+					if (res.length != 0) {
+						let tempList = this.list
+						res.forEach(ele => {
+							if (ele.status === '待付款') {
+								tempList[1].push(ele)
+							} else if (ele.status === '待发货') {
+								tempList[2].push(ele)
+							} else if (ele.status === '待收货') {
+								tempList[3].push(ele)
+							} else if (ele.status === '待评价') {
+								tempList[4].push(ele)
+							}
+						})
+						tempList[this.currentTab] = tempList[this.currentTab].concat(res)
+						this.list = tempList
+						this.$forceUpdate() //二维数组，开启强制渲染
+					} else {
+						uni.showToast({
+							icon: 'none',
+							title: '数据已经全部加载'
+						})
+						this.bottom = true
+						return false
+					}
 				})
 			}, 300),
 			// 刷新touch监听
@@ -387,6 +490,7 @@
 </script>
 
 <style lang="scss" scoped>
+	@import "@/common/common.scss";
 	page {
 		width: 100%;
 		height: 100%;
@@ -460,19 +564,22 @@
 						line-height: 74rpx;
 					}
 				}
+
 				.right {
 					display: flex;
 					align-items: center;
+
 					image {
 						width: 60rpx;
 						height: 40rpx;
 					}
+
 					.status {
 						color: $uni-bg-color;
 					}
 				}
 
-				
+
 			}
 
 			.item-main {
@@ -570,6 +677,127 @@
 					color: #fff;
 					background-color: $uni-bg-color;
 				}
+			}
+		}
+		.coment-form{
+			position: relative;
+			width: 550rpx;
+			border-radius: 5px;
+			background:#fff;
+			.shop-image{
+				position: absolute;
+				width:138rpx;
+				height:138rpx;
+				top: -64rpx;
+				left: 0;
+				right: 0;
+				margin:0 auto;
+				border-radius: 50%;
+				overflow:hidden;
+				image{
+					width:138rpx;
+					height:138rpx;
+					border-radius: 50%;
+				}
+			}
+			.title{
+				padding-top:84rpx;
+				color: #333;
+			}
+			.star{
+				margin:30rpx 0 20rpx 0;
+				.iconfont{
+					margin: 0 10rpx;
+					color: #999;
+				}
+				.dark-color{
+					color: $uni-bg-color;
+				}
+			}
+			
+		}
+		.upload{
+			padding:0 40rpx;
+			align-items:center;
+			.up-image{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 90rpx;
+				height: 90rpx;
+				margin-right: 10rpx;
+				background: $uni-bg-color;
+				border-radius: 5rpx;
+			}
+			.up-text{
+				flex: 1;
+				text-align:left;
+				.title{
+					padding-top: 0px;
+					font-size: 24rpx;
+				}
+				text{
+					color:$uni-text-color-grey;
+					font-size: 20rpx;
+					line-height: 20rpx;
+				}
+			}
+			.iconfont{
+				color: #fff;
+				font-size: 46rpx;
+			}
+		}
+		.noname{
+			margin-top: 30rpx;
+			padding-left: 40rpx;
+			text-align: left;
+			label{
+				font-size: 24rpx;
+			}
+		}
+		.uni-btnv{
+			padding:20rpx 0 40rpx 0;
+			button{
+				width: 276rpx;
+				height: 54rpx;
+				line-height: 54rpx;
+				border-radius: 54rpx;
+				color: #fff;
+				font-size: 28rpx;
+				background: $uni-bg-color;
+				&:after{
+					border: none;
+				}
+			}
+		}
+		.alert-pop{
+			position: relative;
+			width: 550rpx;
+			border-radius: 5px;
+			background:#fff;
+			.shop-image{
+				position: absolute;
+				width:138rpx;
+				height:138rpx;
+				top: -64rpx;
+				left: 0;
+				right: 0;
+				margin:0 auto;
+				border-radius: 50%;
+				overflow:hidden;
+				image{
+					width:138rpx;
+					height:138rpx;
+					border-radius: 50%;
+				}
+			}
+			.title{
+				padding-top:84rpx;
+				color: #333;
+				font-size: 26rpx;
+			}
+			.text{
+				padding: 50rpx 0;
 			}
 		}
 	}

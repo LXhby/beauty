@@ -8,60 +8,30 @@
 			</view>
 			<view class="main-content">
 				<view class="list">
-					<view class="item uni-flex uni-row" @click="gopage">
+					<view class="item uni-flex uni-row" v-for="item in studyRecords" @click="gopage(item.forum.id)">
 						<view class="left uni-flex uni-column">
-							<view class="title">第一期某某课程某某课程某某课程</view>
+							<view class="title">{{item.forum.name}}</view>
 							<view class="bottom-box uni-flex uni-row">
 								<view class="time">
 									<text class="iconfont">&#xe6dd;</text>
-									<text>2019.09.12-2019.09.15</text>
+									<text>{{getTime(item.forum.start_date,item.forum.end_date)}}</text>
 								</view>
 								<view class="address">
 									<text class="iconfont">&#xe853;</text>
-									<text>北京 九华山庄</text>
+									<text>{{item.forum.address}}</text>
 								</view>
 							</view>
 						</view>
-						<view class="right dark">
+						<view v-if="new Date(item.forum.start_date).getTime() > new Date().getTime()" class="right dark">
 							<view class="num">
-								<text>9</text>天
+								<text>{{Math.ceil((new Date(item.forum.start_date).getTime() - new Date().getTime())/1000/60/60/24)}}</text>天
 							</view>
 							<text>倒计时</text>
 						</view>
-					</view>
-					<view class="item uni-flex uni-row">
-						<view class="left uni-flex uni-column">
-							<view class="title">第一期某某课程某某课程某某课程</view>
-							<view class="bottom-box uni-flex uni-row">
-								<view class="time">
-									<text class="iconfont">&#xe6dd;</text>
-									<text>2019.09.12-2019.09.15</text>
-								</view>
-								<view class="address">
-									<text class="iconfont">&#xe853;</text>
-									<text>北京 九华山庄</text>
-								</view>
-							</view>
-						</view>
-						<view class="right dark">
+						<view v-if="new Date(item.forum.start_date).getTime() < new Date().getTime() && item.is_signed_in" class="right dark">
 							<text>已签到</text>
 						</view>
-					</view>
-					<view class="item uni-flex uni-row">
-						<view class="left uni-flex uni-column">
-							<view class="title">第一期某某课程某某课程某某课程</view>
-							<view class="bottom-box uni-flex uni-row">
-								<view class="time">
-									<text class="iconfont">&#xe6dd;</text>
-									<text>2019.09.12-2019.09.15</text>
-								</view>
-								<view class="address">
-									<text class="iconfont">&#xe853;</text>
-									<text>北京 九华山庄</text>
-								</view>
-							</view>
-						</view>
-						<view class="right gray">
+						<view v-if="new Date(item.forum.start_date).getTime() < new Date().getTime() && !item.is_signed_in" class="right dark gray">
 							<text>未签到</text>
 						</view>
 					</view>
@@ -75,21 +45,64 @@
 
 <script>
 	import topBar from "@/components/account/index1.vue";
+	import {
+		mapGetters
+	} from "vuex";
+	import Moment from "moment";
 	export default {
 		components: {
 			topBar
 		},
+		computed: {
+			...mapGetters(["userInfo"])
+		},
 		data() {
 			return {
-				detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
+				detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
+				studyRecords: [], // 学习记录
 			};
 		},
-		methods:{
-			gopage(){
+		onLoad() {
+			this.$http.request({
+				url: 'forum-order',
+				method: 'get',
+				params: {
+					'ForumOrderSearch[user_id]': this.userInfo.id,
+					'expand': 'forum'
+				}
+			}).then(res => {
+				this.studyRecords = res.data.items
+			}).catch(console.log)
+		},
+		methods: {
+			gopage(courseId) {
 				uni.navigateTo({
-					url:'/pages/benefits/courseinfo'
+					url: '/pages/benefits/courseinfo?courseId=' + courseId
 				})
-			}
+			},
+			getTime(start, end) {
+				if (Moment(start).year() != Moment(end).year()) {
+					return (
+						Moment(start).format("YYYY年MM月DD日") +
+						"-" +
+						Moment(end).format("YYYY年MM月DD日")
+					);
+				} else {
+					if (Moment(start).month() != Moment(end).month()) {
+						return (
+							Moment(start).format("YYYY年MM月DD日") +
+							"-" +
+							Moment(end).format("MM月DD日")
+						);
+					} else {
+						return (
+							Moment(start).format("YYYY年MM月DD日") +
+							"-" +
+							Moment(end).format("DD日")
+						);
+					}
+				}
+			},
 		}
 	};
 </script>
@@ -97,6 +110,7 @@
 <style lang="scss" scoped>
 	@import "../../style/topaccount.scss";
 	@import "../../common/common.scss";
+
 	.reward-page {
 		.main {
 			.main-content {

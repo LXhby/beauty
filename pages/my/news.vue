@@ -1,119 +1,217 @@
 <template>
-  <view class="news-page">
-    <top-bar rightText="实名认证" :detailist="detailist" :isreal="false"></top-bar>
-    <view class="main">
-      <view class="main-title">
-        <view class="left">
-          <view class="line"></view>
-          <text class="text">我的消息</text>
-        </view>
-        <view class="right">
-          <text class="iconfont">&#xe60a;</text>
-          <text>筛选</text>
-        </view>
-      </view>
-      <view class="main-content">
-        <view class="news-item">
-          <view class="title">
-            <text>【系统消息】</text>
-            <text class="time">2019.08.31 10:23</text>
-          </view>
-          <view class="content">系统将系统将系统将系统将系统将系统将系统将系统将v系统将系统将系统将系统将系统将系统将</view>
-        </view>
-        <view class="news-item">
-          <view class="title">
-            <text>【系统消息】</text>
-            <text class="time">2019.08.31 10:23</text>
-          </view>
-          <view class="content">系统将系统将系统将系统将系统将系统将系统将系统将v系统将系统将系统将系统将系统将系统将</view>
-        </view>
-      </view>
-    </view>
-    <view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
-  </view>
+	<view class="news-page">
+		<top-bar rightText="实名认证" :detailist="detailist" :isreal="false"></top-bar>
+		<view class="main">
+			<view class="main-title">
+				<view class="left">
+					<view class="line"></view>
+					<text class="text">我的消息</text>
+				</view>
+				<view class="right">
+					<sl-filter :themeColor="themeColor" :menuList="menuList" @result="result"></sl-filter>
+				</view>
+			</view>
+			<view class="main-content">
+				<view class="news-item">
+					<view class="title">
+						<text>【系统消息】</text>
+						<text class="time">2019.08.31 10:23</text>
+					</view>
+					<view class="content">系统将系统将系统将系统将系统将系统将系统将系统将v系统将系统将系统将系统将系统将系统将</view>
+				</view>
+				<view class="news-item">
+					<view class="title">
+						<text>【系统消息】</text>
+						<text class="time">2019.08.31 10:23</text>
+					</view>
+					<view class="content">系统将系统将系统将系统将系统将系统将系统将系统将v系统将系统将系统将系统将系统将系统将</view>
+				</view>
+			</view>
+		</view>
+		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
+	</view>
 </template>
 
 
 <script>
-import topBar from "@/components/account/index1.vue";
-export default {
-  components: {
-    topBar
-  },
-  data() {
-    return {
-      detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
-    };
-  }
-};
+	import topBar from "@/components/account/index1.vue";
+	import slFilter from '@/components/sl-filter/sl-filter.vue';
+	export default {
+		components: {
+			topBar,
+			slFilter
+		},
+		data() {
+			return {
+				detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
+				themeColor: '#000000',
+				filterResult: '',
+				page: 1,
+				newsList: [],
+				menuList: [{
+					'title': '筛选',
+					'key': 'sort',
+					'isSort': true,
+					'reflexTitle': true,
+					'detailList': [{
+							title: "全部",
+							value: null
+						},
+						{
+							title: "会员通知",
+							value: "member.order.create"
+						},
+						{
+							title: "报名通知",
+							value: "forum.order.create"
+						},
+						{
+							title: "会议提醒",
+							value: "forum.order.notify"
+						},
+						{
+							title: "会议签到通知",
+							value: "forum.siginin.notify"
+						},
+						{
+							title: "签到成功通知",
+							value: "forum.siginedin.notify"
+						},
+						{
+							title: "推荐成功通知",
+							value: "user.commend.success"
+						},
+						{
+							title: "收益到账提醒",
+							value: "income.repay.notify"
+						},
+						{
+							title: "提现申请通知",
+							value: "income.settle.create"
+						},
+						{
+							title: "提现审核受理通知",
+							value: "income.settle.approved"
+						},
+						{
+							title: "提现成功通知",
+							value: "income.settle.success"
+						},
+					],
+				}],
+			};
+		},
+		onLoad() {
+			this.findAllNews()
+		},
+		methods: {
+			findAllNews(data) {
+				if (data === undefined) {
+					this.$http.request({
+						url: 'wechat-notifications',
+						method: 'get',
+						params: {
+							page: this.page,
+							
+						}
+					}).then(res => {
+						this.newsList = res.data.items
+					}).catch(console.log)
+				} else {
+					this.$http.request({
+						url: 'wechat-notifications',
+						method: 'get',
+						params: {
+							'WechatNotificationSearch[type]': data,
+							page: this.page,
+							"per-page": 10,
+							sort: '-send_at'
+						}
+					}).then(res => {
+						this.newsList = res.data.items
+					}).catch(console.log)
+				}
+			},
+			result(val) {
+				this.filterResult = val
+				console.log(this.filterResult)
+			}
+		}
+	};
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/topaccount.scss";
-@import "../../common/common.scss";
-@font-face {
-  font-family: "iconfont"; /* project id 1377410 */
-  src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.eot");
-  src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.ttf")
-    format("truetype");
-}
-.iconfont {
-  font-family: iconfont !important;
-  font-size: 32upx;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.news-page {
-  .main {
-    .main-title {
-      justify-content: space-between;
-      .left {
-        display: flex;
-        align-content: center;
-      }
-      .right {
-        display: flex;
-        align-content: center;
-        margin-right: 46rpx;
-        color: $uni-text-color-grey;
-        font-size: 32rpx;
-        line-height: 32rpx;
-        .iconfont {
-          margin-right: 10rpx;
-          color: $uni-text-color-grey;
-          font-size: 14px;
-        }
-      }
-    }
-    .main-content {
-      padding: 20rpx;
-      font-size: 28rpx;
-      color: $uni-text-color;
-      .news-item {
-        padding: 20rpx 40rpx;
-        margin-bottom: 34rpx;
-        background-color: #f4f4f4;
-        border: 1px solid #dddddd;
-        border-radius: 4px;
-        .title {
-          margin-left: -14rpx;
-          margin-bottom: 10rpx;
-          color: $uni-text-color-title;
-          line-height: 40rpx;
-          .time {
-            float: right;
-            font-size: 24rpx;
-            color: $uni-text-color-grey;
-          }
-        }
-        .content {
-        }
-        &:last-child {
-          margin-bottom: 0px;
-        }
-      }
-    }
-  }
-}
+	@import "../../style/topaccount.scss";
+	@import "../../common/common.scss";
+
+	@font-face {
+		font-family: "iconfont";
+		/* project id 1377410 */
+		src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.eot");
+		src: url("https://at.alicdn.com/t/font_1377410_wk4mbv1sumf.ttf") format("truetype");
+	}
+
+	.iconfont {
+		font-family: iconfont !important;
+		font-size: 32upx;
+		font-style: normal;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	.news-page {
+		.main {
+			.main-title {
+				justify-content: space-between;
+
+				.left {
+					display: flex;
+					align-content: center;
+				}
+
+				.right {
+					display: flex;
+					align-content: center;
+					margin-right: 46rpx;
+					margin-top: -22rpx;
+					color: $uni-text-color-grey;
+					font-size: 32rpx;
+					line-height: 32rpx;
+				}
+			}
+
+			.main-content {
+				padding: 20rpx;
+				font-size: 28rpx;
+				color: $uni-text-color;
+
+				.news-item {
+					padding: 20rpx 40rpx;
+					margin-bottom: 34rpx;
+					background-color: #f4f4f4;
+					border: 1px solid #dddddd;
+					border-radius: 4px;
+
+					.title {
+						margin-left: -14rpx;
+						margin-bottom: 10rpx;
+						color: $uni-text-color-title;
+						line-height: 40rpx;
+
+						.time {
+							float: right;
+							font-size: 24rpx;
+							color: $uni-text-color-grey;
+						}
+					}
+
+					.content {}
+
+					&:last-child {
+						margin-bottom: 0px;
+					}
+				}
+			}
+		}
+	}
 </style>
