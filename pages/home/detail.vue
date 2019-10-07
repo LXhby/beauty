@@ -2,26 +2,28 @@
 	<view class="good-detail">
 		<view class="banner">
 			<image src="../../static/37d52be5170e1b25d30ff44db4b0791c.jpg" mode="aspectFill"></image>
-			<view class="shop-car">
+
+			<view class="shop-car" @click="gocart">
 				<text class="iconfont">&#xe603;</text>
-				<uni-badge text="9" type="error" class="shopcar-badge" />
+				<uni-badge :text="cartnum.toString()" type="error" class="shopcar-badge" />
 			</view>
+
 		</view>
 		<view class="good-top">
 			<view class="goods-name">
 				<view class="name-top uni-flex uni-row">
 					<view class="left">
 						<view class="title">
-							<text class="title-h">Deerma女式护肤面霜Deerma女式护肤面霜Deerma女式护肤面霜</text>
+							<text class="title-h">{{info.name}}</text>
 							<text class="sm">包邮</text>
 						</view>
-						<text class="details">女式最爱的护肤面霜，美白，保湿</text>
+						<text class="details">{{info.summary}}</text>
 					</view>
 					<text class="iconfont erweima">&#xe641;</text>
 				</view>
 				<view class="price uni-flex uni-row">
-					<text class="one">￥98.00</text>
-					<text class="two">已售646件</text>
+					<text class="one">￥{{info.pay_price}}</text>
+					<text class="two">已售{{info.sold_count}}件</text>
 				</view>
 			</view>
 			<view class="ensure uni-flex uni-row">
@@ -49,9 +51,8 @@
 				<view class="line"></view>
 				<text class="text">商品详情介绍</text>
 			</view>
-			<view class="image-box">
-				<image src="../../static/816a66edef10673b4768128b41804cae.jpg" mode="widthFix"></image>
-				<image src="../../static/816a66edef10673b4768128b41804cae.jpg" mode="widthFix"></image>
+			<view class="image-box" v-html="info.detail">
+
 			</view>
 		</view>
 		<view class="fans-detail">
@@ -81,7 +82,7 @@
 					<image src="../../static/image_massge_people2.png" mode="widthFix" class="headurl"></image>
 					<view class="comment-main">
 						<view class="comment-user uni-flex uni-row">
-							<view >
+							<view>
 								<text class="name">王晓文</text>
 								<text class="time">3天前</text>
 							</view>
@@ -107,7 +108,7 @@
 					<image src="../../static/image_massge_people2.png" mode="widthFix" class="headurl"></image>
 					<view class="comment-main">
 						<view class="comment-user uni-flex uni-row">
-							<view >
+							<view>
 								<text class="name">王晓文</text>
 								<text class="time">3天前</text>
 							</view>
@@ -128,14 +129,14 @@
 		</view>
 		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 		<view class="height-box">
-			
+
 		</view>
 		<view class="foot-main">
 			<view class="main-btns uni-flex uni-row">
 				<view class="icon-btn uni-flex uni-row">
 					<view class="btn-sm">
 						<text class="iconfont icon1">&#xe660;</text>
-						<view class="text-nav nav1">
+						<view class="text-nav nav1" @click="goHome">
 							首页
 						</view>
 					</view>
@@ -155,31 +156,69 @@
 				<button type="primary" class="btn1">加入购物车</button>
 				<button type="primary" class="btn2" @click="payGoods">立即购买</button>
 			</view>
-			
+
 		</view>
 	</view>
 </template>
 
 <script>
-	import uniBadge from '@/components/uni-badge/uni-badge.vue'
+	import uniBadge from '@/components/uni-badge/uni-badge.vue';
+	import {
+		mapGetters
+	} from "vuex";
 	export default {
 		components: {
 			uniBadge
 		},
 		data() {
-			return {}
+			return {
+				url: '',
+				info: {}
+			}
 		},
-		methods:{
-			gocomment(){
+		computed: {
+			...mapGetters(['config', 'cartnum'])
+		},
+		onLoad() {
+			this.id = this.$route.query.id;
+			this.getInfo();
+		},
+		methods: {
+			getInfo() {
+				uni.showLoading({
+					title: '加载中'
+				})
+				this.$http.request({
+						url: "products/" + this.id,
+						method: "get",
+					})
+					.then(res => {
+						uni.hideLoading();
+						this.info = res.data;
+						this.url = this.$baseUrl;
+					});
+			},
+			gocomment() {
 				uni.navigateTo({
-				    url: '/pages/home/comment'
+					url: '/pages/home/comment'
 				});
 			},
-			payGoods(){
+			payGoods() {
 				uni.navigateTo({
-				    url: '/pages/benefits/PaySuccess'
+					url: '/pages/benefits/PaySuccess'
 				});
-				
+
+			},
+			goHome() {
+				uni.switchTab({
+					url: '/pages/home/index'
+				})
+			},
+			gocart() {
+				console.log(333)
+				uni.switchTab({
+					url: '/pages/shopcar/index'
+				})
 			}
 		}
 	}
@@ -319,7 +358,7 @@
 			border-top: 20rpx solid #f1f1f1;
 
 			.image-box {
-				padding: 0 30rpx 46rpx 30rpx;
+				padding: 30rpx 30rpx 46rpx 30rpx;
 
 				image {
 					margin-top: 20rpx;
@@ -348,21 +387,26 @@
 		.good-coment {
 			padding: 20rpx 0;
 			border-top: 20rpx solid #f1f1f1;
-			.main-title{
-				align-items:center;
-				justify-content:space-between;
-				.left{
+
+			.main-title {
+				align-items: center;
+				justify-content: space-between;
+
+				.left {
 					display: flex;
 				}
-				.right{
+
+				.right {
 					margin-right: 30rpx;
 					color: $uni-text-color-grey;
-					line-height:30rpx;
-					.iconfont{
+					line-height: 30rpx;
+
+					.iconfont {
 						font-size: 26rpx;
 					}
 				}
 			}
+
 			.comment-item {
 				padding: 20rpx 0;
 				margin: 0 30rpx;
@@ -376,25 +420,30 @@
 
 				.comment-main {
 					flex: 1;
-					margin-left:20rpx;
+					margin-left: 20rpx;
+
 					.comment-user {
 						justify-content: space-between;
 						font-size: 32rpx;
-						.name{
+
+						.name {
 							font-size: 28rpx;
 						}
-						.time{
+
+						.time {
 							margin-left: 20rpx;
 							font-size: 24rpx;
 							color: $uni-text-color-grey;
 						}
-						.star{
-							.iconfont{
+
+						.star {
+							.iconfont {
 								font-size: 20rpx;
 								color: $uni-text-color-grey;
 								margin-left: 4rpx;
 							}
-							.light-star{
+
+							.light-star {
 								color: $uni-bg-color;
 							}
 						}
@@ -410,7 +459,8 @@
 					}
 
 					.comment-image {
-						margin-top:10rpx;
+						margin-top: 10rpx;
+
 						image {
 							width: 112rpx;
 							height: 112rpx;
@@ -421,67 +471,79 @@
 				}
 			}
 		}
-		.bottom-line{
+
+		.bottom-line {
 			padding: 30rpx 0;
-			
+
 			background: #f1f1f1;
 		}
-		.height-box{
-			height:100rpx;
+
+		.height-box {
+			height: 100rpx;
 		}
-		.foot-main{
-			
+
+		.foot-main {
+
 			position: fixed;
 			left: 0;
 			bottom: 0;
-			width:100%;
-			height:100rpx;
-			.main-btns{
+			width: 100%;
+			height: 100rpx;
+
+			.main-btns {
 				align-items: center;
 				height: 100%;
 			}
-			.icon-btn{
-				flex:1;
+
+			.icon-btn {
+				flex: 1;
 				display: flex;
 				height: 100%;
 				flex-direction: row;
 				justify-content: space-around;
-				background:#fff;
-				align-items:center;
-				
-				.btn-sm{
-					text-align:center;
-					.iconfont{
+				background: #fff;
+				align-items: center;
+
+				.btn-sm {
+					text-align: center;
+
+					.iconfont {
 						color: #4aa3f0;
 						font-size: 32rpx;
 					}
-					.text-nav{
+
+					.text-nav {
 						font-size: 24rpx;
 						color: $uni-text-color-grey;
 					}
-					.icon1{
+
+					.icon1 {
 						color: $uni-bg-color;
 					}
-					.nav1{
+
+					.nav1 {
 						color: $uni-bg-color;
 					}
 				}
-				
+
 			}
-			button{
+
+			button {
 				width: 242rpx;
 				height: 100%;
 				font-size: 32rpx;
-				line-height:100rpx;
+				line-height: 100rpx;
 				border-radius: 0px;
 			}
-			.btn1{
+
+			.btn1 {
 				background: #4aa3f0;
 			}
-			.btn2{
+
+			.btn2 {
 				background: $uni-bg-color;
 			}
 		}
-			
+
 	}
 </style>
