@@ -12,14 +12,14 @@ const router = new Router({
 			name: 'tabbar-2'
 		}, {
 			path: '/pages/home/detail',
-			name: 'goodsdetail'
+			name: "product-view"
 		}, {
 			path: '/pages/home/comment',
 			name: 'comment'
 		},
 		{
 			path: '/pages/goods/consulting',
-			name: 'consulting'
+			name: 'article-view'
 		},
 		{
 			path: '/pages/benefits/meeting',
@@ -27,7 +27,7 @@ const router = new Router({
 		},
 		{
 			path: '/pages/benefits/courseinfo',
-			name: 'courseinfo'
+			name: 'course-view'
 		},
 		{
 			path: '/pages/benefits/preferential',

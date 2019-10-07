@@ -65,7 +65,9 @@
 					return str+'秒前'
 				}else if(str < 3600){
 					return parseInt(str/60)+'分钟前'
-				}
+				}else if(str<3600*24){
+					return parseInt(str/60/60)+'小时前'
+				}else if(str < 3600*24)
 				return "23"
 			}
 		}

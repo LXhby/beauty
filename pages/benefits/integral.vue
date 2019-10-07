@@ -3,15 +3,15 @@
 		<commom-top :lightIndex="lightIndex"></commom-top>
 		<view class="main">
 			<view class="top uni-flex uni-row">
-				<view >
+				<view>
 					<text>我的积分：</text>
-					<text class="dark-color">1980金币</text>
+					<text class="dark-color">{{userInfo.coin_count}}金币</text>
 				</view>
-				<view >
+				<view>
 					<text>已用积分：</text>
 					<text class="dark-color">380金币</text>
 				</view>
-			
+
 			</view>
 			<view class="item uni-flex uni-row">
 				<view class="left uni-flex uni-row">
@@ -24,7 +24,7 @@
 						</view>
 					</view>
 				</view>
-				
+
 				<view class="right">
 					<view class="money">
 						<text class="num">20600</text>
@@ -41,82 +41,105 @@
 </template>
 
 <script>
+	import {
+		mapGetters
+	} from "vuex";
 	import commomTop from "./index.vue";
 	export default {
 		components: {
 			commomTop,
 		},
-		data(){
-			return{
-				lightIndex:2
+		computed: {
+			...mapGetters(['userInfo'])
+		},
+		data() {
+			return {
+				lightIndex: 2
 			}
 		},
+		onLoad() {
+			console.log(this.userInfo)
+		}
 	}
 </script>
 
 <style lang="scss" scoped>
 	@import "../../common/common.scss";
-	.integral-page{
-		.main{
-			.top{
+
+	.integral-page {
+		.main {
+			.top {
 				height: 80rpx;
 				padding: 0 20rpx;
 				justify-content: space-between;
 				align-items: center;
-				border-bottom:1px solid $uni-border-color ;
-				text{
+				border-bottom: 1px solid $uni-border-color;
+
+				text {
 					color: $uni-text-color;
 					font-size: 28rpx;
 				}
-				.dark-color{
+
+				.dark-color {
 					color: $uni-bg-color;
 				}
 			}
-			.item{
+
+			.item {
 				padding: 20rpx;
 				justify-content: space-between;
 				align-items: center;
-				border-bottom:20rpx solid $uni-border-color;
-				.left{
-					color:$uni-text-color;
-					align-items:center;
-					image{
+				border-bottom: 20rpx solid $uni-border-color;
+
+				.left {
+					color: $uni-text-color;
+					align-items: center;
+
+					image {
 						width: 200rpx;
 						height: 150rpx;
-						margin-right:20rpx;
+						margin-right: 20rpx;
 					}
-					.detail{
-						min-height:150rpx;
+
+					.detail {
+						min-height: 150rpx;
 						display: flex;
 						flex-direction: column;
 						justify-content: space-around;
-						width:240rpx;
-						.title{
+						width: 240rpx;
+
+						.title {
 							font-size: 28rpx;
 						}
-						.bottom{
+
+						.bottom {
 							justify-content: space-between;
+
 							// margin-top:20rpx;
-							text{
+							text {
 								font-size: 20rpx;
 								color: $uni-text-color-grey;
 							}
 						}
 					}
 				}
-				.right{
-					
-					color:$uni-text-color;
-					.money{
+
+				.right {
+
+					color: $uni-text-color;
+
+					.money {
 						font-size: 24rpx;
-						.num{
+
+						.num {
 							font-size: 32rpx;
 						}
 					}
-					.btn{
+
+					.btn {
 						width: 140rpx;
 						height: 45rpx;
-						margin-top:20rpx;
+						margin-top: 20rpx;
 						border-radius: 45rpx;
 						background: $uni-bg-color;
 						text-align: center;
@@ -127,6 +150,6 @@
 				}
 			}
 		}
-		
+
 	}
 </style>
