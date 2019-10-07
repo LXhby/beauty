@@ -8,7 +8,6 @@
 					<text class="text">我的消息</text>
 				</view>
 				<view class="right">
-					<text class="iconfont">&#xe60a;</text>
 					<sl-filter :themeColor="themeColor" :menuList="menuList" @result="result"></sl-filter>
 				</view>
 			</view>
@@ -36,7 +35,7 @@
 
 <script>
 	import topBar from "@/components/account/index1.vue";
-	import slFilter from '@/components/songlazy-sl-filter/sl-filter/sl-filter.vue';
+	import slFilter from '@/components/sl-filter/sl-filter.vue';
 	export default {
 		components: {
 			topBar,
@@ -46,49 +45,97 @@
 			return {
 				detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
 				themeColor: '#000000',
+				filterResult: '',
+				page: 1,
+				newsList: [],
 				menuList: [{
-						title: "会员通知",
-						value: "member.order.create"
-					},
-					{
-						title: "报名通知",
-						value: "forum.order.create"
-					},
-					{
-						title: "会议提醒",
-						value: "forum.order.notify"
-					},
-					{
-						title: "会议签到通知",
-						value: "forum.siginin.notify"
-					},
-					{
-						title: "签到成功通知",
-						value: "forum.siginedin.notify"
-					},
-					{
-						title: "推荐成功通知",
-						value: "user.commend.success"
-					},
-					{
-						title: "收益到账提醒",
-						value: "income.repay.notify"
-					},
-					{
-						title: "提现申请通知",
-						value: "income.settle.create"
-					},
-					{
-						title: "提现审核受理通知",
-						value: "income.settle.approved"
-					},
-					{
-						title: "提现成功通知",
-						value: "income.settle.success"
-					},
-
-				],
+					'title': '筛选',
+					'key': 'sort',
+					'isSort': true,
+					'reflexTitle': true,
+					'detailList': [{
+							title: "全部",
+							value: null
+						},
+						{
+							title: "会员通知",
+							value: "member.order.create"
+						},
+						{
+							title: "报名通知",
+							value: "forum.order.create"
+						},
+						{
+							title: "会议提醒",
+							value: "forum.order.notify"
+						},
+						{
+							title: "会议签到通知",
+							value: "forum.siginin.notify"
+						},
+						{
+							title: "签到成功通知",
+							value: "forum.siginedin.notify"
+						},
+						{
+							title: "推荐成功通知",
+							value: "user.commend.success"
+						},
+						{
+							title: "收益到账提醒",
+							value: "income.repay.notify"
+						},
+						{
+							title: "提现申请通知",
+							value: "income.settle.create"
+						},
+						{
+							title: "提现审核受理通知",
+							value: "income.settle.approved"
+						},
+						{
+							title: "提现成功通知",
+							value: "income.settle.success"
+						},
+					],
+				}],
 			};
+		},
+		onLoad() {
+			this.findAllNews()
+		},
+		methods: {
+			findAllNews(data) {
+				if (data === undefined) {
+					this.$http.request({
+						url: 'wechat-notifications',
+						method: 'get',
+						params: {
+							page: this.page,
+							
+						}
+					}).then(res => {
+						this.newsList = res.data.items
+					}).catch(console.log)
+				} else {
+					this.$http.request({
+						url: 'wechat-notifications',
+						method: 'get',
+						params: {
+							'WechatNotificationSearch[type]': data,
+							page: this.page,
+							"per-page": 10,
+							sort: '-send_at'
+						}
+					}).then(res => {
+						this.newsList = res.data.items
+					}).catch(console.log)
+				}
+			},
+			result(val) {
+				this.filterResult = val
+				console.log(this.filterResult)
+			}
 		}
 	};
 </script>
@@ -126,15 +173,10 @@
 					display: flex;
 					align-content: center;
 					margin-right: 46rpx;
+					margin-top: -22rpx;
 					color: $uni-text-color-grey;
 					font-size: 32rpx;
 					line-height: 32rpx;
-
-					.iconfont {
-						margin-right: 10rpx;
-						color: $uni-text-color-grey;
-						font-size: 14px;
-					}
 				}
 			}
 
