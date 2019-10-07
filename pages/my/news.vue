@@ -1,27 +1,28 @@
 <template>
 	<view class="news-page">
-		<top-bar rightText="实名认证" :detailist="detailist" :isreal="false"></top-bar>
-		<view class="main">
-			<view class="main-title">
-				<view class="left">
-					<view class="line"></view>
-					<text class="text">我的消息</text>
-				</view>
-				<view class="right">
-					<sl-filter :themeColor="themeColor" :menuList="menuList" @result="result"></sl-filter>
-				</view>
-			</view>
-			<view class="main-content">
-				<view class="news-item" v-for="item in newsList">
-					<view class="title">
-						<text>【系统消息】</text>
-						<text class="time">2019.08.31 10:23</text>
+		<mescroll-uni :down="downOption" @down="downCallback" @up="upCallback" :up="upOption">
+			<top-bar rightText="实名认证" :detailist="detailist" :isreal="false"></top-bar>
+			<view class="main">
+				<view class="main-title">
+					<view class="left">
+						<view class="line"></view>
+						<text class="text">我的消息</text>
 					</view>
-					<view class="content">系统将系统将系统将系统将系统将系统将系统将系统将v系统将系统将系统将系统将系统将系统将</view>
+					<view class="right">
+						<sl-filter :themeColor="themeColor" :menuList="menuList" @result="result"></sl-filter>
+					</view>
+				</view>
+				<view class="main-content">
+					<view class="news-item" v-for="item in newsList">
+						<view class="title">
+							<text>【系统消息】</text>
+							<text class="time">2019.08.31 10:23</text>
+						</view>
+						<view class="content">系统将系统将系统将系统将系统将系统将系统将系统将v系统将系统将系统将系统将系统将系统将</view>
+					</view>
 				</view>
 			</view>
-		</view>
-		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
+		</mescroll-uni>
 	</view>
 </template>
 
@@ -29,10 +30,12 @@
 <script>
 	import topBar from "@/components/account/index1.vue";
 	import slFilter from '@/components/sl-filter/sl-filter.vue';
+	import MescrollUni from "@/components/mescroll-uni/mescroll-uni.vue";
 	export default {
 		components: {
 			topBar,
-			slFilter
+			slFilter,
+			MescrollUni
 		},
 		data() {
 			return {
@@ -40,6 +43,15 @@
 				themeColor: '#000000',
 				page: 1,
 				newsList: [],
+				searchParam: '',
+				upOption: {
+					noMoreSize: 1,
+					textNoMore: "-- 我是有底线的卡瑞塔 --",
+					onScroll: true, // 是否监听滚动
+				},
+				downOption: {
+					auto: false //是否在初始化后,自动执行下拉回调callback; 默认true
+				},
 				menuList: [{
 					'title': '筛选',
 					'key': 'sort',
@@ -110,10 +122,54 @@
 				}).then(res => {
 					this.newsList = res.data.items
 				}).catch(console.log)
-
 			},
 			result(val) {
+				this.searchParam = val.sort
 				this.findAllNews(val.sort)
+			},
+			/*下拉刷新的回调 */
+			downCallback(mescroll) {
+				//联网加载数据
+				this.getListDataFromNet(0, 1, (data) => {
+					//联网成功的回调,隐藏下拉刷新的状态
+					mescroll.endSuccess();
+					//设置列表数据
+					this.newsList.unshift(data[0]);
+				}, () => {
+					//联网失败的回调,隐藏下拉刷新的状态
+					mescroll.endErr();
+				})
+			},
+			/*上拉加载的回调: mescroll携带page的参数, 其中num:当前页 从1开始, size:每页数据条数,默认10 */
+			upCallback(mescroll) {
+				//联网加载数据
+				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData, totalSize) => {
+
+					mescroll.endBySize(curPageData.length, totalSize);
+					//设置列表数据
+					this.newsList = this.newsList.concat(curPageData);
+				}, () => {
+					//联网失败的回调,隐藏下拉刷新的状态
+					mescroll.endErr();
+				})
+			},
+			getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
+				let listData = [];
+				this.$http
+					.request({
+						url: "wechat-notifications",
+						method: "get",
+						params: {
+							'WechatNotificationSearch[type]': this.searchParam,
+							sort: '-send_at',
+							page: pageNum,
+							"per-page": pageSize,
+						}
+					})
+					.then(res => {
+						listData = (res.data.items);
+						successCallback && successCallback(listData, res.data._meta.totalCount);
+					});
 			}
 		}
 	};
