@@ -132,7 +132,7 @@
 	import TabsSticky from "@/components/other/tabs-home.vue";
 	import PdList from "@/components/other/home-list.vue";
 	import slFilter from '@/components/sl-filter/sl-filter.vue';
-	import mapGetters from "vuex";
+	import {mapGetters} from "vuex";
 	export default {
 		components: {
 			navTab,
