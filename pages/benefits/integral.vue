@@ -1,46 +1,49 @@
 <template>
 	<view class="integral-page">
-		<commom-top :lightIndex="lightIndex"></commom-top>
-		<view class="main">
-			<view class="top uni-flex uni-row">
-				<view>
-					<text>我的积分：</text>
-					<text class="dark-color">{{userInfo.coin_count}}金币</text>
-				</view>
-				<view>
-					<text>已用积分：</text>
-					<text class="dark-color">380金币</text>
-				</view>
+		<mescroll-uni :down="downOption" @down="downCallback" @up="upCallback">
 
-			</view>
-			<view class="item uni-flex uni-row">
-				<view class="left uni-flex uni-row">
-					<image src="../../static/ad3.jpg" mode="aspectFill"></image>
-					<view class="detail">
-						<text class="title">美白黄金美白黄金美白黄金美白黄金</text>
-						<view class="bottom uni-flex uni-row">
-							<text>已兑换234个</text>
-							<text>剩余31个</text>
+			<commom-top :lightIndex="lightIndex"></commom-top>
+			<view class="main">
+				<view class="top uni-flex uni-row">
+					<view>
+						<text>我的积分：</text>
+						<text class="dark-color">{{userInfo.coin_count}}金币</text>
+					</view>
+					<view>
+						<text>已用积分：</text>
+						<text class="dark-color">380金币</text>
+					</view>
+
+				</view>
+				<view class="item uni-flex uni-row">
+					<view class="left uni-flex uni-row">
+						<image src="../../static/ad3.jpg" mode="aspectFill"></image>
+						<view class="detail">
+							<text class="title">美白黄金美白黄金美白黄金美白黄金</text>
+							<view class="bottom uni-flex uni-row">
+								<text>已兑换234个</text>
+								<text>剩余31个</text>
+							</view>
+						</view>
+					</view>
+
+					<view class="right">
+						<view class="money">
+							<text class="num">20600</text>
+							<text>金币</text>
+						</view>
+						<view class="btn">
+							+兑换
 						</view>
 					</view>
 				</view>
-
-				<view class="right">
-					<view class="money">
-						<text class="num">20600</text>
-						<text>金币</text>
-					</view>
-					<view class="btn">
-						+兑换
-					</view>
-				</view>
 			</view>
-		</view>
-		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
+		</mescroll-uni>
 	</view>
 </template>
 
 <script>
+	import MescrollUni from "@/components/mescroll-uni/mescroll-uni.vue";
 	import {
 		mapGetters
 	} from "vuex";
@@ -48,18 +51,86 @@
 	export default {
 		components: {
 			commomTop,
+			MescrollUni
 		},
 		computed: {
 			...mapGetters(['userInfo'])
 		},
 		data() {
 			return {
-				lightIndex: 2
+				lightIndex: 2,
+				upOption: {
+					noMoreSize: 1,
+					textNoMore: "-- 我是有底线的卡瑞塔 --",
+					onScroll: true, // 是否监听滚动
+				},
+				downOption: {
+					auto: false //是否在初始化后,自动执行下拉回调callback; 默认true
+				},
+				dataList: []
 			}
 		},
 		onLoad() {
 			console.log(this.userInfo)
-		}
+		},
+		methods: {
+			/*下拉刷新的回调 */
+			downCallback(mescroll) {
+				//联网加载数据
+				this.getListDataFromNet(0, 1, (data) => {
+					//联网成功的回调,隐藏下拉刷新的状态
+					mescroll.endSuccess();
+					//设置列表数据
+					this.dataList.unshift(data[0]);
+				}, () => {
+					//联网失败的回调,隐藏下拉刷新的状态
+					mescroll.endErr();
+				})
+			},
+			/*上拉加载的回调: mescroll携带page的参数, 其中num:当前页 从1开始, size:每页数据条数,默认10 */
+			upCallback(mescroll) {
+				//联网加载数据
+				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData, totalSize) => {
+
+
+					//方法一(推荐): 后台接口有返回列表的总页数 totalPage
+					//mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
+
+					//方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+					//mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
+
+					//方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+					//mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
+
+					//方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据.
+					// mescroll.endSuccess(curPageData.length);
+
+					mescroll.endBySize(curPageData.length, totalSize);
+					//设置列表数据
+					this.dataList = this.dataList.concat(curPageData);
+				}, () => {
+					//联网失败的回调,隐藏下拉刷新的状态
+					mescroll.endErr();
+				})
+			},
+			getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
+				let listData = [];
+				this.$http
+					.request({
+						url: "products",
+						method: "get",
+						params: {
+							"ProductSearch[category_id]": 2,
+							page: pageNum,
+							"per-page": pageSize,
+						}
+					})
+					.then(res => {
+						listData = (res.data.items);
+						successCallback && successCallback(listData, res.data._meta.totalCount);
+					});
+			}
+		},
 	}
 </script>
 
