@@ -163,7 +163,7 @@
 				upOption: {
 					noMoreSize: 1,
 					textNoMore: "-- 我是有底线的卡瑞塔 --",
-					onScroll: true, // 是否监听滚动事件, 默认false (配置为true时,可@scroll="scroll"获取到滚动条位置和方向)
+					onScroll: true, // 是否监听滚动
 				},
 				menuList: [{
 					'title': '全部商品',
@@ -285,7 +285,7 @@
 					mescroll.hideUpScroll(); // 切换菜单,不显示mescroll进度, 显示系统进度条
 					uni.showLoading();
 				}
-				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData) => {
+				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData,totalSize) => {
 					//联网成功的回调
 					console.log("mescroll.num=" + mescroll.num + ", mescroll.size=" + mescroll.size + ", curPageData.length=" +
 						curPageData.length);
@@ -296,7 +296,7 @@
 					console.log('this.pdList', this.pdList)
 					// 数据渲染完毕再隐藏加载状态
 					this.$nextTick(() => {
-						mescroll.endSuccess(curPageData.length);
+						mescroll.endBySize(curPageData.length, totalSize);
 						// 设置nav到顶部的距离 (需根据自身的情况获取navTop的值, 这里放到列表数据渲染完毕之后)
 						// 也可以放到onReady里面,或者菜单顶部的数据(轮播等)加载完毕之后..
 						if (!this.navTop) this.setNavTop()
@@ -350,7 +350,7 @@
 						})
 						.then(res => {
 							listData = (res.data.items);
-							successCallback && successCallback(listData);
+							successCallback && successCallback(listData,res.data._meta.totalCount);
 						});
 
 				} catch (e) {
