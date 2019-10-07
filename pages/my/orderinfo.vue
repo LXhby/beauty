@@ -132,11 +132,11 @@
 					王晓文的店铺
 				</view>
 				<view class="star">
-					<text class="iconfont dark-color">&#xe623;</text>
-					<text class="iconfont">&#xe623;</text>
-					<text class="iconfont">&#xe623;</text>
-					<text class="iconfont">&#xe623;</text>
-					<text class="iconfont">&#xe623;</text>
+					<text class="iconfont star dark-color" @click="clickStar(1)">&#xe623;</text>
+					<text class="iconfont star" @click="clickStar(2)">&#xe623;</text>
+					<text class="iconfont star" @click="clickStar(3)">&#xe623;</text>
+					<text class="iconfont star" @click="clickStar(4)">&#xe623;</text>
+					<text class="iconfont star" @click="clickStar(5)">&#xe623;</text>
 				</view>
 				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f4f4f4;" placeholder=""
 				 value="非常好" />
@@ -157,7 +157,7 @@
 					</label>
 				</view>
 				<view class="uni-btnv">
-					<button type="primary">提交评价</button>
+					<button type="primary" @click="formSubmit">提交评价</button>
 				</view>
 			</view>
 		</uni-popup>
@@ -186,7 +186,8 @@
 		data() {
 			return {
 				orderInfo: '',
-				orderId: ''
+				orderId: '',
+				starsNum: 1, // 星星数量
 			}
 		},
 		mounted(){
@@ -223,6 +224,22 @@
 			goAssess() {
 				this.$refs.popup.open()
 			},
+			// 提交评价
+			formSubmit() {
+				
+			},
+			// 点星星
+			clickStar(num) {
+				this.starsNum = num
+				let stars = document.getElementsByClassName("star");
+				for(let i = 1; i <= num; i++) {
+					stars[i].classList.add("dark-color");
+				}
+				while(num < 5) {
+					num++
+					stars[num].classList.remove("dark-color");
+				}
+			}
 		}
 	}
 </script>
