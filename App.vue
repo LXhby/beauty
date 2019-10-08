@@ -60,6 +60,9 @@
 	/* #endif*/
 </style>
 <style lang="scss">
+	body{
+		font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+	}
 	@font-face {
 		font-family: "iconfont";
 		/* project id 1377410 */

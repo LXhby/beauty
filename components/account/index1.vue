@@ -32,12 +32,20 @@
 				</view>
 				<!-- 数字显示第二行 -->
 				<view class="example-body">
-					<uni-grid :column="detailist.length" :show-border="false" :square="false">
+					<view class="list uni-row uni-flex" style="justify-content: space-around;">
+						<view class="item" v-for="(item,index) in detailist" :key="index" style="text-align: center;">
+							<view class="text-one" >
+								16
+							</view>
+							<text class="text">{{item}}</text>
+						</view>
+					</view>
+					<!-- <uni-grid :column="detailist.length" :show-border="false" :square="false" :highlight="false">
 						<uni-grid-item v-for="(item,index) in detailist" :key="index">
 							<view class="text-one">16</view>
 							<text class="text ">{{item}}</text>
 						</uni-grid-item>
-					</uni-grid>
+					</uni-grid> -->
 				</view>
 			</view>
 			<image src="../../static/WechatIMG311.png" mode="" class="bg-img"></image>
@@ -92,7 +100,24 @@
 			uniGridItem,
 			uniPopup
 		},
-		props: ["rightText", "navurl", "isreal", "detailist"],
+		props: {
+			detailist: {
+				type: Array,
+				default: ['','','']
+			},
+			rightText: {
+				type: String,
+				default: ''
+			},
+			navurl: {
+				type: String,
+				default: ''
+			},
+			isreal: {
+				type: Boolean,
+				default: false
+			}
+		},
 		methods: {
 			handleNav() {
 				if (this.rightText == '实名认证') {
@@ -101,7 +126,7 @@
 			}
 		},
 		mounted() {
-			
+
 		}
 	}
 </script>
@@ -121,23 +146,28 @@
 				line-height: 90rpx;
 				border-bottom: 1px solid $uni-border-color;
 			}
-			.padding-botom{
+
+			.padding-botom {
 				margin-bottom: 30rpx;
 			}
-			.form-box{
+
+			.form-box {
 				padding: 40rpx 0;
 				border-bottom: 1px solid $uni-border-color;
 			}
+
 			.uni-form-item {
 				width: 100%;
 				box-sizing: border-box;
-				padding:0 30rpx;
-				align-items:center;
-				.title{
+				padding: 0 30rpx;
+				align-items: center;
+
+				.title {
 					padding: 0px;
-					margin-right:20rpx ;
+					margin-right: 20rpx;
 				}
-				input{
+
+				input {
 					flex: 1;
 					height: 25rpx;
 					font-size: 28rpx;
@@ -147,31 +177,37 @@
 					border-radius: 4px;
 					text-align: left;
 				}
-				button{
+
+				button {
 					width: 118rpx;
 					height: 40rpx;
 					margin-left: 10rpx;
 					line-height: 40rpx;
 					color: #fff;
-					background:linear-gradient(to right,#ffda73,#ffb33f) ;
+					background: linear-gradient(to right, #ffda73, #ffb33f);
 					padding: 0;
 					border-radius: 40rpx;
 					font-size: 20rpx;
-					&:after{
+
+					&:after {
 						border: none;
 					}
 				}
 			}
-			.list-text{
+
+			.list-text {
 				padding: 30rpx 30rpx 0 30rpx;
 				color: $uni-text-color-grey;
 				text-align: left;
-				.text{
+
+				.text {
 					font-size: 24rpx;
 				}
 			}
+
 			.uni-btn {
-				padding:40rpx;
+				padding: 40rpx;
+
 				button {
 					width: 278rpx;
 					height: 54rpx;

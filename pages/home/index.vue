@@ -7,24 +7,32 @@
 
 			<top-bar rightText="店铺设置" :detailist="detailist" :isreal="isreal"></top-bar>
 			<view class="active-nav">
-				<uni-grid :column="4" :show-border="false" :square="false" @change="goPage">
-					<uni-grid-item>
-						<image class="image" src="../../static/meeting.png" mode="aspectFill" />
+				<view class="list uni-row uni-flex" style="justify-content: space-around;margin-bottom: 35rpx;">
+					<view class="item"  style="text-align: center;" @click="goPage">
+						<view class="text-one" >
+							<image class="image" src="../../static/meeting.png" mode="widthFix" />
+						</view>
 						<text class="text">会议活动</text>
-					</uni-grid-item>
-					<uni-grid-item>
-						<image class="image" src="../../static/promotion.png" mode="aspectFill" />
+					</view>
+					<view class="item"  style="text-align: center;">
+						<view class="text-one" >
+							<image class="image" src="../../static/promotion.png" mode="widthFix" />
+						</view>
 						<text class="text">特实惠</text>
-					</uni-grid-item>
-					<uni-grid-item>
-						<image class="image" src="../../static/integral.png" mode="aspectFill" />
+					</view>
+					<view class="item"  style="text-align: center;">
+						<view class="text-one" >
+							<image class="image" src="../../static/integral.png" mode="widthFix" />
+						</view>
 						<text class="text">积分购</text>
-					</uni-grid-item>
-					<uni-grid-item>
-						<image class="image" src="../../static/vip.png" mode="aspectFill" />
+					</view>
+					<view class="item"  style="text-align: center;">
+						<view class="text-one" >
+							<image class="image" src="../../static/vip.png" mode="widthFix" />
+						</view>
 						<text class="text">升级VIP</text>
-					</uni-grid-item>
-				</uni-grid>
+					</view>
+				</view>
 			</view>
 			<!-- 限时特惠 -->
 			<view class="goods-example uni-flex uni-row" v-if="adverList.length">
@@ -368,13 +376,20 @@
 
 	.home-page {
 		.active-nav {
-			.image {
+			margin-top:15rpx;
+			padding:0 20rpx;
+			.text-one {
 				width: 90rpx;
 				height: 90rpx;
+				.image{
+					width: 100%;
+					height: 90rpx;
+				}
 			}
 
 			.text {
 				font-size: 24rpx;
+				color: $uni-text-color;
 			}
 		}
 
