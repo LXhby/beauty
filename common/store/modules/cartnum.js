@@ -5,8 +5,8 @@ const state = {
 };
 
 const mutations = {
-    setnum: (state, info) => {   
-        state.num++;
+    setnum: (state, info) => {
+        state.num = state.num + info;
     },
 	setcollect:(state,info)=>{
 		var item = state.collect.find((ele)=>ele.id==info.id)
@@ -25,7 +25,16 @@ const mutations = {
 			item.num++;
 		}
 		console.log('shopcar',state.shopcar)
-	}
+	},
+	clearnum: (state) => {
+		state.num = 0
+	},
+	clearcollect:(state) => {
+		state.collect = []
+	},
+	clearShopcar:(state) => {
+		state.shopcar = []
+	},
 }
 
 const actions = {
