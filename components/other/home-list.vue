@@ -7,8 +7,8 @@
 					<view class="detail uni-flex uni-column">
 						<text class="title">{{item.name}}</text>
 						<view class="bottom ">
-							<text style="margin-right:10rpx;">销量2{{item.sold_count}}笔</text>
-							<text>好评96%</text>
+							<text style="margin-right:10rpx;">销量{{item.sold_count}}笔</text>
+							<text>好评{{item.rate}}</text>
 						</view>
 					</view>
 				</view>

@@ -8,25 +8,25 @@
 			<top-bar rightText="店铺设置" :detailist="detailist" :isreal="isreal"></top-bar>
 			<view class="active-nav">
 				<view class="list uni-row uni-flex" style="justify-content: space-around;margin-bottom: 35rpx;">
-					<view class="item"  style="text-align: center;" @click="goPage">
+					<view class="item"  style="text-align: center;" @click="goPage('/pages/benefits/meeting')">
 						<view class="text-one" >
 							<image class="image" src="../../static/meeting.png" mode="widthFix" />
 						</view>
 						<text class="text">会议活动</text>
 					</view>
-					<view class="item"  style="text-align: center;">
+					<view class="item"  style="text-align: center;" @click="goPage('/pages/benefits/preferential')">
 						<view class="text-one" >
 							<image class="image" src="../../static/promotion.png" mode="widthFix" />
 						</view>
 						<text class="text">特实惠</text>
 					</view>
-					<view class="item"  style="text-align: center;">
+					<view class="item"  style="text-align: center;" @click="goPage('/pages/benefits/integral')">
 						<view class="text-one" >
 							<image class="image" src="../../static/integral.png" mode="widthFix" />
 						</view>
 						<text class="text">积分购</text>
 					</view>
-					<view class="item"  style="text-align: center;">
+					<view class="item"  style="text-align: center;" @click="goPage('/pages/benefits/upvue')">
 						<view class="text-one" >
 							<image class="image" src="../../static/vip.png" mode="widthFix" />
 						</view>
@@ -243,29 +243,10 @@
 				})
 			},
 			goPage(event) {
-				var index = event.detail.index;
-				switch (index) {
-					case 0:
-						uni.navigateTo({
-							url: '/pages/benefits/meeting'
-						});
-						break;
-					case 1:
-						uni.navigateTo({
-							url: '/pages/benefits/preferential'
-						});
-						break;
-					case 2:
-						uni.navigateTo({
-							url: '/pages/benefits/integral'
-						});
-						break;
-					case 3:
-						uni.navigateTo({
-							url: '/pages/benefits/upvue'
-						});
-						break;
-				}
+				
+				uni.navigateTo({
+					url: event
+				});
 
 			},
 			goDetail(item) {

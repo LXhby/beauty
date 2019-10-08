@@ -146,7 +146,7 @@
 							客服
 						</view>
 					</view>
-					<view class="btn-sm">
+					<view class="btn-sm" @click="handlecollection">
 						<text class="iconfont">&#xe69b;</text>
 						<view class="text-nav">
 							收藏
@@ -215,9 +215,15 @@
 				})
 			},
 			gocart() {
-				console.log(333)
 				uni.switchTab({
 					url: '/pages/shopcar/index'
+				})
+			},
+			// 收藏
+			handlecollection(){
+				this.$store.commit('cartnum/setcollect',this.id);
+				uni.showToast({
+					title:'收藏成功！'
 				})
 			}
 		}
