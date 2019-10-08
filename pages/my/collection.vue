@@ -36,15 +36,24 @@
 
 
 <script>
+	import {
+		mapGetters
+	} from "vuex";
 	import topBar from "@/components/account/index1.vue";
 	export default {
 		components: {
 			topBar
 		},
+		computed: {
+			...mapGetters(["shopcar"])
+		},
 		data() {
 			return {
 				detailist: ["可提现", "待提现", "产品额度", "粉丝量"]
 			};
+		},
+		onLoad() {
+			
 		}
 	};
 </script>

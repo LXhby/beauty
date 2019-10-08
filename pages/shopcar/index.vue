@@ -14,29 +14,29 @@
 				<view class="goods-item">
 					<view class="shop-name uni-flex uni-row" style="align-items: center; justify-content: space-between;">
 						<view class="uni-flex uni-row name-box" style="align-items: center; ">
-							<checkbox value="cb" checked="true"  color="#ff0080" style="transform:scale(0.8);" />
+							<checkbox value="cb" checked="true" color="#ff0080" style="transform:scale(0.8);" />
 							<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
 							<text>王晓文的VIP会员店铺</text>
 						</view>
 						<text class="iconfont right">&#xe60e;</text>
 					</view>
-					<view class="detail uni-flex uni-row" v-for="item in newShopcerVals">
+					<view class="detail uni-flex uni-row" v-for="item in shopcar">
 						<view class="left uni-flex uni-row" style="align-items: center;">
 							<checkbox value="cb" checked="true" color="#ff0080" style="transform:scale(0.8);" />
-							<image :src="item[0].image" mode="aspectFill"></image>
+							<image :src="'http://backend.krtamall.yiidev.cn'+ item.image" mode="aspectFill"></image>
 						</view>
 						<view class="right">
-							<view class="name">{{item[0].name}}</view>
+							<view class="name">{{item.name}}</view>
 							<view class="size">
 								商品规格
 							</view>
 							<view class="bottom  uni-flex uni-row">
 								<view class="num-box" style="overflow: hidden;">
-									<text class="num">￥{{item[0].price * item.length}}</text>
+									<text class="num">￥{{item.price * item.num}}</text>
 									<text class="send">赠送128个金币</text>
 								</view>
-								<view class="number-box" @click="clickNumberBox(item[0].id)">
-									<uni-number-box :min="1" :value="item.length"  @change="bindChange"></uni-number-box>
+								<view class="number-box" @click="clickNumberBox(item.id)">
+									<uni-number-box :min="1" :max="item.stock" :value="item.num" @change="bindChange"></uni-number-box>
 								</view>
 							</view>
 						</view>
@@ -55,7 +55,7 @@
 						<text class="combined">合计</text>
 						<view>
 							<view class="count-box">
-								<view class="count-num">￥256</view>  
+								<view class="count-num">￥{{totalMoney}}</view>
 								<!-- 大于7位数 弹窗-->
 								<text class="gray-color">
 									省256元
@@ -71,45 +71,51 @@
 </template>
 
 <script>
+	import {
+		mapGetters
+	} from "vuex";
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 	export default {
 		data() {
 			return {
 				hasData: true,
-				shopcerVals: [],
-				newShopcerVals: [],
 				productNum: 0,
+				totalMoney: 0,
 			}
+		},
+		computed: {
+			...mapGetters(["shopcar", "cartnum"])
 		},
 		components: {
 			uniNumberBox
 		},
 		onLoad() {
-			this.shopcerVals = JSON.parse(uni.getStorageSync('cartnum'))
-			console.log(this.shopcerVals)
-			let arr = []
-			let arr1 = []
-			this.shopcerVals.forEach(ele => {
-				if(arr1.length === 0) {
-					arr1.push(ele)
-				} else {
-					if(arr1[0].id === ele.id) {
-						arr1.push(ele)
-					} else {
-						return
-					}
-					arr.push(arr1)
-				}
+			let totalMoney = 0
+			this.shopcar.forEach(ele => {
+				totalMoney += ele.num * ele.price
 			})
-			this.newShopcerVals = arr
-			console.log(arr)
+			this.totalMoney = totalMoney
+			// this.$store.commit("cartnum/clearnum");
+			// this.$store.commit("cartnum/clearShopcar");
 		},
 		methods: {
 			bindChange(value) {
 				this.productNum = value
 			},
 			clickNumberBox(productId) {
-				console.log(this.productNum)
+				let totalMoney = 0
+				this.shopcar.forEach(ele => {
+					if (ele.id === productId) {
+						this.$store.commit("cartnum/setnum", this.productNum - ele.num);
+						uni.setTabBarBadge({
+							index: 2,
+							text: this.cartnum.toString()
+						});
+						ele.num = this.productNum
+					}
+					totalMoney += ele.num * ele.price
+				})
+				this.totalMoney = totalMoney
 			}
 		}
 	}
@@ -184,10 +190,11 @@
 
 						.name-box {
 							height: 80rpx;
-							padding-left:30rpx;
+							padding-left: 30rpx;
 						}
-						.right{
-							margin-right:30rpx;
+
+						.right {
+							margin-right: 30rpx;
 						}
 
 						text {
@@ -198,7 +205,7 @@
 							width: 40rpx;
 							height: 40rpx;
 							margin-left: 10rpx;
-							margin-right:10rpx;
+							margin-right: 10rpx;
 							border-radius: 50%;
 							overflow: hidden;
 						}
@@ -207,23 +214,28 @@
 					.detail {
 						padding: 30rpx 0;
 						margin: 0 30rpx;
-						border-bottom:1px solid $uni-border-color;
-						align-items:flex-start;
-						.left{
+						border-bottom: 1px solid $uni-border-color;
+						align-items: flex-start;
+
+						.left {
 							margin-right: 20rpx;
-							image{
+
+							image {
 								width: 150rpx;
 								height: 150rpx;
 								margin-left: 10rpx;
 							}
 						}
-						.right{
+
+						.right {
 							flex: 1;
 							font-size: 24rpx;
-							.name{
+
+							.name {
 								font-size: 24rpx;
 							}
-							.size{
+
+							.size {
 								display: inline-block;
 								margin: 2rpx 0;
 								height: 40rpx;
@@ -233,25 +245,31 @@
 								color: $uni-text-color-grey;
 								background: #f9f9f9;
 							}
-							.bottom{
-								align-items:flex-end;
+
+							.bottom {
+								align-items: flex-end;
 								flex-wrap: wrap;
-								justify-content:space-between;
-								text{
+								justify-content: space-between;
+
+								text {
 									font-size: 24rpx;
 								}
-								.num-box{
-									white-space:nowrap;
-									.num{
+
+								.num-box {
+									white-space: nowrap;
+
+									.num {
 										color: $uni-bg-color;
 									}
-									.send{
+
+									.send {
 										color: $uni-text-color-grey;
 										font-size: 20rpx;
 										margin-left: 10rpx;
 									}
 								}
-								.number-box{
+
+								.number-box {
 									flex: 1;
 									text-align: right;
 								}
@@ -262,44 +280,52 @@
 			}
 
 			.handle-bottom {
-				position: fixed;
+				//position: fixed;
 				bottom: 0px;
 				left: 0px;
 				width: 100%;
 				height: 90rpx;
 				background-color: #fff;
-				.shop-bottom{
+
+				.shop-bottom {
 					width: 100%;
 					height: 100%;
 					justify-content: space-between;
-					align-items:center;
-					.all-left{
+					align-items: center;
+
+					.all-left {
 						margin-left: 20rpx;
-						text{
+
+						text {
 							color: $uni-bg-color;
 							font-size: 20rpx;
 							margin-left: 10rpx;
 						}
 					}
-					.all-right{
+
+					.all-right {
 						margin-right: 20rpx;
 						align-items: center;
-						.combined{
+
+						.combined {
 							margin-right: 10rpx;
 						}
-						.count-box{
-							margin-right:20rpx;
-							.count-num{
+
+						.count-box {
+							margin-right: 20rpx;
+
+							.count-num {
 								color: $uni-bg-color;
 								font-size: 28rpx;
 							}
-							.gray-color{
+
+							.gray-color {
 								font-size: 20rpx;
 								color: $uni-text-color-grey;
 							}
 						}
-						
-						button{
+
+						button {
 							display: flex;
 							align-content: center;
 							justify-content: center;
@@ -307,7 +333,7 @@
 							height: 58rpx;
 							border-radius: 58rpx;
 							font-size: 28rpx;
-							background-color: $uni-bg-color ;
+							background-color: $uni-bg-color;
 						}
 					}
 				}
