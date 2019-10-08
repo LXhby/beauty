@@ -20,23 +20,23 @@
 						</view>
 						<text class="iconfont right">&#xe60e;</text>
 					</view>
-					<view class="detail uni-flex uni-row">
+					<view class="detail uni-flex uni-row" v-for="item in newShopcerVals">
 						<view class="left uni-flex uni-row" style="align-items: center;">
 							<checkbox value="cb" checked="true" color="#ff0080" style="transform:scale(0.8);" />
-							<image src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/shuijiao.jpg?imageView2/3/w/200/h/100/q/90" mode="aspectFill"></image>
+							<image :src="item[0].image" mode="aspectFill"></image>
 						</view>
 						<view class="right">
-							<view class="name">包图新款女式化妆护肤防晒霜 长效保湿安全护肤</view>
+							<view class="name">{{item[0].name}}</view>
 							<view class="size">
 								商品规格
 							</view>
 							<view class="bottom  uni-flex uni-row">
 								<view class="num-box" style="overflow: hidden;">
-									<text class="num">￥1288</text>
+									<text class="num">￥{{item[0].price * item.length}}</text>
 									<text class="send">赠送128个金币</text>
 								</view>
-								<view class="number-box">
-									<uni-number-box :min="1" ></uni-number-box>
+								<view class="number-box" @click="clickNumberBox(item[0].id)">
+									<uni-number-box :min="1" :value="item.length"  @change="bindChange"></uni-number-box>
 								</view>
 							</view>
 						</view>
@@ -75,12 +75,42 @@
 	export default {
 		data() {
 			return {
-				hasData: true
-
+				hasData: true,
+				shopcerVals: [],
+				newShopcerVals: [],
+				productNum: 0,
 			}
 		},
 		components: {
 			uniNumberBox
+		},
+		onLoad() {
+			this.shopcerVals = JSON.parse(uni.getStorageSync('cartnum'))
+			console.log(this.shopcerVals)
+			let arr = []
+			let arr1 = []
+			this.shopcerVals.forEach(ele => {
+				if(arr1.length === 0) {
+					arr1.push(ele)
+				} else {
+					if(arr1[0].id === ele.id) {
+						arr1.push(ele)
+					} else {
+						return
+					}
+					arr.push(arr1)
+				}
+			})
+			this.newShopcerVals = arr
+			console.log(arr)
+		},
+		methods: {
+			bindChange(value) {
+				this.productNum = value
+			},
+			clickNumberBox(productId) {
+				console.log(this.productNum)
+			}
 		}
 	}
 </script>
