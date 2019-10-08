@@ -7,8 +7,8 @@
 					<view class="detail uni-flex uni-column">
 						<text class="title">{{item.name}}</text>
 						<view class="bottom ">
-							<text style="margin-right:10rpx;">销量2{{item.sold_count}}笔</text>
-							<text>好评96%</text>
+							<text style="margin-right:10rpx;">销量{{item.sold_count}}笔</text>
+							<text>好评{{item.rate}}</text>
 						</view>
 					</view>
 				</view>
@@ -65,10 +65,10 @@
 				}else{
 					var data = JSON.parse(num);
 					data.push(item)
-					console.log(data)
 					uni.setStorageSync('cartnum', JSON.stringify(data))
 				}
 				 this.$store.commit("cartnum/setnum", 1);
+				 this.$store.commit("cartnum/setShopcar", item);
 				 uni.setTabBarBadge({
 				 	index: 2,
 				 	text: this.cartnum.toString()
