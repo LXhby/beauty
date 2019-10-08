@@ -29,7 +29,10 @@ const mutations = {
 	clearnum: (state) => {
 		state.num = 0
 	},
-	clearShopcar:(state)=>{
+	clearcollect:(state) => {
+		state.collect = []
+	},
+	clearShopcar:(state) => {
 		state.shopcar = []
 	},
 }
