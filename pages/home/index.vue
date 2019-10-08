@@ -332,9 +332,9 @@
 							url: "products",
 							method: "get",
 							params: {
-								"ProductSearch[category_id]": this.tabIndex ? 2 : null,
 								page: pageNum,
 								"per-page": pageSize,
+								is_enabled:1
 							}
 						})
 						.then(res => {
