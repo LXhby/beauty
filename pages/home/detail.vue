@@ -68,8 +68,8 @@
 					<view class="line"></view>
 					<text class="text">粉丝们好评如潮</text>
 				</view>
-				<view class="right" @click="gocomment">
-					620评论
+				<view class="right" @click="gocomment" v-if="totalnum">
+					{{totalnum}}评论
 					<text class="iconfont">&#xe642;</text>
 				</view>
 			</view>
@@ -170,7 +170,9 @@
 			return {
 				url: '',
 				info: {},
-				browseList:[]
+				browseList:[],
+				commentList:[],
+				totalnum:0
 			}
 		},
 		computed: {
@@ -192,7 +194,8 @@
 							"ProductSearch[category_id]": this.tabIndex ? 2 : null,
 							page: 1,
 							"per-page": 10,
-							is_enabled:1
+							is_enabled:1,
+							expand:'user'
 						}
 					})
 					.then(res => {
@@ -202,6 +205,19 @@
 						this.browseList = this.getRandomArrayElements(data,3);
 						console.log(this.browseList)
 					});
+					this.$http.request({
+							url: "product-comment",
+							method: "get",
+							params: {
+								page: 1,
+								"per-page": 2,
+								'ProductCommentSearch[product_id]':this.id
+							}
+						})
+						.then(res => {
+							this.commentList = res.data.items;
+							this.totalnum = res.data._meta.totalCount;
+						});
 				this.$http.request({
 						url: "products/" + this.id,
 						method: "get",
