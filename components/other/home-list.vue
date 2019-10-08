@@ -59,20 +59,15 @@
 		},
 		methods:{
 			addcar(item){
-				var num = uni.getStorageSync('cartnum');
-				if(!num){
-					uni.setStorageSync('cartnum', JSON.stringify([item]))
-				}else{
-					var data = JSON.parse(num);
-					data.push(item)
-					uni.setStorageSync('cartnum', JSON.stringify(data))
-				}
 				 this.$store.commit("cartnum/setnum", 1);
 				 this.$store.commit("cartnum/setShopcar", item);
 				 uni.setTabBarBadge({
 				 	index: 2,
 				 	text: this.cartnum.toString()
 				 });
+				 uni.showToast({
+				 	title:'加入购物车成功！'
+				 })
 				 console.log('cartnum',this.cartnum)
 			},
 			navToDetails(item){

@@ -2,12 +2,10 @@
 	<view class="good-detail">
 		<view class="banner">
 			<image src="../../static/37d52be5170e1b25d30ff44db4b0791c.jpg" mode="aspectFill"></image>
-
-			<view class="shop-car" @click="gocart">
-				<text class="iconfont">&#xe603;</text>
-				<uni-badge :text="cartnum.toString()" type="error" class="shopcar-badge" />
-			</view>
-
+		</view>
+		<view class="shop-car" @click="gocart">
+			<text class="iconfont">&#xe603;</text>
+			<uni-badge :text="cartnum.toString()" type="error" class="shopcar-badge" />
 		</view>
 		<view class="good-top">
 			<view class="goods-name">
@@ -15,7 +13,7 @@
 					<view class="left">
 						<view class="title">
 							<text class="title-h">{{info.name}}</text>
-							<text class="sm">包邮</text>
+							<text class="sm" v-if="info.freight == '0.00'">包邮</text>
 						</view>
 						<text class="details">{{info.summary}}</text>
 					</view>
@@ -60,10 +58,8 @@
 				<view class="line"></view>
 				<text class="text">粉丝们还在浏览</text>
 			</view>
-			<view class="image-box uni-flex uni-row">
-				<image src="../../static/e7b51b721c3319e9c2916cc41cd9c695.jpg" mode="aspectFill"></image>
-				<image src="../../static/e7b51b721c3319e9c2916cc41cd9c695.jpg" mode="aspectFill"></image>
-				<image src="../../static/816a66edef10673b4768128b41804cae.jpg" mode="aspectFill"></image>
+			<view class="image-box uni-flex uni-row" >
+				<image :src="url+item.image" mode="aspectFill" @click="gopage(item.id)" v-for="(item,index) in browseList" :key="index"></image>
 			</view>
 		</view>
 		<view class="good-coment">
@@ -140,7 +136,7 @@
 							首页
 						</view>
 					</view>
-					<view class="btn-sm">
+					<view class="btn-sm" @click="getcall">
 						<text class="iconfont">&#xe6c5;</text>
 						<view class="text-nav">
 							客服
@@ -153,7 +149,7 @@
 						</view>
 					</view>
 				</view>
-				<button type="primary" class="btn1">加入购物车</button>
+				<button type="primary" class="btn1" @click="addcar">加入购物车</button>
 				<button type="primary" class="btn2" @click="payGoods">立即购买</button>
 			</view>
 
@@ -173,7 +169,8 @@
 		data() {
 			return {
 				url: '',
-				info: {}
+				info: {},
+				browseList:[]
 			}
 		},
 		computed: {
@@ -189,6 +186,23 @@
 					title: '加载中'
 				})
 				this.$http.request({
+						url: "products",
+						method: "get",
+						params: {
+							"ProductSearch[category_id]": this.tabIndex ? 2 : null,
+							page: 1,
+							"per-page": 10,
+							is_enabled:1
+						}
+					})
+					.then(res => {
+						var data = res.data.items;
+						this.deletSelf(data);
+						console.log('data',data)
+						this.browseList = this.getRandomArrayElements(data,3);
+						console.log(this.browseList)
+					});
+				this.$http.request({
 						url: "products/" + this.id,
 						method: "get",
 					})
@@ -198,10 +212,32 @@
 						this.url = this.$baseUrl;
 					});
 			},
+			deletSelf(arr){
+				arr.forEach((ele,index)=>{
+					if(ele.id == this.id){
+						arr.splice(index,1)
+					}
+				})
+			},
+			getRandomArrayElements(arr, count) {
+			    var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
+			    while (i-- > min) {
+			        index = Math.floor((i + 1) * Math.random());
+			        temp = shuffled[index];
+			        shuffled[index] = shuffled[i];
+			        shuffled[i] = temp;
+			    }
+			    return shuffled.slice(min);
+			},
 			gocomment() {
 				uni.navigateTo({
 					url: '/pages/home/comment'
 				});
+			},
+			gopage(id){
+			uni.navigateTo({
+				url: '/pages/home/detail?id='+id
+			});	
 			},
 			payGoods() {
 				uni.navigateTo({
@@ -220,10 +256,26 @@
 				})
 			},
 			// 收藏
-			handlecollection(){
-				this.$store.commit('cartnum/setcollect',this.id);
+			handlecollection() {
+				this.$store.commit('cartnum/setcollect', this.info);
 				uni.showToast({
-					title:'收藏成功！'
+					title: '收藏成功！',
+					icon: 'none'
+				})
+			},
+			getcall() {
+				window.location.href = `tel:${this.config.service_phone}`;
+			},
+			addcar() {
+				this.$store.commit("cartnum/setnum", 1);
+				this.$store.commit("cartnum/setShopcar", this.info);
+				uni.setTabBarBadge({
+					index: 2,
+					text: this.cartnum.toString()
+				});
+				uni.showToast({
+					title: '加入购物车成功',
+					icon: 'none'
 				})
 			}
 		}
@@ -238,12 +290,10 @@
 		background: #fff;
 
 		.banner {
-			position: absolute;
-			z-index: 2;
+
 			width: 100%;
 			height: 465rpx;
-			top: 0;
-			left: 0;
+
 
 			image {
 				width: 100%;
@@ -253,44 +303,48 @@
 				height: 465rpx;
 			}
 
-			.shop-car {
+
+		}
+
+		.shop-car {
+			position: absolute;
+			z-index: 3;
+			top: 20rpx;
+			right: 20rpx;
+			width: 60rpx;
+			height: 60rpx;
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.3);
+			text-align: center;
+
+			.iconfont {
+				line-height: 60rpx;
+				color: #fff;
+				font-size: 36rpx;
+			}
+
+			.shopcar-badge {
 				position: absolute;
-				top: 20rpx;
-				right: 20rpx;
-				width: 60rpx;
-				height: 60rpx;
-				border-radius: 50%;
-				background: rgba(0, 0, 0, 0.3);
-				text-align: center;
-
-				.iconfont {
-					line-height: 60rpx;
-					color: #fff;
-					font-size: 36rpx;
-				}
-
-				.shopcar-badge {
-					position: absolute;
-					top: -16rpx;
-					right: -10rpx;
-				}
+				top: -16rpx;
+				right: -10rpx;
 			}
 		}
 
 		.good-top {
+			margin-top: -70rpx;
 			position: relative;
-			z-index: 3;
-			border-top: 392rpx solid rgba(0, 0, 0, 0);
 			padding-left: 20rpx;
 			padding-right: 20rpx;
 
 			.goods-name {
+
 				overflow: hidden;
 				border-radius: 5px;
 				box-shadow: 0 0 5px .5px rgba(0, 0, 0, .2);
 				background: #fff;
 
 				.name-top {
+
 					padding: 20rpx;
 					justify-content: space-between;
 					align-items: center;

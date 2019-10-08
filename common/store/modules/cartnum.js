@@ -9,7 +9,7 @@ const mutations = {
         state.num = state.num + info;
     },
 	setcollect:(state,info)=>{
-		var item = state.collect.find((ele)=>ele==info)
+		var item = state.collect.find((ele)=>ele.id==info.id)
 		if(!item){
 			state.collect.push(info)
 		}else{
