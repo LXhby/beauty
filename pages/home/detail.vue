@@ -2,12 +2,10 @@
 	<view class="good-detail">
 		<view class="banner">
 			<image src="../../static/37d52be5170e1b25d30ff44db4b0791c.jpg" mode="aspectFill"></image>
-
-			<view class="shop-car" @click="gocart">
-				<text class="iconfont">&#xe603;</text>
-				<uni-badge :text="cartnum.toString()" type="error" class="shopcar-badge" />
-			</view>
-
+		</view>
+		<view class="shop-car" @click="gocart">
+			<text class="iconfont">&#xe603;</text>
+			<uni-badge :text="cartnum.toString()" type="error" class="shopcar-badge" />
 		</view>
 		<view class="good-top">
 			<view class="goods-name">
@@ -140,7 +138,7 @@
 							首页
 						</view>
 					</view>
-					<view class="btn-sm">
+					<view class="btn-sm" @click="getcall">
 						<text class="iconfont">&#xe6c5;</text>
 						<view class="text-nav">
 							客服
@@ -153,7 +151,7 @@
 						</view>
 					</view>
 				</view>
-				<button type="primary" class="btn1">加入购物车</button>
+				<button type="primary" class="btn1" @click="addcar">加入购物车</button>
 				<button type="primary" class="btn2" @click="payGoods">立即购买</button>
 			</view>
 
@@ -223,7 +221,23 @@
 			handlecollection(){
 				this.$store.commit('cartnum/setcollect',this.id);
 				uni.showToast({
-					title:'收藏成功！'
+					title:'收藏成功！',
+					icon:'none'
+				})
+			},
+			getcall(){
+				window.location.href = `tel:${this.config.service_phone}`;
+			},
+			addcar(){
+				this.$store.commit("cartnum/setnum", 1);
+				this.$store.commit("cartnum/setShopcar", this.info);
+				uni.setTabBarBadge({
+					index: 2,
+					text: this.cartnum.toString()
+				});
+				uni.showToast({
+					title:'加入购物车成功',
+					icon:'none'
 				})
 			}
 		}
@@ -253,27 +267,29 @@
 				height: 465rpx;
 			}
 
-			.shop-car {
+			
+		}
+		.shop-car {
+			position: absolute;
+			z-index: 3;
+			top: 20rpx;
+			right: 20rpx;
+			width: 60rpx;
+			height: 60rpx;
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.3);
+			text-align: center;
+		
+			.iconfont {
+				line-height: 60rpx;
+				color: #fff;
+				font-size: 36rpx;
+			}
+		
+			.shopcar-badge {
 				position: absolute;
-				top: 20rpx;
-				right: 20rpx;
-				width: 60rpx;
-				height: 60rpx;
-				border-radius: 50%;
-				background: rgba(0, 0, 0, 0.3);
-				text-align: center;
-
-				.iconfont {
-					line-height: 60rpx;
-					color: #fff;
-					font-size: 36rpx;
-				}
-
-				.shopcar-badge {
-					position: absolute;
-					top: -16rpx;
-					right: -10rpx;
-				}
+				top: -16rpx;
+				right: -10rpx;
 			}
 		}
 
