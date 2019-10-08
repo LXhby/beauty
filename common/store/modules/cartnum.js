@@ -1,12 +1,12 @@
 const state = {
 	num:0,
-	collect:[]
+	collect:[],
+	shopcar:[]
 };
 
 const mutations = {
     setnum: (state, info) => {   
         state.num++;
-		console.log(state.num)
     },
 	setcollect:(state,info)=>{
 		var item = state.collect.find((ele)=>ele==info)
@@ -15,6 +15,16 @@ const mutations = {
 		}else{
 			return false;
 		}
+	},
+	setShopcar:(state,info)=>{
+		var item = state.shopcar.find((ele)=>ele.id==info.id)
+		if(!item){
+			var obj = Object.assign({num:1},info)
+			state.shopcar.push(obj)
+		}else{
+			item.num++;
+		}
+		console.log('shopcar',state.shopcar)
 	}
 }
 

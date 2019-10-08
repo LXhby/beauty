@@ -65,10 +65,10 @@
 				}else{
 					var data = JSON.parse(num);
 					data.push(item)
-					console.log(data)
 					uni.setStorageSync('cartnum', JSON.stringify(data))
 				}
 				 this.$store.commit("cartnum/setnum", 1);
+				 this.$store.commit("cartnum/setShopcar", item);
 				 uni.setTabBarBadge({
 				 	index: 2,
 				 	text: this.cartnum.toString()
