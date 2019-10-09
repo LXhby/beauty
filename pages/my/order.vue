@@ -9,83 +9,85 @@
 		<!-- swiper切换 swiper-item表示一页 scroll-view表示滚动视窗 -->
 		<swiper style="min-height: 100vh;" :current="tabCurrentIndex" @change="swiperTab">
 			<swiper-item v-for="(listItem,listIndex) in list" :key="listIndex">
-				<scroll-view style="height: 100%;" scroll-y="true" @scrolltolower="lower1" scroll-with-animation>
-					<view class='content'>
-						<!-- 订单列表 -->
-						<view v-for="(item,index) in listItem" :key="index" class="order-item">
-							<view class="top uni-flex uni-row">
-								<view class="left">
-									<text class="iconfont">&#xe608;</text>
-									<text class="time">{{item.created_at}}</text>
+				<mescroll-uni :down="downOption" @down="downCallback" @up="upCallback" :up="upOption">
+					<scroll-view style="height: 100%;" scroll-y="true" scroll-with-animation>
+						<view class='content'>
+							<!-- 订单列表 -->
+							<view v-for="(item,index) in listItem" :key="index" class="order-item">
+								<view class="top uni-flex uni-row">
+									<view class="left">
+										<text class="iconfont">&#xe608;</text>
+										<text class="time">{{item.created_at}}</text>
+									</view>
+									<view class="right">
+										<text class="status" v-if="item.status === '待付款'">待付款</text>
+										<text class="status" style="margin-right: 10rpx;padding-right: 10rpx;border-right: 1px solid #f5f5f5;" v-if="item.status === '待发货'">待发货</text>
+										<text class="status" style="margin-right: 10rpx;padding-right: 10rpx;border-right: 1px solid #f5f5f5;" v-if="item.status === '待收货'">待确认</text>
+										<text class="status" v-if="item.status === '待评价'">待评价</text>
+										<text class="status" v-if="item.status === '已评价'">交易成功</text>
+										<image v-if="item.status === '待收货' || item.status === '待发货'" src="../../static/car.png" mode="widthFix"></image>
+									</view>
 								</view>
-								<view class="right">
-									<text class="status" v-if="item.status === '待付款'">待付款</text>
-									<text class="status" style="margin-right: 10rpx;padding-right: 10rpx;border-right: 1px solid #f5f5f5;" v-if="item.status === '待发货'">待发货</text>
-									<text class="status" style="margin-right: 10rpx;padding-right: 10rpx;border-right: 1px solid #f5f5f5;" v-if="item.status === '待收货'">待确认</text>
-									<text class="status" v-if="item.status === '待评价'">待评价</text>
-									<text class="status" v-if="item.status === '已评价'">交易成功</text>
-									<image v-if="item.status === '待收货' || item.status === '待发货'" src="../../static/car.png" mode="widthFix"></image>
-								</view>
-							</view>
-							<view class="item-main uni-flex uni-row" v-for="product in item.orderProducts">
-								<view class="left uni-flex uni-row">
-									<image :src="'http://backend.krtamall.yiidev.cn' + product.product.image" mode="aspectFill"></image>
-									<view class="item-title">
-										<view class="name">
-											{{product.product.name}}
+								<view class="item-main uni-flex uni-row" v-for="product in item.orderProducts">
+									<view class="left uni-flex uni-row">
+										<image :src="'http://backend.krtamall.yiidev.cn' + product.product.image" mode="aspectFill"></image>
+										<view class="item-title">
+											<view class="name">
+												{{product.product.name}}
+											</view>
+											<text>套装产品加乳液</text>
 										</view>
-										<text>套装产品加乳液</text>
+									</view>
+									<view class="right">
+										<view class="money">￥{{product.price}}</view>
+										<text class="num">X{{product.quantity}}</text>
 									</view>
 								</view>
-								<view class="right">
-									<view class="money">￥{{product.price}}</view>
-									<text class="num">X{{product.quantity}}</text>
-								</view>
-							</view>
-							<view class="total uni-flex uni-row">
-								<view class="total-glod">
-									<text>赠送</text>
-									<text class="dark-color">100</text>
-									<text>个金币</text>
-								</view>
-								<view class="total-num uni-flex uni-row">
-									<text class="heji">共{{item.quantity}}件商品</text>
-									<view class="">
-										<text>合计：</text>
-										<text class="dark-color">￥{{item.amount}}</text>
+								<view class="total uni-flex uni-row">
+									<view class="total-glod">
+										<text>赠送</text>
+										<text class="dark-color">100</text>
+										<text>个金币</text>
+									</view>
+									<view class="total-num uni-flex uni-row">
+										<text class="heji">共{{item.quantity}}件商品</text>
+										<view class="">
+											<text>合计：</text>
+											<text class="dark-color">￥{{item.amount}}</text>
+										</view>
 									</view>
 								</view>
-							</view>
-							<view class="btn-list uni-flex uni-row">
-								<button type="primary" class="detail" @click="godetail(item.id)">订单详情</button>
-								<view v-if="item.status === '待付款'" class="right-btn uni-flex uni-row">
-									<button type="primary" class="blue btn1">朋友代付</button>
-									<button type="primary" class="dark" @click="goPay(item.id)">立即付款</button>
+								<view class="btn-list uni-flex uni-row">
+									<button type="primary" class="detail" @click="godetail(item.id)">订单详情</button>
+									<view v-if="item.status === '待付款'" class="right-btn uni-flex uni-row">
+										<button type="primary" class="blue btn1">朋友代付</button>
+										<button type="primary" class="dark" @click="goPay(item.id)">立即付款</button>
+									</view>
+									<view v-if="item.status === '待发货'" class="right-btn uni-flex uni-row">
+										<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
+										<button type="primary" class="dark" @click="sendGoods">提醒发货</button>
+									</view>
+									<view v-if="item.status === '待收货'" class="right-btn uni-flex uni-row">
+										<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
+										<button type="primary" class="dark" @click="getGoods">确认发货</button>
+									</view>
+									<view v-if="item.status === '待评价'" class="right-btn uni-flex uni-row">
+										<button type="primary" class="blue btn1">再来一单</button>
+										<button type="primary" class="dark" @click="goAssess">评价有奖</button>
+									</view>
 								</view>
-								<view v-if="item.status === '待发货'" class="right-btn uni-flex uni-row">
-									<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
-									<button type="primary" class="dark" @click="sendGoods">提醒发货</button>
-								</view>
-								<view v-if="item.status === '待收货'" class="right-btn uni-flex uni-row">
-									<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
-									<button type="primary" class="dark" @click="getGoods">确认发货</button>
-								</view>
-								<view v-if="item.status === '待评价'" class="right-btn uni-flex uni-row">
-									<button type="primary" class="blue btn1">再来一单</button>
-									<button type="primary" class="dark" @click="goAssess">评价有奖</button>
-								</view>
-							</view>
 
 
+							</view>
 						</view>
-					</view>
-					<view class='noCard' v-if="listItem.length===0" style="padding-top: 50px;text-align: center;">
-						暂无信息
-					</view>
-					<view class="bottom-line" style="width:100%;height:100upx;line-height:50px;">
-						<text v-if="bottom">-- 我是有底线的卡瑞塔 --</text>
-					</view>
-				</scroll-view>
+						<view class='noCard' v-if="listItem.length===0" style="padding-top: 50px;text-align: center;">
+							暂无信息
+						</view>
+						<view class="bottom-line" style="width:100%;height:100upx;line-height:50px;">
+							<text v-if="bottom">-- 我是有底线的卡瑞塔 --</text>
+						</view>
+					</scroll-view>
+				</mescroll-uni>
 			</swiper-item>
 		</swiper>
 		<!-- //评价 -->
@@ -153,12 +155,14 @@
 	import navTab from '@/components/navTab.vue';
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
+	import MescrollUni from "@/components/mescroll-uni/mescroll-uni.vue";
 	export default {
 		components: {
 			uniLoadMore,
 			navTab,
 			refresh,
-			uniPopup
+			uniPopup,
+			MescrollUni
 		},
 		computed: {
 			...mapGetters(["userInfo"])
@@ -180,6 +184,14 @@
 				], //数据格式
 				bottom: false,
 				starsNum: 1, // 星星数量
+				upOption: {
+					noMoreSize: 1,
+					textNoMore: "-- 我是有底线的卡瑞塔 --",
+					onScroll: true, // 是否监听滚动
+				},
+				downOption: {
+					auto: false //是否在初始化后,自动执行下拉回调callback; 默认true
+				},
 			}
 		},
 		// 		onLoad(options) {
@@ -295,45 +307,50 @@
 				}
 				this.tabCurrentIndex = index
 			},
-			// 其他请求事件 当然刷新和其他请求可以写一起 多一层判断。
-			isRequest(pages) {
-				return new Promise((resolve, reject) => {
-					this.pages[this.currentTab]++
-					var that = this
-					setTimeout(() => {
-						uni.hideLoading()
-						if (this.currentTab != 0) {
-							this.$http.request({
-								url: 'order',
-								method: 'get',
-								params: {
-									'OrderSearch[user_id]': this.userInfo.id,
-									'OrderSearch[status]': this.tabTitle[this.currentTab],
-									'expand': 'orderProducts,orderProducts.product',
-									'page': this.pages[this.currentTab],
-									'per-page': 2
-								}
-							}).then(res => {
-								let newData = res.data.items
-								resolve(newData)
-							}).catch(console.log)
-						} else {
-							this.$http.request({
-								url: 'order',
-								method: 'get',
-								params: {
-									'OrderSearch[user_id]': this.userInfo.id,
-									'expand': 'orderProducts,orderProducts.product',
-									'page': this.pages[this.currentTab],
-									'per-page': 2
-								}
-							}).then(res => {
-								let newData = res.data.items
-								resolve(newData)
-							}).catch(console.log)
-						}
-					}, 1000)
+			/*下拉刷新的回调 */
+			downCallback(mescroll) {
+				//联网加载数据
+				this.getListDataFromNet(0, 1, (data) => {
+					//联网成功的回调,隐藏下拉刷新的状态
+					mescroll.endSuccess();
+					//设置列表数据
+					this.list[0].unshift(data[0]);
+				}, () => {
+					//联网失败的回调,隐藏下拉刷新的状态
+					mescroll.endErr();
 				})
+			},
+			/*上拉加载的回调: mescroll携带page的参数, 其中num:当前页 从1开始, size:每页数据条数,默认10 */
+			upCallback(mescroll) {
+				console.log(1)
+				//联网加载数据
+				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData, totalSize) => {
+			
+					mescroll.endBySize(curPageData.length, totalSize);
+					//设置列表数据
+					this.list[0] = this.list[0].concat(curPageData);
+				}, () => {
+					//联网失败的回调,隐藏下拉刷新的状态
+					mescroll.endErr();
+				})
+			},
+			getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
+				let listData = [];
+				this.$http
+					.request({
+						url: "order",
+						method: "get",
+						params: {
+							'OrderSearch[user_id]': this.userInfo.id,
+							'expand': 'orderProducts,orderProducts.product',
+							page: pageNum,
+							"per-page": pageSize,
+						}
+					})
+					.then(res => {
+						listData = (res.data.items);
+						successCallback && successCallback(listData, res.data._meta.totalCount);
+					});
 			},
 			// swiper 滑动
 			swiperTab(e) {
@@ -344,40 +361,7 @@
 					this.$refs.navTab.longClick(index)
 				}
 			},
-			// 加载更多 util.throttle为防抖函数
-			lower1: util.throttle(function(e) {
-				console.log(`加载${this.currentTab}`) //currentTab表示当前所在页数 根据当前所在页数发起请求并带上page页数
-				uni.showLoading({
-					title: '加载中',
-					mask: true
-				})
-				this.isRequest().then((res) => {
-					if (res.length != 0) {
-						let tempList = this.list
-						res.forEach(ele => {
-							if (ele.status === '待付款') {
-								tempList[1].push(ele)
-							} else if (ele.status === '待发货') {
-								tempList[2].push(ele)
-							} else if (ele.status === '待收货') {
-								tempList[3].push(ele)
-							} else if (ele.status === '待评价') {
-								tempList[4].push(ele)
-							}
-						})
-						tempList[this.currentTab] = tempList[this.currentTab].concat(res)
-						this.list = tempList
-						this.$forceUpdate() //二维数组，开启强制渲染
-					} else {
-						uni.showToast({
-							icon: 'none',
-							title: '数据已经全部加载'
-						})
-						this.bottom = true
-						return false
-					}
-				})
-			}, 300),
+			
 			// 刷新touch监听
 			refreshStart(e) {
 				this.$refs.refresh.refreshStart(e);
