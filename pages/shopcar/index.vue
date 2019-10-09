@@ -22,8 +22,8 @@
 					</view>
 					<view class="detail uni-flex uni-row" v-for="item in shopcar">
 						<view class="left uni-flex uni-row" style="align-items: center;">
-							<checkbox-group class="checkbox-group" @change="oneChange">
-								<checkbox value="cb" :checked="status" color="#ff0080" style="transform:scale(0.8);" />
+							<checkbox-group class="checkbox-group" @change="oneChange(item, $event)">
+								<checkbox :value="(item.price * item.num).toString()" :checked="status" color="#ff0080" style="transform:scale(0.8);" />
 							</checkbox-group>
 							<image :src="'http://backend.krtamall.yiidev.cn'+ item.image" mode="aspectFill"></image>
 						</view>
@@ -96,17 +96,8 @@
 		components: {
 			uniNumberBox
 		},
-		watch: {
-			selectAll(val) {
-				console.log(val)
-			}
-		},
 		onLoad() {
-			let totalMoney = 0
-			this.shopcar.forEach(ele => {
-				totalMoney += ele.num * ele.price
-			})
-			this.totalMoney = totalMoney
+			console.log(this.shoper)
 			// this.$store.commit("cartnum/clearnum");
 			// this.$store.commit("cartnum/clearShopcar");
 		},
@@ -130,11 +121,15 @@
 				this.totalMoney = totalMoney
 			},
 			// 单个选
-			oneChange(data) {
-				if (data.target.value.length === 0) {
+			oneChange(data, $event) {
+				console.log($event)
+				if ($event.target.value.length === 0) {
 					this.num--
+					this.totalMoney -= data.price * data.num
+					console.log(this.num)
 				} else {
 					this.num++
+					this.totalMoney += data.price * data.num
 				}
 				if (this.num === this.shopcar.length) {
 					this.selectStatus = true
@@ -144,12 +139,19 @@
 			},
 			// 全选
 			selectAll(data) {
+				console.log(this.shopcar)
 				if (data.target.value.length != 0) {
 					// 全选
+					let totalMoney = 0
+					this.shopcar.forEach(ele => {
+						totalMoney += ele.num * ele.price
+					})
+					this.totalMoney = totalMoney
 					this.selectStatus = true
 					this.status = true
 					this.num = this.shopcar.length
 				} else {
+					this.totalMoney = 0
 					this.selectStatus = false
 					this.status = false
 					this.num = 0
