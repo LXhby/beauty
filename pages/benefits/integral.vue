@@ -11,7 +11,7 @@
 					</view>
 					<view>
 						<text>已用积分：</text>
-						<text class="dark-color">380金币</text>
+						<text class="dark-color">{{userInfo.coin_used}}金币</text>
 					</view>
 
 				</view>

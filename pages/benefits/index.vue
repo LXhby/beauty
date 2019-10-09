@@ -2,24 +2,32 @@
 	<view class="benifit-page">
 		<top-bar rightText="店铺设置" :detailist="detailist" :isreal="false"></top-bar>
 		<view class="nav-list">
-			<uni-grid :column="4" :show-border="false" :square="false" class="my-list"  @change="goPage">
-				<uni-grid-item>
-					<image class="image" src="../../static/meeting.png" mode="widthFix" />
+			<view class="my-list uni-flex uni-row">
+				<view class="item" @click="goPage('/pages/benefits/meeting')">
+					<view class="text-one">
+						<image class="image" src="../../static/meeting.png" mode="widthFix" />
+					</view>
 					<text class="text" :class="{'light-color':lightIndex==0}">会议活动</text>
-				</uni-grid-item>
-				<uni-grid-item>
-					<image class="image" src="../../static/promotion.png" mode="widthFix" />
+				</view>
+				<view class="item" @click="goPage('/pages/benefits/preferential')">
+					<view class="text-one">
+						<image class="image" src="../../static/promotion.png" mode="widthFix" />
+					</view>
 					<text class="text" :class="{'light-color':lightIndex==1}">特惠购</text>
-				</uni-grid-item>
-				<uni-grid-item>
-					<image class="image" src="../../static/integral.png" mode="widthFix" />
+				</view>
+				<view class="item" @click="goPage('/pages/benefits/integral')">
+					<view class="text-one">
+						<image class="image" src="../../static/integral.png" mode="widthFix" />
+					</view>
 					<text class="text" :class="{'light-color':lightIndex==2}">积分购</text>
-				</uni-grid-item>
-				<uni-grid-item>
-					<image class="image" src="../../static/vip.png" mode="widthFix" />
+				</view>
+				<view class="item" @click="goPage('/pages/benefits/upvue')">
+					<view class="text-one">
+						<image class="image" src="../../static/vip.png" mode="widthFix" />
+					</view>
 					<text class="text" :class="{'light-color':lightIndex==3}">升级VIP</text>
-				</uni-grid-item>
-			</uni-grid>
+				</view>
+			</view>
 		</view>
 		<view class="swiper-box">
 			<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="interval" :duration="duration" :circular="true">
@@ -48,54 +56,32 @@
 				detailist: ["可提现", "待提现", "产品额度"],
 				interval: 2000,
 				duration: 500,
-				bannerList:[]
+				bannerList: []
 			}
 		},
 		created() {
 			// 获取轮播图
 			this.$http
-			.request({
-				url: "carousels",
-				method: "get",
-				params: {
-				"CarouselSearch[group]": "home"
-				}
-			})
-			.then(res => {
-				this.bannerList = res.data.items;
-				console.log(this.bannerList)
-				this.url = this.$baseUrl;
-			});
+				.request({
+					url: "carousels",
+					method: "get",
+					params: {
+						"CarouselSearch[group]": "home"
+					}
+				})
+				.then(res => {
+					this.bannerList = res.data.items;
+					console.log(this.bannerList)
+					this.url = this.$baseUrl;
+				});
 		},
-		methods:{
-			goPage(event){
-				var index = event.detail.index;
-				switch (index){
-					case 0:
-					uni.navigateTo({
-					    url: '/pages/benefits/meeting'
-					});
-					break;
-					case 1:
-					uni.navigateTo({
-					    url: '/pages/benefits/preferential'
-					});
-					break;
-					case 2:
-					uni.navigateTo({
-					    url: '/pages/benefits/integral'
-					});
-					break;
-					case 3:
-					uni.navigateTo({
-					    url: '/pages/benefits/upvue'
-					});
-					break;
-				}
-				
-			},
-
-		}
+		methods: {
+			goPage(event) {
+				uni.navigateTo({
+					url: event
+				});
+			}
+		},
 	}
 </script>
 
@@ -105,12 +91,28 @@
 
 	.benifit-page {
 		.nav-list {
-			image {
-				width: 90rpx;
-				height: 90rpx;
+			margin-top: 14rpx;
+			padding: 0 20rpx;
+			margin-bottom: 34rpx;
+
+			.my-list {
+				justify-content: space-around;
+				text-align: center;
 			}
 
+			.text-one {
+				width: 90rpx;
+				height: 90rpx;
+
+				image {
+					width: 90rpx;
+					height: 90rpx;
+				}
+			}
+
+
 			.text {
+				display: block;
 				font-size: 24rpx;
 			}
 
@@ -127,6 +129,8 @@
 
 			.swiper {
 				height: 180rpx;
+				overflow: hidden;
+				border-radius: 5px;
 
 				image {
 					width: 100%;
