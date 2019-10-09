@@ -2,9 +2,9 @@
 	<view class="course">
 		<view class="banner">
 			<image :src="'http://backend.krtamall.yiidev.cn' + forum.banner" mode="aspectFill"></image>
-			<view class="shop-car">
+			<view class="shop-car" @click="gocart">
 				<text class="iconfont">&#xe603;</text>
-				<uni-badge text="9" type="error" class="shopcar-badge" />
+				<uni-badge :text="cartnum.toString()" type="error" class="shopcar-badge" />
 			</view>
 		</view>
 
@@ -81,8 +81,8 @@
 
 		</view>
 		<view class="couse-money">
-			<text class="new-price">￥ {{forum.price}}元</text>
-			<text class="old-price">原价: ￥ {{forum.original_price}}元</text>
+			<text class="new-price">￥{{forum.price}}</text>
+			<text class="old-price">原价: ￥{{forum.original_price}}</text>
 			<button class="btn" type="primary">立即报名</button>
 		</view>
 		<view class="height-box">
@@ -96,9 +96,15 @@
 
 <script>
 	import uniBadge from '@/components/uni-badge/uni-badge.vue'
+	import {
+		mapGetters
+	} from "vuex";
 	export default {
 		components: {
 			uniBadge
+		},
+		computed: {
+			...mapGetters(['config', 'cartnum'])
 		},
 		data() {
 			return {
@@ -112,6 +118,13 @@
 			}).then(res => {
 				this.forum = res.data
 			}).catch(console.log)
+		},
+		methods:{
+			gocart() {
+				uni.switchTab({
+					url: '/pages/shopcar/index'
+				})
+			},
 		}
 	}
 </script>
@@ -123,17 +136,11 @@
 		background-color: #f1f1f1;
 
 		.banner {
-			position: absolute;
+			position: relative;
 			width: 100%;
 			height: 420rpx;
-			left: 0;
-			top: 0;
-
 			image {
 				width: 100%;
-				position: absolute;
-				top: 0;
-				left: 0;
 				height: 420rpx;
 			}
 
@@ -163,9 +170,10 @@
 
 		.course-show {
 			position: relative;
-			z-index: 999;
+			z-index: 3;
+			margin-top:-72rpx;
 			box-sizing: border-box;
-			padding: 350rpx 20rpx 20rpx 20rpx;
+			padding: 0 20rpx 20rpx 20rpx;
 
 			.course-name {
 				margin-bottom: 20rpx;
@@ -315,6 +323,7 @@
 			}
 
 			.old-price {
+				flex: 1;
 				margin: 0 30rpx 0 20rpx;
 				text-decoration: line-through;
 				font-size: 28rpx;
@@ -322,11 +331,11 @@
 			}
 
 			.btn {
-				width: 292rpx;
+				width: 200rpx;
 				height: 60rpx;
 				padding: 0;
 				line-height: 60rpx;
-
+				border-radius: 60rpx;
 				font-size: 32rpx;
 				background-color: $uni-bg-color;
 			}
