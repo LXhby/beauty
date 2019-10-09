@@ -25,17 +25,17 @@
         :class="[{ 'active': isShowSticky }, 'screen-btn','uni-flex','uni-row']"
         v-if="tabIndex == 0"
       >
-        <view class="price">
-          <text>价格</text>
-          <text class="iconfont">&#xe71c;</text>
+        <view :class="[{'active-sort':sortType.indexOf('price') != -1},'price']" @click="handlesort('price')">
+        	<text>价格</text>
+        	<text class="iconfont ">&#xe71c;</text>
         </view>
-        <view class="price">
-          <text>折扣</text>
-          <text class="iconfont">&#xe71c;</text>
+        <view :class="[{'active-sort':sortType.indexOf('discount') != -1},'price']" @click="handlesort('discount')">
+        	<text>折扣</text>
+        	<text class="iconfont ">&#xe71c;</text>
         </view>
-        <view class="price">
-          <text>销量</text>
-          <text class="iconfont">&#xe71c;</text>
+        <view :class="[{'active-sort':sortType.indexOf('sold_count') != -1},'price']" @click="handlesort('sold_count')">
+        	<text>销量</text>
+        	<text class="iconfont ">&#xe71c;</text>
         </view>
         <view class="price all">
           <sl-filter
@@ -81,8 +81,7 @@ export default {
           title: "全部商品",
           key: "sort",
           isSort: true,
-          reflexTitle: false,
-          defaultSelectedIndex: 0,
+          reflexTitle: true,
           detailList: [
             {
               title: "全部商品",
@@ -90,7 +89,9 @@ export default {
             }
           ]
         }
-      ]
+      ],
+	  sortType:'',
+	  category_id:''
     };
   },
   components: {
@@ -126,8 +127,27 @@ export default {
   },
   methods: {
     result(val) {
-      console.log("filter_result:" + JSON.stringify(val));
+    	this.category_id = val.sort;
+    	this.mescroll.resetUpScroll()
     },
+	handlesort(item){
+		if(!this.sortType){
+			this.sortType = item;
+		}else{
+			console.log()
+			if(this.sortType.indexOf(item) != -1){
+				if(this.sortType.indexOf('-') != -1){
+					this.sortType = item
+				}else{
+					this.sortType = '-'+item
+				}
+				
+			}else{
+				this.sortType = item;
+			}
+		}
+		this.mescroll.resetUpScroll()
+	},
     // 切换tab
     mescrollInit(mescroll) {
       this.mescroll = mescroll;
@@ -214,9 +234,12 @@ export default {
             url: "products",
             method: "get",
             params: {
-              "ProductSearch[category_id]": this.tabIndex ? 2 : null,
               page: pageNum,
-              "per-page": pageSize
+              "per-page": pageSize,
+              'ProductSearch[is_enabled]':1,
+              'ProductSearch[is_coin_usable]':this.tabIndex?1:0,
+              sort:this.sortType,
+              'ProductSearch[category_id]':this.category_id
             }
           })
           .then(res => {
@@ -298,6 +321,9 @@ page {
     top: 80rpx;
     left: 0;
     width: 100%;
+  }
+  .active-sort{
+  	color: $uni-bg-color;
   }
   .screen-btn {
     justify-content: space-around;
