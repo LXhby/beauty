@@ -224,7 +224,7 @@
 				.news-item {
 					padding: 20rpx 40rpx;
 					margin-bottom: 34rpx;
-					background-color: #f4f4f4;
+					background-color: #f5f5f5;
 					border: 1px solid #dddddd;
 					border-radius: 4px;
 

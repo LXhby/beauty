@@ -96,7 +96,7 @@
 <style lang="scss" scoped>
 @import "@/common/common.scss";
 .draw-back {
-  background-color: #f4f4f4;
+  background-color: #f5f5f5;
   .order-info {
     margin-bottom: 20rpx;
     background-color: #fff;
@@ -140,7 +140,7 @@
         height: 230rpx;
         padding: 20rpx;
         margin: 20rpx 40rpx;
-        background: #f4f4f4;
+        background: #f5f5f5;
         border-radius: 5px;
       }
 
@@ -191,7 +191,7 @@
     display: flex;
     align-items: center;
     padding: 30rpx 20rpx;
-    border-bottom: 1px solid #f4f4f4;
+    border-bottom: 1px solid #f5f5f5;
   }
 }
 </style>

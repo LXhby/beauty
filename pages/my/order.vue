@@ -106,7 +106,7 @@
 					<text class="iconfont star" @click="clickStar(4)">&#xe623;</text>
 					<text class="iconfont star" @click="clickStar(5)">&#xe623;</text>
 				</view>
-				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f4f4f4;" placeholder=""
+				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f5f5f5;" placeholder=""
 				 value="非常好" />
 				<view class="upload uni-flex uni-row">
 					<view class="up-image">

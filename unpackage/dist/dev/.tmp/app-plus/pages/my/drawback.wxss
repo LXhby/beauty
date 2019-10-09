@@ -86,7 +86,7 @@
   height: 230rpx;
   padding: 20rpx;
   margin: 20rpx 40rpx;
-  background: #f4f4f4;
+  background: #f5f5f5;
   border-radius: 5px;
 }
 .order textarea.data-v-ee66d374 {
@@ -98,12 +98,12 @@
   margin: 30rpx 40rpx;
   text-align: left;
   font-size: 28rpx;
-  background: #f4f4f4;
+  background: #f5f5f5;
   border-radius: 5px;
   color: #333;
 }
 .draw-back.data-v-ee66d374 {
-  background-color: #f4f4f4;
+  background-color: #f5f5f5;
 }
 .draw-back .order-info.data-v-ee66d374 {
     margin-bottom: 20rpx;
@@ -160,7 +160,7 @@
         height: 230rpx;
         padding: 20rpx;
         margin: 20rpx 40rpx;
-        background: #f4f4f4;
+        background: #f5f5f5;
         border-radius: 5px;
 }
 .draw-back .back-reason .content .upload-photo.data-v-ee66d374 {
@@ -226,6 +226,6 @@
         -ms-flex-align: center;
             align-items: center;
     padding: 30rpx 20rpx;
-    border-bottom: 1px solid #f4f4f4;
+    border-bottom: 1px solid #f5f5f5;
 }
 

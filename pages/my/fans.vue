@@ -62,24 +62,7 @@
 				},
 			}
 		},
-		onLoad() {
-			this.findAllReward()
-		},
 		methods: {
-			findAllReward() {
-				this.$http.request({
-					url: 'users',
-					method: 'get',
-					params: {
-						"UserSearch[from_user_id]": this.userInfo.id,
-						page: this.page,
-						expand: 'member',
-						"per-page": 10
-					}
-				}).then(res => {
-					this.fansList = res.data.items
-				}).catch(console.log)
-			},
 			/*下拉刷新的回调 */
 			downCallback(mescroll) {
 				//联网加载数据

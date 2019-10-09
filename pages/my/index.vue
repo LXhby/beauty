@@ -15,28 +15,28 @@
 				</view>
 			</navigator>
 
-			<uni-grid :column="5" :show-border="false" :square="false" class="my-list" @change="navTo">
-				<uni-grid-item >
+			<view class="my-list uni-flex uni-row" @change="navTo">
+				<view  class="item">
 					<image class="image" src="../../static/ic_待付款.png" mode="aspectFill"  />
 					<text class="text">待付款</text>
-				</uni-grid-item>
-				<uni-grid-item>
+				</view>
+				<view class="item">
 					<image class="image" src="../../static/待发货订单.png" mode="aspectFill" />
 					<text class="text">待发货</text>
-				</uni-grid-item>
-				<uni-grid-item>
+				</view>
+				<view class="item">
 					<image class="image" src="../../static/待收货.png" mode="aspectFill" />
 					<text class="text">待收货</text>
-				</uni-grid-item>
-				<uni-grid-item>
+				</view>
+				<view class="item">
 					<image class="image" src="../../static/待评价订单.png" mode="aspectFill" />
 					<text class="text">待评价</text>
-				</uni-grid-item>
-				<uni-grid-item>
+				</view>
+				<view class="item">
 					<image class="image" src="../../static/退款.png" mode="aspectFill" />
 					<text class="text">退款</text>
-				</uni-grid-item>
-			</uni-grid>
+				</view>
+			</view>
 		</view>
 
 
@@ -210,7 +210,7 @@
 					}
 
 					text {
-						
+						color: $uni-text-color;
 						font-size: 32rpx;
 						line-height: 32rpx;
 					}
@@ -220,6 +220,7 @@
 					text {
 						font-size: 24rpx;
 						line-height: 24rpx;
+						color: $uni-text-color;
 					}
 					.iconfont{
 						font-size: 20rpx;
@@ -229,9 +230,14 @@
 			}
 
 			.my-list {
+				padding: 20rpx 0;
+				justify-content:space-around;
+				text-align: center;
 				text {
+					display: block;
 					font-size: 24rpx;
 					color: #000;
+					
 				}
 
 				image {
@@ -268,8 +274,8 @@
 						height: 100%;
 						left: 36px;
 						line-height: 86rpx;
-						font-size: 32rpx;
-						color: #c2c2c2;
+						font-size: 28rpx;
+						color: #303133;
 					}
 				}
 
@@ -280,8 +286,8 @@
 					margin: auto;
 					right: 0;
 					height: 28rpx;
-					font-size: 32rpx;
-					color: #ccc;
+					font-size: 28rpx;
+					color: #909399;
 				}
 			}
 		}

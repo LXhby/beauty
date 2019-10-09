@@ -1,7 +1,12 @@
 <template>
 	<view class="good-detail">
 		<view class="banner">
-			<image src="../../static/37d52be5170e1b25d30ff44db4b0791c.jpg" mode="aspectFill"></image>
+			<swiper :indicator-dots="false" :autoplay="true" :interval="3000" :duration="1000" :circular="true" v-if="info.pics.length" style="height:100%;" >
+				<swiper-item v-for="(img,index) in info.pics" :key="index">
+					<image :src="url+img" mode="aspectFill"></image>
+				</swiper-item>
+			</swiper>
+			<image :src="url+info.image" mode="aspectFill" v-else></image>
 		</view>
 		<view class="shop-car" @click="gocart">
 			<text class="iconfont">&#xe603;</text>
@@ -68,56 +73,37 @@
 					<view class="line"></view>
 					<text class="text">粉丝们好评如潮</text>
 				</view>
-				<view class="right" @click="gocomment">
-					620评论
+				<view class="right" @click="gocomment" v-if="totalnum">
+					{{totalnum}}评论
 					<text class="iconfont">&#xe642;</text>
 				</view>
 			</view>
 			<view class="comment-list">
-				<view class="comment-item uni-flex uni-row">
-					<image src="../../static/image_massge_people2.png" mode="widthFix" class="headurl"></image>
+				<view class="comment-item uni-flex uni-row" v-for="(item,index) in commentList" :key="index">
+					<image :src="url+item.user.headimgurl" mode="widthFix" class="headurl" v-if="item.user.headimgurl"></image>
+					<image :src="url+item.user.avatar" mode="widthFix" class="headurl" v-if="item.user.avatar"></image>
 					<view class="comment-main">
 						<view class="comment-user uni-flex uni-row">
 							<view>
-								<text class="name">王晓文</text>
-								<text class="time">3天前</text>
+								<text class="name">{{item.user.maskedName}}</text>
+								<text class="time">{{gettimeago(item.updated_at)}}</text>
 							</view>
 							<view class="star">
-								<text class="iconfont light-star">&#xe623;</text>
-								<text class="iconfont light-star">&#xe623;</text>
-								<text class="iconfont light-star">&#xe623;</text>
-								<text class="iconfont">&#xe623;</text>
-								<text class="iconfont">&#xe623;</text>
+								<text :class="[{'light-star':item.rate>=1},'iconfont']">&#xe623;</text>
+								<text :class="[{'light-star':item.rate>=2},'iconfont']">&#xe623;</text>
+								<text :class="[{'light-star':item.rate>=3},'iconfont']">&#xe623;</text>
+								<text :class="[{'light-star':item.rate>=4},'iconfont']">&#xe623;</text>
+								<text :class="[{'light-star':item.rate>=5},'iconfont']">&#xe623;</text>
 							</view>
 						</view>
-						<view class="comment-text">
-							很不错哦很不错哦
+						<view class="comment-text" v-if="item.content">
+							{{item.content}}
+						</view>
+						<view class="comment-text" v-else>
+							此用户没有填写评价
 						</view>
 						<view class="comment-image">
-							<image src="../../static/006tlvijgy1g6ldbo6anuj30e20e2wjb.jpg" mode="aspectFill"></image>
-							<image src="../../static/006tlvijgy1g6ldbo6anuj30e20e2wjb.jpg" mode="aspectFill"></image>
-							<image src="../../static/006tlvijgy1g6ldbo6anuj30e20e2wjb.jpg" mode="aspectFill"></image>
-						</view>
-					</view>
-				</view>
-				<view class="comment-item uni-flex uni-row">
-					<image src="../../static/image_massge_people2.png" mode="widthFix" class="headurl"></image>
-					<view class="comment-main">
-						<view class="comment-user uni-flex uni-row">
-							<view>
-								<text class="name">王晓文</text>
-								<text class="time">3天前</text>
-							</view>
-							<view class="star">
-								<text class="iconfont light-star">&#xe623;</text>
-								<text class="iconfont">&#xe623;</text>
-								<text class="iconfont">&#xe623;</text>
-								<text class="iconfont">&#xe623;</text>
-								<text class="iconfont">&#xe623;</text>
-							</view>
-						</view>
-						<view class="comment-text">
-							很不错哦很不错哦很不错哦很不错哦很不错哦很不错哦很不错哦很不错哦
+							<image :src="url+ele" mode="aspectFill" v-for="(ele,index) in item.images" :key="index"></image>
 						</view>
 					</view>
 				</view>
@@ -159,6 +145,7 @@
 
 <script>
 	import uniBadge from '@/components/uni-badge/uni-badge.vue';
+	import Moment from "moment";
 	import {
 		mapGetters
 	} from "vuex";
@@ -169,8 +156,13 @@
 		data() {
 			return {
 				url: '',
-				info: {},
-				browseList:[]
+				info: {
+					pics:[]
+				},
+				browseList:[],
+				commentList:[],
+				totalnum:0,
+				id:''
 			}
 		},
 		computed: {
@@ -181,6 +173,25 @@
 			this.getInfo();
 		},
 		methods: {
+			 gettimeago(value) {
+				   var time =Moment().format("X") - Moment(value).format("X");
+				  	var minite= parseInt(time/60);
+				  	var hour= parseInt(time/60/60);
+					  var day= parseInt(time/60/60/24);
+					 if(day>=1){
+						 return day+'天前'
+					 }else{
+						 if(hour>=1){
+							 return hour +'小时前'
+						 }else{
+							 if(minite>=1){
+								 return minite+'分钟前'
+							 }else{
+								 return time+'秒前'
+							 }
+						 }
+					 }
+    },
 			getInfo() {
 				uni.showLoading({
 					title: '加载中'
@@ -189,10 +200,10 @@
 						url: "products",
 						method: "get",
 						params: {
-							"ProductSearch[category_id]": this.tabIndex ? 2 : null,
 							page: 1,
 							"per-page": 10,
-							is_enabled:1
+							is_enabled:1,
+							
 						}
 					})
 					.then(res => {
@@ -202,6 +213,20 @@
 						this.browseList = this.getRandomArrayElements(data,3);
 						console.log(this.browseList)
 					});
+					this.$http.request({
+							url: "product-comment",
+							method: "get",
+							params: {
+								page: 1,
+								"per-page": 2,
+								'ProductCommentSearch[product_id]':this.id,
+								expand:'user'
+							}
+						})
+						.then(res => {
+							this.commentList = res.data.items;
+							this.totalnum = res.data._meta.totalCount;
+						});
 				this.$http.request({
 						url: "products/" + this.id,
 						method: "get",
@@ -231,7 +256,7 @@
 			},
 			gocomment() {
 				uni.navigateTo({
-					url: '/pages/home/comment'
+					url: '/pages/home/comment?id='+this.id
 				});
 			},
 			gopage(id){
@@ -251,6 +276,7 @@
 				})
 			},
 			gocart() {
+				console.log(22)
 				uni.switchTab({
 					url: '/pages/shopcar/index'
 				})

@@ -216,7 +216,7 @@
       font-size: 28rpx;
       line-height: 25rpx;
       padding: 8rpx 0 8rpx 16rpx;
-      background: #f4f4f4;
+      background: #f5f5f5;
       border-radius: 4px;
       text-align: left;
 }

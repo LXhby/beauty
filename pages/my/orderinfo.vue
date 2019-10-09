@@ -138,7 +138,7 @@
 					<text class="iconfont star" @click="clickStar(4)">&#xe623;</text>
 					<text class="iconfont star" @click="clickStar(5)">&#xe623;</text>
 				</view>
-				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f4f4f4;" placeholder=""
+				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f5f5f5;" placeholder=""
 				 value="非常好" />
 				<view class="upload uni-flex uni-row">
 					<view class="up-image">
@@ -179,15 +179,29 @@
 
 <script>
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
+	import {
+		mapGetters
+	} from "vuex";
 	export default {
 		components: {
 			uniPopup
+		},
+		computed: {
+			...mapGetters(['userInfo'])
 		},
 		data() {
 			return {
 				orderInfo: '',
 				orderId: '',
-				starsNum: 1, // 星星数量
+				starsNum:1,
+				commentinfo:{
+					user_id:'',
+					product_id:'',
+					rate: 1, // 星星数量
+					content:'',
+					image:[],
+					is_anonymous:false
+				}
 			}
 		},
 		mounted(){
@@ -202,7 +216,8 @@
 					'expand': 'orderProducts,orderProducts.product'
 				}
 			}).then(res => {
-				this.orderInfo = res.data
+				this.orderInfo = res.data;
+				this.commentinfo.product_id = 1;
 			}).catch(console.log)
 		},
 		methods:{
@@ -222,7 +237,9 @@
 			},
 			// 立即评价
 			goAssess() {
-				this.$refs.popup.open()
+				uni.navigateTo({
+					url: '/pages/my/postcomment?orderId='+this.orderId
+				});
 			},
 			// 提交评价
 			formSubmit() {
@@ -248,7 +265,7 @@
 	@import "@/common/common.scss";
 
 	.order {
-		background-color: #f4f4f4;
+		background-color: #f5f5f5;
 
 		.header {
 			position: relative;
@@ -283,7 +300,7 @@
 				justify-content: space-between;
 				padding: 0 20rpx;
 				height: 75rpx;
-				border-bottom: 1px solid #f4f4f4;
+				border-bottom: 1px solid #f5f5f5;
 
 				.header-left {
 					display: flex;
@@ -349,7 +366,7 @@
 					justify-content: space-between;
 					padding: 30rpx 0;
 					margin: 0 30rpx;
-					border-bottom: 1px solid #f4f4f4;
+					border-bottom: 1px solid #f5f5f5;
 
 					image {
 						width: 135rpx;
@@ -584,16 +601,6 @@
 			.title{
 				padding-top:84rpx;
 				color: #333;
-			}
-			.star{
-				margin:30rpx 0 20rpx 0;
-				.iconfont{
-					margin: 0 10rpx;
-					color: #999;
-				}
-				.dark-color{
-					color: $uni-bg-color;
-				}
 			}
 			
 		}

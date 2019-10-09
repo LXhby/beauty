@@ -86,7 +86,7 @@
   height: 230rpx;
   padding: 20rpx;
   margin: 20rpx 40rpx;
-  background: #f4f4f4;
+  background: #f5f5f5;
   border-radius: 5px;
 }
 .order textarea.data-v-dece29ce {
@@ -98,7 +98,7 @@
   margin: 30rpx 40rpx;
   text-align: left;
   font-size: 28rpx;
-  background: #f4f4f4;
+  background: #f5f5f5;
   border-radius: 5px;
   color: #333;
 }

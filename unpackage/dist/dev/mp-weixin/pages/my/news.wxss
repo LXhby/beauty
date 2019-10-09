@@ -237,7 +237,7 @@
   height: 230rpx;
   padding: 20rpx;
   margin: 20rpx 40rpx;
-  background: #f4f4f4;
+  background: #f5f5f5;
   border-radius: 5px;
 }
 .order textarea.data-v-52ccfdae {
@@ -249,7 +249,7 @@
   margin: 30rpx 40rpx;
   text-align: left;
   font-size: 28rpx;
-  background: #f4f4f4;
+  background: #f5f5f5;
   border-radius: 5px;
   color: #333;
 }
@@ -307,7 +307,7 @@
 .news-page .main .main-content .news-item.data-v-52ccfdae {
     padding: 20rpx 40rpx;
     margin-bottom: 34rpx;
-    background-color: #f4f4f4;
+    background-color: #f5f5f5;
     border: 1px solid #dddddd;
     border-radius: 4px;
 }
