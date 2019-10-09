@@ -22,7 +22,9 @@
 					</view>
 					<view class="detail uni-flex uni-row" v-for="item in shopcar">
 						<view class="left uni-flex uni-row" style="align-items: center;">
-							<checkbox value="cb" checked="true" color="#ff0080" style="transform:scale(0.8);" />
+							<checkbox-group class="checkbox-group" @change="oneChange">
+								<checkbox value="cb" :checked="status" color="#ff0080" style="transform:scale(0.8);" />
+							</checkbox-group>
 							<image :src="'http://backend.krtamall.yiidev.cn'+ item.image" mode="aspectFill"></image>
 						</view>
 						<view class="right">
@@ -46,9 +48,11 @@
 			<view class="handle-bottom ">
 				<view class="shop-bottom uni-flex uni-row">
 					<view class="all-left">
-						<label class="radio">
-							<checkbox value="cb" checked="true" color="#ff0080" style="transform:scale(0.8);" />全选
-						</label>
+						<checkbox-group @change="selectAll">
+							<label class="radio">
+								<checkbox value="cb" :checked="selectStatus" color="#ff0080" style="transform:scale(0.8);" />全选
+							</label>
+						</checkbox-group>
 						<text>赠送128个金币</text>
 					</view>
 					<view class="all-right uni-flex uni-row">
@@ -81,6 +85,9 @@
 				hasData: true,
 				productNum: 0,
 				totalMoney: 0,
+				status: false,
+				selectStatus: false,
+				num: 0
 			}
 		},
 		computed: {
@@ -88,6 +95,11 @@
 		},
 		components: {
 			uniNumberBox
+		},
+		watch: {
+			selectAll(val) {
+				console.log(val)
+			}
 		},
 		onLoad() {
 			let totalMoney = 0
@@ -116,7 +128,33 @@
 					totalMoney += ele.num * ele.price
 				})
 				this.totalMoney = totalMoney
-			}
+			},
+			// 单个选
+			oneChange(data) {
+				if (data.target.value.length === 0) {
+					this.num--
+				} else {
+					this.num++
+				}
+				if (this.num === this.shopcar.length) {
+					this.selectStatus = true
+				} else {
+					this.selectStatus = false
+				}
+			},
+			// 全选
+			selectAll(data) {
+				if (data.target.value.length != 0) {
+					// 全选
+					this.selectStatus = true
+					this.status = true
+					this.num = this.shopcar.length
+				} else {
+					this.selectStatus = false
+					this.status = false
+					this.num = 0
+				}
+			},
 		}
 	}
 </script>
@@ -224,6 +262,10 @@
 								width: 150rpx;
 								height: 150rpx;
 								margin-left: 10rpx;
+							}
+
+							.checkbox-group {
+								width: 60rpx;
 							}
 						}
 
