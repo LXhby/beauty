@@ -220,6 +220,7 @@
 							}
 							this.menuList[0].detailList.push(obj);
 						})
+						console.log(this.menuList[0].detailList)
 					}
 
 
