@@ -276,7 +276,6 @@
 				})
 			},
 			gocart() {
-				console.log(22)
 				uni.switchTab({
 					url: '/pages/shopcar/index'
 				})
