@@ -8,7 +8,7 @@
 						<text class="title">{{item.name}}</text>
 						<view class="bottom ">
 							<text style="margin-right:10rpx;">销量{{item.sold_count}}笔</text>
-							<text>好评{{item.rate}}</text>
+							<text>好评{{getrate(item.rate)}}</text>
 						</view>
 					</view>
 				</view>
@@ -58,6 +58,9 @@
 			  
 		},
 		methods:{
+			getrate(rate){
+				return (Math.round(rate/5*10000) / 100.00 + "%");
+			},
 			addcar(item){
 				 this.$store.commit("cartnum/setnum", 1);
 				 this.$store.commit("cartnum/setShopcar", item);
@@ -66,7 +69,8 @@
 				 	text: this.cartnum.toString()
 				 });
 				 uni.showToast({
-				 	title:'加入购物车成功！'
+					 title:'加入购物车成功！',
+					 icon:none
 				 })
 				 console.log('cartnum',this.cartnum)
 			},

@@ -117,6 +117,10 @@ const router = new Router({
 			path: '/pages/my/toPay',
 			name: 'toPay'
 		},
+		{
+			path:'/pages/my/postcomment',
+			name:'postComment'
+		}
 	]
 });
 

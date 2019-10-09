@@ -84,7 +84,7 @@
 		{
 			"path": "pages/my/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "我的"
 			}
 		},
 		{
@@ -187,6 +187,12 @@
 			"path": "pages/my/toPay",
 			"style": {
 				"navigationBarTitleText": "订单待付款"
+			}
+		},
+		{
+			"path": "pages/my/postcomment",
+			"style": {
+				"navigationBarTitleText": "发表评论"
 			}
 		}
 	],

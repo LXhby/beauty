@@ -121,7 +121,7 @@
 	}
 	.to-pay {
 		height: 100%;
-		background-color: #f4f4f4;
+		background-color: #f5f5f5;
 
 		.user-info {
 			margin-bottom: 20rpx;
@@ -297,7 +297,7 @@
 				height: 80rpx;
 				align-items: center;
 				justify-content: space-between;
-				border-bottom: 1px solid #f4f4f4;
+				border-bottom: 1px solid #f5f5f5;
 				color:#333;
 				.uni-input {
 					color: $uni-text-color-grey;

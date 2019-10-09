@@ -204,7 +204,7 @@
 	.beautiful {
 		height: 100%;
 		position: relative;
-		background-color: #f4f4f4;
+		background-color: #f5f5f5;
 	
 		.swiper-box {
 			width: 100%;

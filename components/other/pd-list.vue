@@ -132,7 +132,7 @@
 		}
 		.more-img {
 			padding: 25rpx 0;
-			border-bottom: 1px solid #f4f4f4;
+			border-bottom: 1px solid #f5f5f5;
 			background-color: white;
 			margin: 0 25rpx;
 			background: #FFFFFF;
