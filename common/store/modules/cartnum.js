@@ -16,6 +16,13 @@ const mutations = {
 			return false;
 		}
 	},
+	delcollect:(state,info)=>{
+		var item = state.collect.forEach((item,index)=>{
+			if(item.id == info.id){
+				state.collect.splice(index,1)
+			}
+		})
+	},
 	setShopcar:(state,info)=>{
 		var item = state.shopcar.find((ele)=>ele.id==info.id)
 		if(!item){

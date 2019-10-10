@@ -15,24 +15,24 @@
 				</view>
 			</navigator>
 
-			<view class="my-list uni-flex uni-row" @change="navTo">
-				<view  class="item">
+			<view class="my-list uni-flex uni-row" >
+				<view  class="item" @click="navTo(0)">
 					<image class="image" src="../../static/ic_待付款.png" mode="aspectFill"  />
 					<text class="text">待付款</text>
 				</view>
-				<view class="item">
+				<view class="item" @click="navTo(1)">
 					<image class="image" src="../../static/待发货订单.png" mode="aspectFill" />
 					<text class="text">待发货</text>
 				</view>
-				<view class="item">
+				<view class="item" @click="navTo(2)">
 					<image class="image" src="../../static/待收货.png" mode="aspectFill" />
 					<text class="text">待收货</text>
 				</view>
-				<view class="item">
+				<view class="item" @click="navTo(3)">
 					<image class="image" src="../../static/待评价订单.png" mode="aspectFill" />
 					<text class="text">待评价</text>
 				</view>
-				<view class="item">
+				<view class="item" @click="returngood">
 					<image class="image" src="../../static/退款.png" mode="aspectFill" />
 					<text class="text">退款</text>
 				</view>
@@ -168,18 +168,14 @@
 		},
 		methods:{
 			navTo(url){
-				console.log(url)
-				if(url.detail.index !=4){
-					url.detail.index++
-					uni.navigateTo({
-						url:'/pages/my/order?state='+ url.detail.index
-					})   
-				}else{
-					uni.navigateTo({
-						url:'/pages/my/drawback'
-					})
-				}
-				
+				uni.navigateTo({
+					url:'/pages/my/order?state='+ url
+				}) 
+			},
+			returngood(){
+				uni.navigateTo({
+					url:'/pages/my/drawback'
+				})
 			},
 			getcall(){
 				window.location.href = `tel:${this.config.service_phone}`;

@@ -2,9 +2,9 @@
 	<view class="info-page">
 		<view class="banner">
 			<image :src="url+info.image" mode="aspectFill"></image>
-			<view class="shop-car">
+			<view class="shop-car" @click="gocart">
 				<text class="iconfont">&#xe603;</text>
-				<uni-badge text="9" type="error" class="shopcar-badge" />
+				<uni-badge :text="cartnum.toString()" type="error" class="shopcar-badge" />
 			</view>
 		</view>
 		<view class="main">
@@ -15,10 +15,10 @@
 				<view class="main-content">
 					<view class="sub-detail uni-flex uni-row">
 						<view class="gray-color">
-							<text>来源：某公众号</text>
+							<text>来源：{{info.source}}</text>
 							<text>时间：{{info.created_at | convertTime('YYYY-MM-DD')}}</text>
 						</view>
-						<text class="hot">热度 3980℃</text>
+						<text class="hot">热度 {{info.views}}</text>
 					</view>
 					<view class="shop">
 						<view class="shop-main  uni-flex uni-row">
@@ -68,40 +68,23 @@
 					<view class="line"></view>
 					<text class="text">相关资讯</text>
 				</view>
-				<view class="right">
+				<view class="right" @click="goArticle">
 					<text>全部资讯 </text>
 					<text class="iconfont">&#xe612;</text>
 				</view>
 			</view>
-			<view class="item uni-flex uni-row">
-				<view class="left">
+			<view class="item uni-flex uni-row" v-for="(item,index) in relativeList" :key="index">
+				<view class="left uni-flex uni-column">
 					<view class="title">
-						盛世黄金12月21日评：税改投票落地 金价小幅上涨
+						{{item.title}}
 					</view>
 					<view class="left-bo uni-flex uni-row">
 						<view class="badge">
-							分类名称
+							{{columnname}}
 						</view>
 						<view class="time-ago">
 							<text class="iconfont">&#xe6dd;</text>
-							<text>12小时前</text>
-						</view>
-					</view>
-				</view>
-				<image src="../../static/816a66edef10673b4768128b41804cae.jpg" mode="aspectFill"></image>
-			</view>
-			<view class="item uni-flex uni-row">
-				<view class="left">
-					<view class="title">
-						盛世黄金12月21日评：税改投票落地 金价小幅上涨
-					</view>
-					<view class="left-bo uni-flex uni-row">
-						<view class="badge">
-							分类名称
-						</view>
-						<view class="time-ago ">
-							<text class="iconfont">&#xe6dd;</text>
-							<text>12小时前</text>
+							<text>{{getTime(item.created_at)}}</text>
 						</view>
 					</view>
 				</view>
@@ -121,7 +104,11 @@
 </template>
 
 <script>
-	import uniBadge from '@/components/uni-badge/uni-badge.vue'
+	import uniBadge from '@/components/uni-badge/uni-badge.vue';
+	import Moment from "moment";
+	import {
+		mapGetters
+	} from "vuex";
 	export default {
 		components: {
 			uniBadge
@@ -130,14 +117,30 @@
 			return {
 				id:null,
 				url:'',
-				info:{}
+				info:{},
+				column_id:'',
+				relativeList:[],
+				columnname:''
 			}
+		},
+		computed: {
+			...mapGetters(['config', 'cartnum'])
 		},
 		onLoad() {
 			this.id = this.$route.query.id;
 			this.getInfo();
 		},
 		methods:{
+			gocart() {
+				uni.switchTab({
+					url: '/pages/shopcar/index'
+				})
+			},
+			goArticle(){
+				uni.switchTab({
+					url: '/pages/goods/info'
+				})
+			},
 			getInfo(){
 				uni.showLoading({
 					title:'加载中'
@@ -147,10 +150,43 @@
 					method: "get",
 				})
 				.then(res => {
-					uni.hideLoading();
 					this.info = res.data;
+					this.column_id = this.info.column_id;
 					this.url = this.$baseUrl;
+					
+					this.getRelative()
 				});	
+			},
+			getRelative(){
+				this.$http.request({
+					url: "articles",
+					method: "get",
+					params:{
+						"ArticleSearch[column_id]":this.column_id,
+						expand:'column'
+					}
+				}).then(res=>{
+					uni.hideLoading();
+					this.relativeList = res.data.items;
+					if(res.data.items.length){
+						this.columnname = res.data.items[0].column.name;
+					}
+					
+				})
+			},
+			getTime(time){
+				var str = Moment().diff(Moment(time),"seconds");
+				console.log(str);
+				if(str <60){
+					return str+'秒前'
+				}else if(str < 3600){
+					return parseInt(str/60)+'分钟前'
+				}else if(str<3600*24){
+					return parseInt(str/60/60)+'小时前'
+				}else{
+					return parseInt(str/60/60/24)+'天前'
+				}
+			
 			}
 		}
 	}
@@ -164,17 +200,12 @@
 		background: #f1f1f1;
 
 		.banner {
-			position: absolute;
+			position: relative;
 			width: 100%;
 			height: 420rpx;
-			left: 0;
-			top: 0;
 
 			image {
 				width: 100%;
-				position: absolute;
-				top: 0;
-				left: 0;
 				height: 420rpx;
 			}
 
@@ -205,7 +236,8 @@
 			position: relative;
 			z-index: 999;
 			box-sizing: border-box;
-			padding: 344rpx 20rpx 20rpx 20rpx;
+			padding: 0 20rpx 20rpx 20rpx;
+			margin-top:-80rpx;
 
 			.main-box {
 				border-radius: 5px;
@@ -355,11 +387,14 @@
 
 			.item {
 				justify-content:space-between;
+				align-items: center;
 				margin:0 20rpx ;
 				padding:20rpx 0;
 				border-bottom:1px solid $uni-border-color;
 				.left{
 					width: 470rpx;
+					min-height: 120rpx;
+					justify-content: space-between;
 					font-size: 32rpx;
 					.title{
 						color: $uni-text-color;
@@ -382,7 +417,7 @@
 								vertical-align: middle;
 							}
 							.iconfont{
-								margin-right: 10rpx;
+								margin-right: 5rpx;
 							}
 							font-size: 24rpx;
 							color:$uni-text-color-grey;

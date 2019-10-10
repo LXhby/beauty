@@ -1,7 +1,7 @@
 <template>
 	<view class="course">
 		<view class="banner">
-			<image :src="'http://backend.krtamall.yiidev.cn' + forum.banner" mode="aspectFill"></image>
+			<image :src="'http://backend.krtamall.yiidev.cn' + forum.banner" mode="aspectFill" v-if="forum.banner"></image>
 			<view class="shop-car" @click="gocart">
 				<text class="iconfont">&#xe603;</text>
 				<uni-badge :text="cartnum.toString()" type="error" class="shopcar-badge" />
@@ -13,39 +13,24 @@
 				<view class="title">{{forum.name}}</view>
 				<view class="course-content">
 					<view class="course-list uni-flex uni-row">
-						<view class="icon-btn">
+						<view class="icon-btn" @click="pushforword">
 							<text class="iconfont">&#xe60c;</text>
 						</view>
 						<swiper class="swiper" :indicator-dots="false" :autoplay="false" :interval="interval" :duration="duration"
-						 :circular="true">
-							<swiper-item>
+						 :current="current">
+							<swiper-item v-for="(ele,index) in courseList" :key="index">
 								<view class="item-box uni-flex uni-row">
-									<view class="item one">
-										<view class="phase ">
-											第二期
-										</view>
-										<text>2019年7月16日</text>
-									</view>
-									<view class="item two">
+									<view :class="[getSatus(item),'item' ]" v-for="(item,index) in ele" :key="index" @click="goOtherCourse(item)">
 										<view class="phase">
-											第二期
+											第{{item.courseIndex}}期
 										</view>
-										<text>2019年7月16日</text>
-									</view>
-									<view class="item third">
-										<view class="phase">
-											第二期
-										</view>
-										<text>2019年7月16日</text>
+										<text>{{item.start_date | convertTime('YYYY年MM月DD日')}}</text>
 									</view>
 								</view>
 							</swiper-item>
-							<swiper-item>
-								<image src="../../static/chuke.jpg" mode=""></image>
-							</swiper-item>
 
 						</swiper>
-						<view class="icon-btn">
+						<view class="icon-btn" @click="pushback">
 							<text class="iconfont">&#xe60d;</text>
 						</view>
 					</view>
@@ -83,14 +68,11 @@
 		<view class="couse-money">
 			<text class="new-price">￥{{forum.price}}</text>
 			<text class="old-price">原价: ￥{{forum.original_price}}</text>
-			<button class="btn" type="primary">立即报名</button>
+			<button :class="[signBtn == '立即报名'?'redstyle':'infostyle','btn']" type="primary" @click="goPay">{{signBtn}}</button>
 		</view>
-		<view class="height-box">
-
-		</view>
-		<view class="bottom">
+		<!-- 		<view class="bottom">
 			<button class="btn" type="primary">报名成功</button>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -108,22 +90,131 @@
 		},
 		data() {
 			return {
-				forum: null, // 课程信息
+				forum: {}, // 课程信息
+				interval: 1000,
+				duration: 1000,
+				bundle_id: '',
+				id: '',
+				courseList: [],
+				nowCourse: {},
+				saveIndex: "",
+				current: 0,
+				signBtn: '立即报名',
+				btntype: 'primary'
 			}
 		},
 		onLoad(option) {
+			uni.showLoading({
+				title: '正在加载中'
+			})
+			this.bundle_id = option.bundle_id * 1;
+			this.id = option.courseId * 1;
 			this.$http.request({
 				url: 'forums/' + option.courseId,
 				method: 'get',
 			}).then(res => {
-				this.forum = res.data
+				this.forum = res.data;
+				this.getSameList();
+				this.hasBuyForum();
 			}).catch(console.log)
 		},
-		methods:{
+		methods: {
 			gocart() {
 				uni.switchTab({
 					url: '/pages/shopcar/index'
 				})
+			},
+			getSatus(item) {
+				console.log('item', item)
+				if (item.status == '已结束') {
+					return 'third'
+				} else {
+					if (item.id == this.id) {
+						return 'one'
+					} else {
+						return 'two'
+					}
+				}
+			},
+			getSameList() {
+				this.$http.request({
+					url: 'forums',
+					method: 'get',
+					params: {
+						'ForumSearch[bundle_id]': this.bundle_id,
+						sort: 'start_date'
+					}
+				}).then(res => {
+					uni.hideLoading();
+					var arr = res.data.items;
+					arr.forEach((item, index) => {
+						this.$set(item, "courseIndex", index + 1);
+						if (item.id == this.id) {
+							this.nowCourse = item;
+							this.saveIndex = index;
+						} else {
+							this.courseList.push(item);
+						}
+					});
+					this.courseList.unshift(this.nowCourse)
+					var result = [];
+					for (var i = 0; i < this.courseList.length; i += 3) {
+						result.push(this.courseList.slice(i, i + 3));
+					}
+					this.courseList = result;
+				}).catch(console.log)
+			},
+			goOtherCourse(item) {
+				if (item.status == "已结束") {
+					return false;
+				} else {
+					uni.navigateTo({
+						url: '/pages/benefits/courseinfo?courseId=' + item.id + '&bundle_id=' + item.bundle_id
+					})
+					const info = {
+						id: item.id,
+						bundle_id: item.bundle_id
+					};
+				}
+			},
+			pushforword() {
+				if (this.current > 0) {
+					this.current -= 1;
+				} else {
+					return false
+				}
+			},
+			pushback() {
+				if (this.current < this.courseList.length - 1) {
+					this.current += 1;
+				} else {
+					return false
+				}
+
+			},
+			hasBuyForum() {
+				this.$http.request({
+					url: 'forum-orders',
+					method: 'get',
+					params: {
+						'ForumOrderSearch[user_id]': this.bundle_id,
+						'ForumOrderSearch[forum_id]': this.id,
+					}
+				}).then(res => {
+					if (res.data.items.length > 0 && res.data.items[0].status == "已支付") {
+						this.signBtn = "已报名";
+
+					} else {
+						this.signBtn = "立即报名";
+					}
+				})
+			},
+			goPay() {
+				if (this.signBtn != "已报名") {
+					this.sheet = true;
+				} else {
+					return false;
+				}
 			},
 		}
 	}
@@ -139,6 +230,7 @@
 			position: relative;
 			width: 100%;
 			height: 420rpx;
+
 			image {
 				width: 100%;
 				height: 420rpx;
@@ -171,7 +263,7 @@
 		.course-show {
 			position: relative;
 			z-index: 3;
-			margin-top:-72rpx;
+			margin-top: -72rpx;
 			box-sizing: border-box;
 			padding: 0 20rpx 20rpx 20rpx;
 
@@ -311,11 +403,17 @@
 		}
 
 		.couse-money {
+			position: fixed;
+			z-index: 999;
+			left: 0;
+			bottom: 0;
 			display: flex;
+			width: 100%;
 			align-items: center;
 			padding: 20rpx;
-			margin-bottom: 20rpx;
+			// margin-bottom: 20rpx;
 			background-color: #fff;
+			box-sizing: border-box;
 
 			.new-price {
 				color: $uni-bg-color;
@@ -337,7 +435,20 @@
 				line-height: 60rpx;
 				border-radius: 60rpx;
 				font-size: 32rpx;
+
+				&:after {
+					border: none;
+				}
+
+			}
+
+			.redstyle {
 				background-color: $uni-bg-color;
+			}
+
+			.infostyle {
+				color: $uni-text-color;
+				background-color: #f5f5f5;
 			}
 		}
 

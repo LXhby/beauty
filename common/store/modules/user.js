@@ -1,6 +1,6 @@
 const state = {
     userInfo: {
-        id: 1,
+        id: 5,
         coin_count: 1,
 		u:1
     },

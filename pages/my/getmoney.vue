@@ -8,7 +8,8 @@
 			</view>
 			<view class="main-content">
 				<input class="uni-input" type="number" placeholder="自动获取可提现的总额度金额" />
-				<label class="radio"><radio value="r2" style="transform:scale(0.7)" />银行卡</label>
+				<label class="radio">
+					<radio value="r2" style="transform:scale(0.7)" />银行卡</label>
 				<button type="primary">提现申请</button>
 				<view class="instructions">
 					<text>*提现周期为每周四，每天最高提现额度为微信支付限额；</text><br>
@@ -19,7 +20,7 @@
 				<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 			</view>
 		</view>
-		<uni-popup ref="popup" type="center" custom="true">
+		<uni-popup ref="popup" type="center" :custom="true">
 			<view class="alert-box">
 				<view class="title">
 					提现确认
@@ -46,7 +47,7 @@
 						￥8640.00
 					</view>
 				</view>
-				
+
 				<view class="btn">
 					提现确认
 				</view>
@@ -58,36 +59,70 @@
 <script>
 	import topBar from "@/components/account/index1.vue";
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
+	import {
+		mapGetters
+	} from "vuex";
 	export default {
 		components: {
 			topBar,
 			uniPopup
 		},
-		data(){
-			return{
-				detailist:["可提现","待提现","产品额度","粉丝量"]
+		computed: {
+			...mapGetters(["userInfo"])
+		},
+		data() {
+			return {
+				detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
+				myBank:[],
+				money:''
 			}
 		},
-		mounted(){
-			this.$refs.popup.open()
+		mounted() {
+			// this.$refs.popup.open()
+		},
+		onLoad() {
+				this.money = this.userInfo.balance;
+		},
+		methods: {
+			getAccounts() {
+				//查看是否本人有银行卡
+				this.$http.request({
+					url: 'accounts',
+					method: 'get',
+					params: {
+						'AccountSearch[user_id]': this.userInfo.id
+					}
+				}).then(res=>{
+					const data = res.data.items;
+					if (data.length) {
+						this.myBank = data;
+					} else {
+						this.myBank = [];
+					}
+				})
+			},
 		}
 	}
 </script>
 
 <style lang="scss">
 	@import "../../common/common.scss";
+
 	.withdrawal-page {
-		.main-content{
-			padding:0 44rpx;
-			input{
+		.main-content {
+			padding: 0 44rpx;
+
+			input {
 				margin-bottom: 24rpx;
 				padding-left: 0px;
 				border-bottom: 1px solid $uni-border-color;
 			}
-			label{
-				color:$uni-text-color;
+
+			label {
+				color: $uni-text-color;
 			}
-			button{
+
+			button {
 				width: 520rpx;
 				height: 76rpx;
 				margin-top: 60rpx;
@@ -96,19 +131,22 @@
 				border-radius: 76rpx;
 				background: $uni-bg-color;
 			}
-			.instructions{
-				color:$uni-text-color;
+
+			.instructions {
+				color: $uni-text-color;
 				font-size: 24rpx;
 				line-height: 40rpx;
 			}
 		}
-		.alert-box{
+
+		.alert-box {
 			position: relative;
 			width: 480rpx;
 			padding-bottom: 36rpx;
 			border-radius: 5px;
-			background-color:#fff;
-			.title{
+			background-color: #fff;
+
+			.title {
 				height: 78rpx;
 				line-height: 78rpx;
 				border-bottom: 1px solid $uni-border-color;
@@ -116,25 +154,30 @@
 				font-size: 36rpx;
 				font-weight: 600;
 			}
-			.item-text{
+
+			.item-text {
 				color: $uni-text-color;
 			}
-			.item-money{
+
+			.item-money {
 				color: $uni-bg-color;
 			}
-			.get-box{
+
+			.get-box {
 				justify-content: space-between;
 				border-bottom: 1px solid $uni-border-color;
-				padding:26rpx 40rpx;
+				padding: 26rpx 40rpx;
 			}
-			.get-total{
+
+			.get-total {
 				justify-content: space-between;
-				padding:26rpx 40rpx;
+				padding: 26rpx 40rpx;
 			}
-			.btn{
+
+			.btn {
 				width: 300rpx;
 				height: 45rpx;
-				margin:0 auto;
+				margin: 0 auto;
 				border-radius: 45rpx;
 				color: #fff;
 				background: $uni-bg-color;

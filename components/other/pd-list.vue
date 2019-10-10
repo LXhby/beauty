@@ -4,11 +4,15 @@
 		<view class='content' >
 			<view class='card' v-for="(item,index) in list"  :key="index" @click="goPage(item.id)">
 				<view class="letter-img" >
-					<view class='card-left'>
+					<view class='card-left uni-flex uni-column'>
 						<text>{{item.title}}</text><br />
 						<view class="tag">
 							<view class="uni-class" >{{type}}</view>
-							<text class="word-grey">{{getTime(item.created_at)}}</text>
+							<view class="time">
+								<text class="iconfont word-grey" style="margin-right: 5rpx;">&#xe6dd;</text>
+								<text class=" word-grey">{{getTime(item.created_at)}}</text>
+							</view>
+							
 						</view>
 					</view>
 					<image :src="url+item.image" mode=""></image>
@@ -67,8 +71,10 @@
 					return parseInt(str/60)+'分钟前'
 				}else if(str<3600*24){
 					return parseInt(str/60/60)+'小时前'
-				}else if(str < 3600*24)
-				return "23"
+				}else{
+					return parseInt(str/60/60/24)+'天前'
+				}
+
 			}
 		}
 	}
@@ -87,6 +93,7 @@
 		
 		.letter-img {
 			display: flex;
+			align-items: center;
 			padding: 25rpx 0;
 			border-bottom: 1px solid $uni-border-color;
 			background-color: white;
@@ -95,14 +102,15 @@
 			border-radius: 5px;
 			position: relative;
 			.card-left {
+				min-height: 140rpx;
 				flex: 1;
 				margin-right: 20rpx;
-			
+				justify-content:space-between;
 				.tag {
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
-					margin-top: 20rpx;
+					
 			
 					.uni-class {
 						width: 126rpx;
@@ -118,6 +126,11 @@
 					.word-grey {
 						font-size: $uni-font-size-ssm;
 						color: $uni-text-color-grey;
+						line-height: 30rpx;
+					}
+					.iconfont{
+						font-size: 28rpx;
+						line-height: 30rpx;
 					}
 				}
 			

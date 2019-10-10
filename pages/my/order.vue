@@ -1,147 +1,12 @@
 <template>
-	<view class="order-page" @touchstart="refreshStart" @touchmove="refreshMove" @touchend="refreshEnd">
-		<!-- 刷新事件isRefresh需要异步操作返回resolve -->
-		<refresh ref="refresh" @isRefresh='isRefresh'></refresh>
-		<view class="navbar">
-			<!-- 导航栏 agents导航栏标题 -->
-			<navTab ref="navTab" :tabTitle="tabTitle" @changeTab='changeTab'></navTab>
-		</view>
-		<!-- swiper切换 swiper-item表示一页 scroll-view表示滚动视窗 -->
-		<swiper style="min-height: 100vh;" :current="tabCurrentIndex" @change="swiperTab">
-			<swiper-item v-for="(listItem,listIndex) in list" :key="listIndex">
-				<mescroll-uni :down="downOption" @down="downCallback" @up="upCallback" :up="upOption">
-					<scroll-view style="height: 100%;" scroll-y="true" scroll-with-animation>
-						<view class='content'>
-							<!-- 订单列表 -->
-							<view v-for="(item,index) in listItem" :key="index" class="order-item">
-								<view class="top uni-flex uni-row">
-									<view class="left">
-										<text class="iconfont">&#xe608;</text>
-										<text class="time">{{item.created_at}}</text>
-									</view>
-									<view class="right">
-										<text class="status" v-if="item.status === '待付款'">待付款</text>
-										<text class="status" style="margin-right: 10rpx;padding-right: 10rpx;border-right: 1px solid #f5f5f5;" v-if="item.status === '待发货'">待发货</text>
-										<text class="status" style="margin-right: 10rpx;padding-right: 10rpx;border-right: 1px solid #f5f5f5;" v-if="item.status === '待收货'">待确认</text>
-										<text class="status" v-if="item.status === '待评价'">待评价</text>
-										<text class="status" v-if="item.status === '已评价'">交易成功</text>
-										<image v-if="item.status === '待收货' || item.status === '待发货'" src="../../static/car.png" mode="widthFix"></image>
-									</view>
-								</view>
-								<view class="item-main uni-flex uni-row" v-for="product in item.orderProducts">
-									<view class="left uni-flex uni-row">
-										<image :src="'http://backend.krtamall.yiidev.cn' + product.product.image" mode="aspectFill"></image>
-										<view class="item-title">
-											<view class="name">
-												{{product.product.name}}
-											</view>
-											<text>套装产品加乳液</text>
-										</view>
-									</view>
-									<view class="right">
-										<view class="money">￥{{product.price}}</view>
-										<text class="num">X{{product.quantity}}</text>
-									</view>
-								</view>
-								<view class="total uni-flex uni-row">
-									<view class="total-glod">
-										<text>赠送</text>
-										<text class="dark-color">100</text>
-										<text>个金币</text>
-									</view>
-									<view class="total-num uni-flex uni-row">
-										<text class="heji">共{{item.quantity}}件商品</text>
-										<view class="">
-											<text>合计：</text>
-											<text class="dark-color">￥{{item.amount}}</text>
-										</view>
-									</view>
-								</view>
-								<view class="btn-list uni-flex uni-row">
-									<button type="primary" class="detail" @click="godetail(item.id)">订单详情</button>
-									<view v-if="item.status === '待付款'" class="right-btn uni-flex uni-row">
-										<button type="primary" class="blue btn1">朋友代付</button>
-										<button type="primary" class="dark" @click="goPay(item.id)">立即付款</button>
-									</view>
-									<view v-if="item.status === '待发货'" class="right-btn uni-flex uni-row">
-										<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
-										<button type="primary" class="dark" @click="sendGoods">提醒发货</button>
-									</view>
-									<view v-if="item.status === '待收货'" class="right-btn uni-flex uni-row">
-										<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
-										<button type="primary" class="dark" @click="getGoods">确认发货</button>
-									</view>
-									<view v-if="item.status === '待评价'" class="right-btn uni-flex uni-row">
-										<button type="primary" class="blue btn1">再来一单</button>
-										<button type="primary" class="dark" @click="goAssess">评价有奖</button>
-									</view>
-								</view>
+	<view class="order-page">
+		<tabs-sticky v-model="tabType" :tabs="tabTitle" @change="changeTab"></tabs-sticky>
+		<mescroll-uni :down="downOption" @down="downCallback" @up="upCallback" :up="upOption" top="80" @emptyclick="emptyClick" @init="mescrollInit">
+			<!-- 数据列表 -->
+			<pd-list :list="listItem"></pd-list>
+		</mescroll-uni>
 
 
-							</view>
-						</view>
-						<view class='noCard' v-if="listItem.length===0" style="padding-top: 50px;text-align: center;">
-							暂无信息
-						</view>
-						<view class="bottom-line" style="width:100%;height:100upx;line-height:50px;">
-							<text v-if="bottom">-- 我是有底线的卡瑞塔 --</text>
-						</view>
-					</scroll-view>
-				</mescroll-uni>
-			</swiper-item>
-		</swiper>
-		<!-- //评价 -->
-		<uni-popup ref="popup" type="center" custom="true">
-			<view class="coment-form">
-				<view class="shop-image">
-					<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
-				</view>
-				<view class="title">
-					王晓文的店铺
-				</view>
-				<view class="star">
-					<text class="iconfont star dark-color" @click="clickStar(1)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(2)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(3)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(4)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(5)">&#xe623;</text>
-				</view>
-				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f5f5f5;" placeholder=""
-				 value="非常好" />
-				<view class="upload uni-flex uni-row">
-					<view class="up-image">
-						<text class="iconfont">&#xe64a;</text>
-					</view>
-					<view class="up-text">
-						<view class="title">
-							上传照片
-						</view>
-						<text>内容丰富的评价更容易成为优质评价哦！</text>
-					</view>
-				</view>
-				<view class="noname">
-					<label>
-						<checkbox value="cb" checked="true" style="transform:scale(0.7)" color="#ff0080" />匿名评价
-					</label>
-				</view>
-				<view class="uni-btnv">
-					<button type="primary">提交评价</button>
-				</view>
-			</view>
-		</uni-popup>
-		
-		<!-- 提醒发货 -->
-		<uni-popup ref="popups" type="center" custom="true">
-			<view class="alert-pop">
-				<view class="shop-image">
-					<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
-				</view>
-				<view class="title">
-					王晓文的店铺
-				</view>
-				<view class="text">亲，我们已收到提醒，将尽快发货！</view>
-			</view>
-		</uni-popup>
 	</view>
 
 </template>
@@ -151,18 +16,18 @@
 	import {
 		mapGetters
 	} from "vuex";
-	import refresh from '@/components/refresh.vue';
-	import navTab from '@/components/navTab.vue';
+	import TabsSticky from "@/components/other/tabs-home.vue";
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
-	import uniPopup from '@/components/uni-popup/uni-popup.vue';
+	
 	import MescrollUni from "@/components/mescroll-uni/mescroll-uni.vue";
+	import PdList from "@/components/other/orderlist.vue";
 	export default {
 		components: {
 			uniLoadMore,
-			navTab,
-			refresh,
-			uniPopup,
-			MescrollUni
+			TabsSticky,
+	
+			MescrollUni,
+			PdList
 		},
 		computed: {
 			...mapGetters(["userInfo"])
@@ -170,222 +35,131 @@
 		data() {
 			return {
 				userId: 1,
-				tabCurrentIndex: 0,
-				currentPage: 'index',
+				tabType: 0,
 				tabTitle: ['全部', '待付款', '待发货', '待收货', '待评价'], //导航栏格式 --导航栏组件
-				currentTab: 0, //sweiper所在页
-				pages: [1, 1, 1, 1, 1], //第几个swiper的第几页
-				list: [
-					[],
-					[],
-					[],
-					[],
-					[]
-				], //数据格式
+				listItem: [], //数据格式
 				bottom: false,
-				starsNum: 1, // 星星数量
+				mescroll: null, //mescroll实例对象
 				upOption: {
 					noMoreSize: 1,
 					textNoMore: "-- 我是有底线的卡瑞塔 --",
 					onScroll: true, // 是否监听滚动
+					empty: {
+						tip: '~ 搜索无数据 ~', // 提示
+						btnText: '去看看'
+					}
 				},
 				downOption: {
 					auto: false //是否在初始化后,自动执行下拉回调callback; 默认true
 				},
+				url: '',
+				orderStatus: ''
 			}
 		},
-		// 		onLoad(options) {
-		// 			/**
-		// 			 * 修复app端点击除全部订单外的按钮进入时不加载数据的问题
-		// 			 * 替换onLoad下代码即可
-		// 			 */
-		// 			console.log('tabCurrentIndex', this.tabCurrentIndex)
-		// 			console.log('options.state', options.state)
-		// 			this.tabCurrentIndex = +options.state;
-		// 			// #ifndef MP
-		// 			this.loadData()
-		// 			// #endif
-		// 			// #ifdef MP
-		// 			if (options.state == 0) {
-		// 				this.loadData()
-		// 			}
-		// 			// #endif
-		// 
-		// 		},
 		onLoad() {
-			this.changeTab(this.$route.query.state)
-			if (this.currentTab != 0) {
-				this.$http.request({
-					url: 'order',
-					method: 'get',
-					params: {
-						'OrderSearch[user_id]': this.userInfo.id,
-						'OrderSearch[status]': this.tabTitle[this.currentTab],
-						'expand': 'orderProducts,orderProducts.product',
-						'page': this.pages[this.currentTab],
-						'per-page': 2
-					}
-				}).then(res => {
-					res.data.items.forEach(ele => {
-						if (ele.status === '待付款') {
-							this.list[1].push(ele)
-						} else if (ele.status === '待发货') {
-							this.list[2].push(ele)
-						} else if (ele.status === '待收货') {
-							this.list[3].push(ele)
-						} else if (ele.status === '待评价') {
-							this.list[4].push(ele)
-						}
-					})
-				}).catch(console.log)
-			} else {
-				this.$http.request({
-					url: 'order',
-					method: 'get',
-					params: {
-						'OrderSearch[user_id]': this.userInfo.id,
-						'expand': 'orderProducts,orderProducts.product',
-						'page': this.pages[this.currentTab],
-						'per-page': 2
-					}
-				}).then(res => {
-					this.list[0] = res.data.items
-					res.data.items.forEach(ele => {
-						if (ele.status === '待付款') {
-							this.list[1].push(ele)
-						} else if (ele.status === '待发货') {
-							this.list[2].push(ele)
-						} else if (ele.status === '待收货') {
-							this.list[3].push(ele)
-						} else if (ele.status === '待评价') {
-							this.list[4].push(ele)
-						}
-					})
-				}).catch(console.log)
-			}
 		},
 		methods: {
+			//点击空布局按钮的回调
+			emptyClick() {
+				uni.showToast({
+					title: '点击了按钮,具体逻辑自行实现'
+				})
+			},
 			// 立即付款
 			goPay(orderId) {
 				uni.navigateTo({
 					url: '/pages/my/toPay?orderId=' + orderId,
 				})
 			},
-			// 申请退款
-			drawBack(orderId) {
-				uni.navigateTo({
-					url: '/pages/my/drawback?orderId=' + orderId,
-				})
-			},
-			// 提醒发货
-			sendGoods() {
-				this.$refs.popups.open()
-			},
-			// 确认收货
-			getGoods() {
-				this.$refs.popup.open()
-			},
-			// 立即评价
-			goAssess() {
-				this.$refs.popup.open()
-			},
-			// 点星星
-			clickStar(num) {
-				this.starsNum = num
-				let stars = document.getElementsByClassName("star");
-				for(let i = 1; i <= num; i++) {
-					stars[i].classList.add("dark-color");
-				}
-				while(num < 5) {
-					num++
-					stars[num].classList.remove("dark-color");
-				}
-			},
-			changeTab(index) {
-				if(index != undefined) {
-					this.currentTab = index
-				}
-				this.tabCurrentIndex = index
+
+
+
+
+
+
+			mescrollInit(mescroll) {
+				this.mescroll = mescroll;
 			},
 			/*下拉刷新的回调 */
 			downCallback(mescroll) {
-				//联网加载数据
-				this.getListDataFromNet(0, 1, (data) => {
-					//联网成功的回调,隐藏下拉刷新的状态
-					mescroll.endSuccess();
-					//设置列表数据
-					this.list[0].unshift(data[0]);
-				}, () => {
-					//联网失败的回调,隐藏下拉刷新的状态
-					mescroll.endErr();
-				})
+				// 这里加载你想下拉刷新的数据, 比如刷新轮播数据
+				// loadSwiper();
+				// 下拉刷新的回调,默认重置上拉加载列表为第一页 (自动执行 mescroll.num=1, 再触发upCallback方法 )
+				mescroll.resetUpScroll()
 			},
 			/*上拉加载的回调: mescroll携带page的参数, 其中num:当前页 从1开始, size:每页数据条数,默认10 */
 			upCallback(mescroll) {
-				console.log(1)
 				//联网加载数据
 				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData, totalSize) => {
-			
+					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
 					mescroll.endBySize(curPageData.length, totalSize);
 					//设置列表数据
-					this.list[0] = this.list[0].concat(curPageData);
+					if (mescroll.num == 1) this.listItem = []; //如果是第一页需手动制空列表
+					this.listItem = this.listItem.concat(curPageData); //追加新数据
 				}, () => {
 					//联网失败的回调,隐藏下拉刷新的状态
 					mescroll.endErr();
 				})
 			},
-			getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
-				let listData = [];
-				this.$http
-					.request({
-						url: "order",
-						method: "get",
-						params: {
-							'OrderSearch[user_id]': this.userInfo.id,
-							'expand': 'orderProducts,orderProducts.product',
-							page: pageNum,
-							"per-page": pageSize,
-						}
-					})
-					.then(res => {
-						listData = (res.data.items);
-						successCallback && successCallback(listData, res.data._meta.totalCount);
-					});
-			},
-			// swiper 滑动
-			swiperTab(e) {
-				var index = e.detail.current //获取索引
-				if (this.tabTitle.length <= 5) {
-					this.$refs.navTab.navClick(index)
-				} else {
-					this.$refs.navTab.longClick(index)
-				}
-			},
-			
-			// 刷新touch监听
-			refreshStart(e) {
-				this.$refs.refresh.refreshStart(e);
-			},
-			refreshMove(e) {
-				this.$refs.refresh.refreshMove(e);
-			},
-			refreshEnd(e) {
-				this.$refs.refresh.refreshEnd(e);
-			},
-			isRefresh() {
-				setTimeout(() => {
-					uni.showToast({
-						icon: 'success',
-						title: '刷新成功'
-					})
-					this.$refs.refresh.endAfter() //刷新结束调用
-				}, 1000)
-			},
-			godetail(orderId) {
-				uni.navigateTo({
-					url: '/pages/my/orderinfo?orderId=' + orderId,
+			//点击空布局按钮的回调
+			emptyClick() {
+				uni.showToast({
+					title: '点击了按钮,具体逻辑自行实现'
 				})
 			},
+
+			// 切换菜单
+			changeTab(type) {
+				console.log('type',type)
+				switch (type) {
+					case 0:
+						this.orderStatus = '';
+						break;
+					case 1:
+						this.orderStatus = '待付款';
+						break;
+					case 2:
+						this.orderStatus = '待发货';
+						break;
+					case 3:
+						this.orderStatus = '待收货';
+						break;
+					case 4:
+						this.orderStatus = '待评价';
+						break;
+				}
+				
+				this.mescroll.resetUpScroll() // 刷新列表数据
+			},
+
+			/*联网加载列表数据
+			在您的实际项目中,请参考官方写法: http://www.mescroll.com/uni.html#tagUpCallback
+			请忽略getListDataFromNet的逻辑,这里仅仅是在本地模拟分页数据,本地演示用
+			实际项目以您服务器接口返回的数据为准,无需本地处理分页.
+			* */
+			getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
+				this.$http.request({
+					url: 'order',
+					method: 'get',
+					params: {
+						'OrderSearch[user_id]': this.userInfo.id,
+						'OrderSearch[status]': this.orderStatus,
+						'expand': 'orderProducts,orderProducts.product',
+						'page': pageNum,
+						'per-page': pageSize
+					}
+				}).then(res => {
+					try {
+						let listData = [];
+						listData = res.data.items;
+						successCallback && successCallback(listData, res.data._meta.totalCount);
+					} catch (e) {
+						//联网失败的回调
+						errorCallback && errorCallback();
+					}
+				})
+			}
+
 			// 			//获取订单列表
 			// 			loadData(source) {
 			// 				//这里是将订单挂载到tab列表下
@@ -425,15 +199,6 @@
 			// 				}, 600);
 			// 			},
 			// 
-			// 			//swiper 切换
-			// 			// changeTab(e) {
-			// 			// 	this.tabCurrentIndex = e.target.current;
-			// 			// 	this.loadData('tabChange');
-			// 			// },
-			// 			//顶部tab点击
-			// 			tabClick(index) {
-			// 				this.tabCurrentIndex = index;
-			// 			},
 			// 			//删除订单
 			// 			deleteOrder(index) {
 			// 				uni.showLoading({
@@ -475,49 +240,16 @@
 
 <style lang="scss" scoped>
 	@import "@/common/common.scss";
+
 	page {
 		width: 100%;
 		height: 100%;
 	}
 
 	.order-page {
-		background: #f1f1f1;
+		background: #f5f5f5;
 		height: 100%;
 
-		.navbar {
-			display: flex;
-			height: 40px;
-			background: #fff;
-			box-shadow: 0 1px 5px rgba(0, 0, 0, .06);
-			position: relative;
-			z-index: 10;
-
-			.nav-item {
-				flex: 1;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				height: 100%;
-				font-size: 15px;
-				color: $uni-text-color;
-				position: relative;
-
-				&.current {
-					color: $uni-bg-color;
-
-					&:after {
-						content: '';
-						position: absolute;
-						left: 50%;
-						bottom: 0;
-						transform: translateX(-50%);
-						width: 44px;
-						height: 0;
-						border-bottom: 2px solid $uni-bg-color;
-					}
-				}
-			}
-		}
 
 		.swiper-box {
 			height: 100%;
@@ -527,183 +259,56 @@
 			}
 		}
 
-		.order-item {
-			margin-top: 20rpx;
+
+		.coment-form {
+			position: relative;
+			width: 550rpx;
+			border-radius: 5px;
 			background: #fff;
 
-			.top {
-				height: 74rpx;
-				padding: 0 30rpx;
-				justify-content: space-between;
-				align-items: center;
-				border-bottom: 1px solid $uni-border-color;
+			.shop-image {
+				position: absolute;
+				width: 138rpx;
+				height: 138rpx;
+				top: -64rpx;
+				left: 0;
+				right: 0;
+				margin: 0 auto;
+				border-radius: 50%;
+				overflow: hidden;
 
-				.left {
-					line-height: 74rpx;
-					color: $uni-text-color;
-
-					.iconfont {
-						font-size: 24rpx;
-						margin-right: 8rpx;
-						line-height: 74rpx;
-					}
-				}
-
-				.right {
-					display: flex;
-					align-items: center;
-
-					image {
-						width: 60rpx;
-						height: 40rpx;
-					}
-
-					.status {
-						color: $uni-bg-color;
-					}
-				}
-
-
-			}
-
-			.item-main {
-				margin: 0 30rpx;
-				padding: 30rpx 0;
-				justify-content: space-between;
-				border-bottom: 1px solid $uni-border-color;
-
-				.left {
-					width: 580rpx;
-
-					image {
-						overflow: hidden;
-						width: 135rpx;
-						height: 135rpx;
-						margin-right: 20rpx;
-						border-radius: 5px;
-					}
-
-					.item-title {
-						.name {
-							margin-bottom: 20rpx;
-							font-size: 28rpx;
-						}
-
-						text {
-							font-size: 24rpx;
-							color: $uni-text-color-grey;
-						}
-					}
-				}
-
-				.right {
-					flex: 1;
-					text-align: right;
-
-					.money {}
-
-					.num {
-						font-size: 20rpx;
-						color: $uni-text-color-grey;
-					}
+				image {
+					width: 138rpx;
+					height: 138rpx;
+					border-radius: 50%;
 				}
 			}
 
-			.total {
-				margin: 0 30rpx;
-				height: 75rpx;
-				justify-content: space-between;
-				align-items: center;
-				border-bottom: 1px solid $uni-border-color;
+			.title {
+				padding-top: 84rpx;
+				color: #333;
+			}
+
+			.star {
+				margin: 30rpx 0 20rpx 0;
+
+				.iconfont {
+					margin: 0 10rpx;
+					color: #999;
+				}
 
 				.dark-color {
 					color: $uni-bg-color;
 				}
-
-				.total-num {
-					.heji {
-						margin-right: 20rpx;
-					}
-				}
 			}
 
-			.btn-list {
-				margin: 0 30rpx;
-				padding: 20rpx 0;
-				justify-content: space-between;
-
-				button {
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					width: 180rpx;
-					height: 56rpx;
-					border-radius: 56rpx;
-					margin: 0px;
-					font-size: 28rpx;
-				}
-
-				.detail {
-					color: $uni-text-color;
-					background: #ddd;
-				}
-
-				.btn1 {
-					margin-right: 20rpx;
-				}
-
-				.blue {
-					color: #fff;
-					background: #4aa3f0;
-				}
-
-				.dark {
-					color: #fff;
-					background-color: $uni-bg-color;
-				}
-			}
 		}
-		.coment-form{
-			position: relative;
-			width: 550rpx;
-			border-radius: 5px;
-			background:#fff;
-			.shop-image{
-				position: absolute;
-				width:138rpx;
-				height:138rpx;
-				top: -64rpx;
-				left: 0;
-				right: 0;
-				margin:0 auto;
-				border-radius: 50%;
-				overflow:hidden;
-				image{
-					width:138rpx;
-					height:138rpx;
-					border-radius: 50%;
-				}
-			}
-			.title{
-				padding-top:84rpx;
-				color: #333;
-			}
-			.star{
-				margin:30rpx 0 20rpx 0;
-				.iconfont{
-					margin: 0 10rpx;
-					color: #999;
-				}
-				.dark-color{
-					color: $uni-bg-color;
-				}
-			}
-			
-		}
-		.upload{
-			padding:0 40rpx;
-			align-items:center;
-			.up-image{
+
+		.upload {
+			padding: 0 40rpx;
+			align-items: center;
+
+			.up-image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -713,35 +318,43 @@
 				background: $uni-bg-color;
 				border-radius: 5rpx;
 			}
-			.up-text{
+
+			.up-text {
 				flex: 1;
-				text-align:left;
-				.title{
+				text-align: left;
+
+				.title {
 					padding-top: 0px;
 					font-size: 24rpx;
 				}
-				text{
-					color:$uni-text-color-grey;
+
+				text {
+					color: $uni-text-color-grey;
 					font-size: 20rpx;
 					line-height: 20rpx;
 				}
 			}
-			.iconfont{
+
+			.iconfont {
 				color: #fff;
 				font-size: 46rpx;
 			}
 		}
-		.noname{
+
+		.noname {
 			margin-top: 30rpx;
 			padding-left: 40rpx;
 			text-align: left;
-			label{
+
+			label {
 				font-size: 24rpx;
 			}
 		}
-		.uni-btnv{
-			padding:20rpx 0 40rpx 0;
-			button{
+
+		.uni-btnv {
+			padding: 20rpx 0 40rpx 0;
+
+			button {
 				width: 276rpx;
 				height: 54rpx;
 				line-height: 54rpx;
@@ -749,40 +362,13 @@
 				color: #fff;
 				font-size: 28rpx;
 				background: $uni-bg-color;
-				&:after{
+
+				&:after {
 					border: none;
 				}
 			}
 		}
-		.alert-pop{
-			position: relative;
-			width: 550rpx;
-			border-radius: 5px;
-			background:#fff;
-			.shop-image{
-				position: absolute;
-				width:138rpx;
-				height:138rpx;
-				top: -64rpx;
-				left: 0;
-				right: 0;
-				margin:0 auto;
-				border-radius: 50%;
-				overflow:hidden;
-				image{
-					width:138rpx;
-					height:138rpx;
-					border-radius: 50%;
-				}
-			}
-			.title{
-				padding-top:84rpx;
-				color: #333;
-				font-size: 26rpx;
-			}
-			.text{
-				padding: 50rpx 0;
-			}
-		}
+
+
 	}
 </style>

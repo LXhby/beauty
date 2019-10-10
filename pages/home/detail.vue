@@ -123,13 +123,13 @@
 						</view>
 					</view>
 					<view class="btn-sm" @click="getcall">
-						<text class="iconfont">&#xe6c5;</text>
+						<text class="iconfont" style="color: #4aa3f0;">&#xe6c5;</text>
 						<view class="text-nav">
 							客服
 						</view>
 					</view>
 					<view class="btn-sm" @click="handlecollection">
-						<text class="iconfont">&#xe69b;</text>
+						<text :class="[iscollect?'hascollect':'notcollect','iconfont']">&#xe69b;</text>
 						<view class="text-nav">
 							收藏
 						</view>
@@ -162,15 +162,27 @@
 				browseList:[],
 				commentList:[],
 				totalnum:0,
-				id:''
+				id:'',
+				iscollect:false
 			}
 		},
 		computed: {
-			...mapGetters(['config', 'cartnum'])
+			...mapGetters(['config', 'cartnum','collect'])
 		},
 		onLoad() {
-			this.id = this.$route.query.id;
+			this.id = this.$route.query.id*1;
 			this.getInfo();
+			if(!this.collect.length){
+				this.iscollect = false;
+			}else{
+				var item = this.collect.find(ele=>ele.id == this.id);
+				if(item){
+					this.iscollect = true;
+				}else{
+					this.iscollect = false;
+				}
+			}
+			
 		},
 		methods: {
 			 gettimeago(value) {
@@ -282,11 +294,22 @@
 			},
 			// 收藏
 			handlecollection() {
-				this.$store.commit('cartnum/setcollect', this.info);
-				uni.showToast({
-					title: '收藏成功！',
-					icon: 'none'
-				})
+				if(!this.iscollect){
+					this.$store.commit('cartnum/setcollect', this.info);
+					this.iscollect = true;
+					uni.showToast({
+						title: '收藏成功！',
+						icon: 'none'
+					})
+				}else{
+					this.iscollect = false;
+					this.$store.commit('cartnum/delcollect', this.info);
+					uni.showToast({
+						title: '取消收藏',
+						icon: 'none'
+					})
+				}
+				
 			},
 			getcall() {
 				window.location.href = `tel:${this.config.service_phone}`;
@@ -591,9 +614,13 @@
 
 				.btn-sm {
 					text-align: center;
-
-					.iconfont {
+					.hascollect{
+						color:$uni-bg-color ;
+					}
+					.notcollect{
 						color: #4aa3f0;
+					}
+					.iconfont {
 						font-size: 32rpx;
 					}
 

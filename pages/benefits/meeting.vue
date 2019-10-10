@@ -7,27 +7,30 @@
 				<text class="text">活动预告</text>
 			</view>
 			<view class="list">
-				<view class="item uni-flex uni-row" v-for="(item,index) in forumsList" :key="index" @click="toCourseInfo(item.id)">
-					<view class="left uni-flex uni-column">
-						<view class="title">{{item.name}}</view>
-						<view class="bottom-box uni-flex uni-row">
-							<view class="time">
-								<text class="iconfont">&#xe6dd;</text>
-								<text>{{getTime(item.start_date,item.end_date)}}</text>
-							</view>
-							<view class="address">
-								<text class="iconfont">&#xe657;</text>
-								<text>{{item.address}}</text>
+				<view class="" v-for="(ele,index) in forumsList" :key="index">
+					<view class="item uni-flex uni-row" v-for="(item,index) in ele.data" :key="index" @click="toCourseInfo(item.id,item.bundle_id)">
+						<view class="left uni-flex uni-column">
+							<view class="title">{{item.name}}</view>
+							<view class="bottom-box uni-flex uni-row">
+								<view class="time">
+									<text class="iconfont">&#xe6dd;</text>
+									<text>{{getTime(item.start_date,item.end_date)}}</text>
+								</view>
+								<view class="address">
+									<text class="iconfont">&#xe657;</text>
+									<text>{{item.address}}</text>
+								</view>
 							</view>
 						</view>
-					</view>
-					<view :class="[getCount(item.start_date,item.end_date)[1] === '已结束'?'gray':'dark','right']">
-						<view class="num">
-							<text v-if="getCount(item.start_date,item.end_date)[0]">{{getCount(item.start_date,item.end_date)[0]}}天</text>
+						<view :class="[getCount(item.start_date,item.end_date)[1] === '已结束'?'gray':'dark','right']">
+							<view class="num">
+								<text v-if="getCount(item.start_date,item.end_date)[0]">{{getCount(item.start_date,item.end_date)[0]}}天</text>
+							</view>
+							<text>{{getCount(item.start_date,item.end_date)[1]}}</text>
 						</view>
-						<text>{{getCount(item.start_date,item.end_date)[1]}}</text>
 					</view>
 				</view>
+				
 			</view>
 		</view>
 		<view class="bottom-line">-- 我是有底线的{{config.app_name}} --</view>
@@ -65,14 +68,46 @@
 				})
 				.then(res => {
 					uni.hideLoading();
-					this.forumsList = res.data.items;
+					var arrList = res.data.items;
+					var items = [];
+					arrList.forEach(al => {
+						if (al.status != "已结束") {
+							items.push(al);
+						}
+					});
+					var map = {},
+						dest = [];
+						console.log('items',items)
+					for (var i = 0; i < items.length; i++) {
+						var ai = items[i];
+						if (!map[ai.bundle_id]) {
+							//依赖分组字段可自行更改！
+							dest.push({
+								bundle_id: ai.bundle_id, //依赖分组字段可自行更改！
+								data: [ai]
+							});
+							map[ai.bundle_id] = ai; //依赖分组字段可自行更改！
+						} else {
+							for (var j = 0; j < dest.length; j++) {
+								var dj = dest[j];
+								if (dj.bundle_id == ai.bundle_id) {
+									//依赖分组字段可自行更改！
+									dj.data.push(ai);
+									break;
+								}
+							}
+						}
+					}
+					console.log('dest',dest)
+
+					this.forumsList = dest
 				});
 		},
 		methods: {
 			// 点击课程跳转课程详情页面
-			toCourseInfo(id) {
+			toCourseInfo(id,bundle_id) {
 				uni.navigateTo({
-					url: '/pages/benefits/courseinfo?courseId=' + id
+					url: '/pages/benefits/courseinfo?courseId=' + id+'&bundle_id='+bundle_id
 				})
 			},
 			getTime(start, end) {
