@@ -120,6 +120,10 @@ const router = new Router({
 		{
 			path:'/pages/my/postcomment',
 			name:'postComment'
+		},
+		{
+			path:'/pages/shopcar/paypage',
+			name:'paypage'
 		}
 	]
 });

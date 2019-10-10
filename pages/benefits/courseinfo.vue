@@ -70,23 +70,24 @@
 			<text class="old-price">原价: ￥{{forum.original_price}}</text>
 			<button :class="[signBtn == '立即报名'?'redstyle':'infostyle','btn']" type="primary" @click="goPay">{{signBtn}}</button>
 		</view>
-		<!-- 		<view class="bottom">
-			<button class="btn" type="primary">报名成功</button>
-		</view> -->
+		<!-- <w-picker ref="picker" mode="selector" themeColor="#f00"
+    :selectList="selectList" level="1" v-if="selectList.length" :defaultVal="[1]"></w-picker> -->
 	</view>
 </template>
 
 <script>
-	import uniBadge from '@/components/uni-badge/uni-badge.vue'
+	import uniBadge from '@/components/uni-badge/uni-badge.vue';
+	import wPicker from "@/components/w-picker/w-picker.vue"
 	import {
 		mapGetters
 	} from "vuex";
 	export default {
 		components: {
-			uniBadge
+			uniBadge,
+			wPicker
 		},
 		computed: {
-			...mapGetters(['config', 'cartnum'])
+			...mapGetters(['config', 'cartnum', 'userInfo'])
 		},
 		data() {
 			return {
@@ -100,7 +101,8 @@
 				saveIndex: "",
 				current: 0,
 				signBtn: '立即报名',
-				btntype: 'primary'
+				btntype: 'primary',
+				selectList: []
 			}
 		},
 		onLoad(option) {
@@ -162,6 +164,15 @@
 						result.push(this.courseList.slice(i, i + 3));
 					}
 					this.courseList = result;
+					this.selectList = [];
+					arr.forEach(item => {
+						var obj = {
+							label: '第' + item.courseIndex + '期(' + item.start_date + ')',
+							value: item.id
+						}
+						this.selectList.push(obj)
+					})
+					console.log('this.selectList', this.selectList)
 				}).catch(console.log)
 			},
 			goOtherCourse(item) {
@@ -197,13 +208,12 @@
 					url: 'forum-orders',
 					method: 'get',
 					params: {
-						'ForumOrderSearch[user_id]': this.bundle_id,
+						'ForumOrderSearch[user_id]': this.userInfo.id,
 						'ForumOrderSearch[forum_id]': this.id,
 					}
 				}).then(res => {
 					if (res.data.items.length > 0 && res.data.items[0].status == "已支付") {
 						this.signBtn = "已报名";
-
 					} else {
 						this.signBtn = "立即报名";
 					}
@@ -211,7 +221,39 @@
 			},
 			goPay() {
 				if (this.signBtn != "已报名") {
-					this.sheet = true;
+					this.$http.request({
+						url: 'forum-orders',
+						method: 'post',
+						data: {
+							user_id: this.userInfo.id,
+							forum_id: this.id,
+							quantity: 1
+						}
+					}).then(res => {
+						console.log(res)
+						if (res.statusCode == 201) {
+							let order = res.data;
+							console.log(order)
+							if (order.status == "未支付") {
+								uni.setStorageSync('payment', JSON.stringify({
+									id: order.id,
+									type: "FORUM_ORDER"
+								}))
+								window.location.href = "/#/pages/shopcar/paypage";
+							} else {
+								uni.showModal({
+									title:'恭喜您已报名成功！',
+									confirmText:'知道了',
+									showCancel:false,
+									success:()=>{
+										uni.navigateTo({
+											url:'/pages/benefits/meeting'
+										})
+									}
+								})
+							}
+						}
+					})
 				} else {
 					return false;
 				}
@@ -223,7 +265,12 @@
 <style lang="scss" scoped>
 	@import "../../common/common.scss";
 
+	page {
+		height: 100%;
+	}
+
 	.course {
+		height: 100%;
 		background-color: #f1f1f1;
 
 		.banner {
@@ -264,6 +311,7 @@
 			position: relative;
 			z-index: 3;
 			margin-top: -72rpx;
+			margin-bottom: 100rpx;
 			box-sizing: border-box;
 			padding: 0 20rpx 20rpx 20rpx;
 

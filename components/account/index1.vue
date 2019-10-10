@@ -34,7 +34,7 @@
 				<view class="example-body">
 					<view class="list uni-row uni-flex" style="justify-content: space-around;">
 						<view class="item" v-for="(item,index) in detailist" :key="index" style="text-align: center;">
-							<view class="text-one" >
+							<view class="text-one">
 								16
 							</view>
 							<text class="text">{{item}}</text>
@@ -61,13 +61,13 @@
 					<view class="form-box">
 						<view class="uni-form-item uni-flex uni-row padding-botom">
 							<view class="title">真实姓名</view>
-							<input class="uni-input" placeholder="请输入真实姓名" />
+							<input class="uni-input" placeholder="请输入真实姓名" name="realname" />
 						</view>
 						<view class="uni-form-item uni-flex uni-row padding-botom">
 							<view class="title">身份证号</view>
-							<input class="uni-input" placeholder="请输入真实身份证号" />
+							<input class="uni-input" placeholder="请输入真实身份证号" name="idsn" />
 						</view>
-						<view class="uni-form-item uni-flex uni-row ">
+						<view class="uni-form-item uni-flex uni-row " name="mobile">
 							<view class="title">手机号码</view>
 							<input class="uni-input" placeholder="请输入手机号" />
 							<button>获取验证码</button>
@@ -94,6 +94,7 @@
 	import uniGrid from '@/components/uni-grid/uni-grid.vue'
 	import uniGridItem from '@/components/uni-grid-item/uni-grid-item.vue'
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
+	var graceChecker = require("../../js_sdk/graceui-dataChecker/graceChecker.js");
 	export default {
 		components: {
 			uniGrid,
@@ -103,7 +104,7 @@
 		props: {
 			detailist: {
 				type: Array,
-				default: ['','','']
+				default: ['', '', '']
 			},
 			rightText: {
 				type: String,
@@ -123,10 +124,48 @@
 				if (this.rightText == '实名认证') {
 					this.$refs.popup.open()
 				}
+			},
+			formSubmit(e) {
+				var rule = [{
+						name: "realname",
+						checkType: "notnull",
+						errorMsg: "请输入真实姓名"
+					},
+					{
+						name: "idsn",
+						checkType: "notnull",
+						errorMsg: "请输入身份证号"
+					},
+					{
+						name: "idsn",
+						checkType: "reg",
+						checkRule: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
+						errorMsg: "身份证号填写有误"
+					},
+					{
+						name: "mobile",
+						checkType: "phoneno",
+						errorMsg: "请输入手机号"
+					}
+				];
+				//进行表单检查
+				var formData = e.detail.value;
+				var checkRes = graceChecker.check(formData, rule);
+				if (checkRes) {
+					uni.showToast({
+						title: "验证通过!",
+						icon: "none"
+					});
+				} else {
+					uni.showToast({
+						title: graceChecker.error,
+						icon: "none"
+					});
+				}
 			}
 		},
 		mounted() {
-
+			this.$refs.popup.open()
 		}
 	}
 </script>

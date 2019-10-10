@@ -194,6 +194,12 @@
 			"style": {
 				"navigationBarTitleText": "发表评论"
 			}
+		},
+		{
+			"path": "pages/shopcar/paypage",
+			"style": {
+				"navigationBarTitleText": "支付"
+			}
 		}
 	],
 	"globalStyle": {
