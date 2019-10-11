@@ -194,14 +194,6 @@
 				orderInfo: '',
 				orderId: '',
 				starsNum:1,
-				commentinfo:{
-					user_id:'',
-					product_id:'',
-					rate: 1, // 星星数量
-					content:'',
-					image:[],
-					is_anonymous:false
-				}
 			}
 		},
 		mounted(){
@@ -217,7 +209,7 @@
 				}
 			}).then(res => {
 				this.orderInfo = res.data;
-				this.commentinfo.product_id = 1;
+				
 			}).catch(console.log)
 		},
 		methods:{

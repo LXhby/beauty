@@ -77,12 +77,12 @@ globalInterceptor.response.use((res, config) => {
 	console.log('is global response interceptor');
 
 	// 回传数据中没有携带 code
-	if (!(res.data && res.data.code)) {
+	if (!(res.data && res.data.statusCode)) {
 		return res;
 	}
 
 	// 用code模拟http状态码
-	const code = parseInt(res.data.code);
+	const code = parseInt(res.data.statusCode);
 
 	// 20x ~ 30x
 	if (200 <= code && code < 400) {

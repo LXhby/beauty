@@ -67,10 +67,14 @@
 							<view class="title">身份证号</view>
 							<input class="uni-input" placeholder="请输入真实身份证号" name="idsn" />
 						</view>
-						<view class="uni-form-item uni-flex uni-row " name="mobile">
+						<view class="uni-form-item uni-flex uni-row padding-botom">
 							<view class="title">手机号码</view>
-							<input class="uni-input" placeholder="请输入手机号" />
-							<button>获取验证码</button>
+							<input class="uni-input" placeholder="请输入手机号" name="mobile" v-model="form.mobile" />
+						</view>
+						<view class="uni-form-item uni-flex uni-row " >
+							<view class="title">验证码</view>
+							<input class="uni-input" placeholder="请输入验证码" name="verifycode" />
+							<button @click="sendVerifycode" :disabled="btnDisabled">{{btnText}}</button>
 						</view>
 					</view>
 					<view class="list-text">
@@ -95,6 +99,9 @@
 	import uniGridItem from '@/components/uni-grid-item/uni-grid-item.vue'
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	var graceChecker = require("../../js_sdk/graceui-dataChecker/graceChecker.js");
+	import {
+		mapGetters
+	} from "vuex";
 	export default {
 		components: {
 			uniGrid,
@@ -119,12 +126,63 @@
 				default: false
 			}
 		},
+		computed: {
+			...mapGetters(['userInfo'])
+		},
+		data(){
+			return{
+				form:{
+					mobile:''
+				},
+				btnDisabled:false,
+				btnText:'获取验证码'
+			}
+		},
 		methods: {
 			handleNav() {
 				if (this.rightText == '实名认证') {
 					this.$refs.popup.open()
 				}
 			},
+			sendVerifycode(){
+				console.log('this.form.mobile',this.form.mobile)
+				 if (!this.form.mobile || this.form.mobile.length != 11) {
+				        return false;
+				      } else {
+				       
+						this.$http
+							.request({
+								url: "sms",
+								method: "post",
+								data:{
+									mobile: this.form.mobile,
+									user_id: this.userInfo.id,
+									type:'验证码'
+								}
+							})
+				          .then(response => {
+				            this.startTimer();
+				          })
+				          .catch(error => {
+				            console.log(error);
+				            // this.$vux.toast.text(error.response.data.message);
+				          });
+				      }
+				
+			},
+			startTimer() {
+			      this.btnDisabled = true;
+			      let seconds = 60;
+			      this.timer = setInterval(() => {
+			        seconds--;
+			        this.btnText = seconds + "秒";
+			        if (seconds <= 0) {
+			          clearInterval(this.timer);
+			          this.btnText = "重发验证码";
+			          this.btnDisabled = false;
+			        }
+			      }, 1000);
+			    },
 			formSubmit(e) {
 				var rule = [{
 						name: "realname",
@@ -144,18 +202,43 @@
 					},
 					{
 						name: "mobile",
-						checkType: "phoneno",
+						checkType: "notnull",
 						errorMsg: "请输入手机号"
+					},	
+					{
+						name: "mobile",
+						checkType: "phoneno",
+						errorMsg: "手机号填写有误"
+					},
+					{
+						name:'verifycode',
+						checkType: "notnull",
+						errorMsg: "请输入验证码"
+					},
+					{
+						name:'verifycode',
+						checkType: "reg",
+						checkRule:/^\d{6}$/,
+						errorMsg: "验证码填写有误"
 					}
 				];
 				//进行表单检查
 				var formData = e.detail.value;
 				var checkRes = graceChecker.check(formData, rule);
 				if (checkRes) {
-					uni.showToast({
-						title: "验证通过!",
-						icon: "none"
-					});
+					this.$http
+						.request({
+							url: "users/"+this.userInfo.id,
+							method: "put",
+							data:formData
+						}).then(res=>{
+							uni.showToast({
+								title: "实名成功!",
+								icon: "none"
+							});
+							this.$refs.popup.close();
+							this.$store.commit('user/setUserInfo',res.data);
+						})
 				} else {
 					uni.showToast({
 						title: graceChecker.error,
@@ -165,7 +248,6 @@
 			}
 		},
 		mounted() {
-			this.$refs.popup.open()
 		}
 	}
 </script>
@@ -218,7 +300,7 @@
 				}
 
 				button {
-					width: 118rpx;
+					width: 140rpx;
 					height: 40rpx;
 					margin-left: 10rpx;
 					line-height: 40rpx;

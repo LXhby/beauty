@@ -1,25 +1,28 @@
 <template>
 	<view class="post-comment">
-		<view class="item">
-			<view class="item-top uni-flex uni-row">
-				<image src="../../static/006tlvijgy1g6ldbo6anuj30e20e2wjb.jpg" mode="aspectFill"></image>
-				<text>实打实大空间</text>
+		<view class="item" v-for="(item,index) in orderInfo" :key="index" v-if="orderInfo.length">
+			<view class="item-top uni-flex uni-row" @click="gogoodsinfo(item.product.id)">
+				<image :src="url+item.product.image" mode="aspectFill"></image>
+				<text>{{item.product.name}}</text>
 			</view>
 			<view class="star-item uni-flex uni-row">
 				<text>整体评价</text>
 				<view class="star">
-					<text class="iconfont star dark-color" @click="clickStar(1)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(2)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(3)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(4)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(5)">&#xe623;</text>
+					<text :class="[{'dark-color':commentarr[index].rate>=1},'iconfont','star']" @click="clickStar(1,commentarr[index])">&#xe623;</text>
+					<text :class="[{'dark-color':commentarr[index].rate>=2},'iconfont','star']" @click="clickStar(2,commentarr[index])">&#xe623;</text>
+					<text :class="[{'dark-color':commentarr[index].rate>=3},'iconfont','star']" @click="clickStar(3,commentarr[index])">&#xe623;</text>
+					<text :class="[{'dark-color':commentarr[index].rate>=4},'iconfont','star']" @click="clickStar(4,commentarr[index])">&#xe623;</text>
+					<text :class="[{'dark-color':commentarr[index].rate>=5},'iconfont','star']" @click="clickStar(5,commentarr[index])">&#xe623;</text>
 				</view>
 			</view>
 			<textarea maxlength="200" placeholder-style="width:750rpx
 			;border-radius: 5px; background: #f5f5f5;" placeholder=""
-			 value="非常好" />
-			 <view class="upload uni-flex uni-row">
-			 	<view class="up-image">
+			 :value="commentarr[index].content" />
+			<view class="uni-flex uni-row upimg-list">
+				 <image :src="ele" mode="aspectFill" v-for="(ele,index) in commentarr[index].image" :key="index"></image>
+			 </view>
+			<view class="upload uni-flex uni-row">
+			 	<view class="up-image" @click="upload(commentarr[index],index)">
 			 		<text class="iconfont">&#xe64a;</text>
 			 	</view>
 			 	<view class="up-text">
@@ -31,34 +34,165 @@
 			 </view>
 			 <view class="noname">
 			 	<label>
-			 		<checkbox value="cb" checked="true" style="transform:scale(0.7)" color="#ff0080" />匿名评价
+			 		<checkbox value="cb" :checked="commentarr[index].is_anonymous" style="transform:scale(0.7)" color="#ff0080" />匿名评价
 			 	</label>
 			 </view>
 		</view>
+		<button type="primary" @click="sendcomment" class="send-btn">提交评价</button>
 	</view>
 </template>
 
 <script>
+	import {
+		mapGetters
+	} from "vuex";
 	export default {
+		computed: {
+			...mapGetters(['userInfo'])
+		},
 		data(){
 			return{
-				commentinfo:{
-					user_id:'',
-					product_id:'',
-					rate: 1, // 星星数量
-					content:'',
-					image:[],
-					is_anonymous:false
-				}
+				orderId:'',
+				orderInfo:[],
+				url:'',
+				commentarr:[],
+				numindex:''
 			}
+		},
+		onLoad(option) {
+			this.orderId = option.orderId;
+			uni.showLoading({
+				title:'正在加载中'
+			})
+			this.$http.request({
+				url: 'orders/' + option.orderId,
+				method: 'get',
+				params: {
+					'expand': 'orderProducts,orderProducts.product'
+				}
+			}).then(res => {
+				uni.hideLoading();
+				this.url = this.$baseUrl;
+				this.orderInfo= res.data.orderProducts;
+				if(this.orderInfo.length){
+					this.commentarr = [];
+					this.orderInfo.forEach(item=>{
+						var obj = {
+							user_id:this.userInfo.id,
+							product_id:item.product.id,
+							rate: 5, // 星星数量
+							content:'非常好',
+							image:[],
+							is_anonymous:false
+						}
+						this.commentarr.push(obj)
+					})
+					console.log(arr)
+				}
+				console.log('this.orderInfo',this.orderInfo)
+				// this.commentinfo.product_id = 1;
+			}).catch(console.log)
+		},
+		methods:{
+			gogoodsinfo(id){
+				uni.navigateTo({
+					url:'/pages/home/detail?id='+id
+				})
+			},
+			// 点星星
+			clickStar(num,item) {
+				item.rate = num;
+			},
+			sendcomment(){
+				var list = [];
+			this.commentarr.forEach(item=>{
+				list.push(new Promise(resolve=>{
+					this.$http.request({
+							url: 'product-comments',
+							method: 'post',
+							data: item
+						}).then(res=>{
+							resolve(res)
+						})
+				}))
+			})
+				Promise.all(list).then(result=>{
+				  uni.showToast({
+				  	title:'评价成功',
+					icon:'none'
+				  })
+				  uni.navigateTo({
+				  	url:'/pages/my/order'
+				  })
+				})
+			},
+			upload(item,index){
+				console.log('item',item)
+				if(item.image.length >=3){
+					uni.showToast({
+						title:"最多上传三张图片",
+						icon: "none"
+					})
+					return false;
+				}else{
+					this.numindex = index;
+					console.log('index',index)
+					this.$wechat.chooseImage({
+					        count: 3,
+					        sizeType: ["compressed"], // 可以指定是原图还是压缩图，默认二者都有
+					        sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有
+					        success: async res => {
+					          try {
+					            for (let index = 0; index < res.localIds.length; index++) {
+					              const serverId = res.localIds[index];
+					              await this.uploadImage(serverId);
+					            }
+					          } catch (error) {
+					            console.log(error);
+					          }
+					        }
+					      });
+				}
+			},
+			 uploadImage(serverId) {
+			  return new Promise((resolve, reject) => {
+				this.$wechat.uploadImage({
+				  localId: serverId,
+				  isShowProgressTips: 1,
+				  success: res => {
+					var serverId = res.serverId; // 返回图片的服务器端ID
+					  this.$http.request({
+						url: 'wechat/download-image',
+						method: 'get',
+						params: {
+							'serverId':serverId
+						}
+					  }).then(response => {
+						this.commentarr[this.numindex].images.push(response.data);
+						resolve();
+					  })
+					  .catch(error => {
+						reject(error);
+					  });
+				  }
+				});
+			  });
+			},
 		}
 	}
 </script>
 
 <style scoped lang="scss">
+	page{
+		height: 100%;
+	}
 .post-comment{
+	height: 100%;
+	background:#f5f5f5;
 	.item{
 		color:$uni-text-color;
+		background:#fff;
+		margin-bottom:20rpx;
 		.item-top{
 			padding: 10rpx 20rpx;
 			border-bottom: 1px solid $uni-border-color;
@@ -85,7 +219,17 @@
 				}
 			}
 		}
+		.upimg-list{
+			margin-top:20rpx;
+			padding:0 20rpx;
+			image{
+				width:160rpx;
+				height: 160rpx;
+				margin-right: 20rpx;
+			}
+		}
 		.upload{
+			margin-top: 20rpx;
 			padding:0 20rpx;
 			align-items:center;
 			.up-image{
@@ -99,6 +243,7 @@
 				border-radius: 5rpx;
 			}
 			.up-text{
+				
 				flex: 1;
 				text-align:left;
 				.title{
@@ -118,12 +263,27 @@
 		}
 		.noname{
 			margin-top: 30rpx;
-			padding-left: 40rpx;
+			padding-left: 20rpx;
 			text-align: left;
 			label{
 				font-size: 24rpx;
 			}
 		}
 	}
+	.send-btn{
+		background: $uni-bg-color;
+		border-radius:0;
+		&:after{
+			border-radius:0;
+			}
+	}
 }
+</style>
+<style lang="scss">
+	uni-textarea{
+		width:100%;
+		box-sizing: border-box;
+		padding: 20rpx;
+		background: #f5f5f5;
+	}
 </style>
