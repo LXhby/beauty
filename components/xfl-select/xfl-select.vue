@@ -110,7 +110,7 @@
 				selectText: '',    // 已经选择的内容
 				activeIndex: -1,   // 列表中当前活动的索引号
 				isRotate: false,   // 右侧的小三角是否旋转
-				listTop__: 50,       // 列表框的top位置，在初始时，根据input节点的高度来调整
+				listTop__: 10,       // 列表框的top位置，在初始时，根据input节点的高度来调整
 			};
 		},
 		// 进行监听的话，在组件外改变这个值，组件内就能响应变化
@@ -823,7 +823,7 @@
 		
 		/****** 列表框部分样式 *****/
 		.list-container{
-			position: absolute; width: 100%; left: 0; top: 50px;
+			position: absolute; width: 100%; left: 0; top: 20px;
 			box-sizing: border-box; z-index: 100;
 			
 			//***************************  弹出框上面的小三角  ***************************

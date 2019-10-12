@@ -26,7 +26,6 @@
 								<text class="name">{{rightText}}</text>
 								<text class="iconfont right">&#xe642;</text>
 							</view>
-
 						</view>
 					</view>
 				</view>
@@ -71,7 +70,7 @@
 							<view class="title">手机号码</view>
 							<input class="uni-input" placeholder="请输入手机号" name="mobile" v-model="form.mobile" />
 						</view>
-						<view class="uni-form-item uni-flex uni-row " >
+						<view class="uni-form-item uni-flex uni-row ">
 							<view class="title">验证码</view>
 							<input class="uni-input" placeholder="请输入验证码" name="verifycode" />
 							<button @click="sendVerifycode" :disabled="btnDisabled">{{btnText}}</button>
@@ -83,6 +82,44 @@
 						</view>
 						<view class="text">
 							*用户信息和隐私我们承诺绝不向外泄密。
+						</view>
+					</view>
+					<view class="uni-btn">
+						<button form-type="submit">确认设置</button>
+					</view>
+				</form>
+			</view>
+		</uni-popup>
+		<uni-popup ref="popupshop" type="center" :custom="true">
+			<view class="real-form">
+				<view class="titles">
+					店铺设置
+				</view>
+				<form @submit="formSubmitshop">
+					<view class="form-box">
+						<view class="uni-form-item uni-flex uni-row padding-botom">
+							<view class="title">店铺名称</view>
+							<input class="uni-input" placeholder="最多五个汉字" name="shop_name" />
+						</view>
+						<view class="uni-form-item uni-flex uni-row padding-botom">
+							<view class="title">店铺头像</view>
+							<view class="img" style="margin-right: 20rpx;" @click="upload(1)">
+								<image :src="avatar" mode="aspectFill"></image>
+								<text class="iconfont">&#xe64a;</text>
+							</view>
+							<view class="title">背景</view>
+							<view class="img" @click="upload(2)">
+								<image :src="shop_banner" mode="aspectFill"></image>
+								<text class="iconfont">&#xe64a;</text>
+							</view>
+						</view>
+					</view>
+					<view class="list-text">
+						<view class="text">
+							*店铺名称建议使用真实姓名；
+						</view>
+						<view class="text">
+							*店铺名称、头像、店铺背景图不得使用国家领导人，法律明文规定的违法信息。
 						</view>
 					</view>
 					<view class="uni-btn">
@@ -129,60 +166,162 @@
 		computed: {
 			...mapGetters(['userInfo'])
 		},
-		data(){
-			return{
-				form:{
-					mobile:''
+		data() {
+			return {
+				form: {
+					mobile: ''
 				},
-				btnDisabled:false,
-				btnText:'获取验证码'
+				btnDisabled: false,
+				btnText: '获取验证码',
+				avatar: '',
+				shop_banner: '',
+				index:1
 			}
 		},
 		methods: {
+			upload(index){
+				this.index = index;
+				this.$wechat.chooseImage({
+				        count: 1,
+				        sizeType: ["compressed"], // 可以指定是原图还是压缩图，默认二者都有
+				        sourceType: ["album", "camera"], // 可以指定来源是相册还是相机，默认二者都有
+				        success: async res => {
+				          try {
+				            for (let index = 0; index < res.localIds.length; index++) {
+				              const serverId = res.localIds[index];
+				              await this.uploadImage(serverId);
+				            }
+				          } catch (error) {
+				            console.log(error);
+				          }
+				        }
+				      });
+			},
+			uploadImage(serverId) {
+			  return new Promise((resolve, reject) => {
+				this.$wechat.uploadImage({
+				  localId: serverId,
+				  isShowProgressTips: 1,
+				  success: res => {
+					var serverId = res.serverId; // 返回图片的服务器端ID
+					  this.$http.request({
+						url: 'wechat/download-image',
+						method: 'get',
+						params: {
+							'serverId':serverId
+						}
+					  }).then(response => {
+						if(this.index == 1){
+							this.avatar = response.data;
+						}else{
+							this.shop_banner = response.data;
+						}
+						resolve();
+					  })
+					  .catch(error => {
+						reject(error);
+					  });
+				  }
+				});
+			  });
+			},
 			handleNav() {
 				if (this.rightText == '实名认证') {
 					this.$refs.popup.open()
+				} else if (this.rightText == '店铺设置') {
+					this.$refs.popupshop.open();
 				}
 			},
-			sendVerifycode(){
-				console.log('this.form.mobile',this.form.mobile)
-				 if (!this.form.mobile || this.form.mobile.length != 11) {
-				        return false;
-				      } else {
-				       
-						this.$http
-							.request({
-								url: "sms",
-								method: "post",
-								data:{
-									mobile: this.form.mobile,
-									user_id: this.userInfo.id,
-									type:'验证码'
-								}
-							})
-				          .then(response => {
-				            this.startTimer();
-				          })
-				          .catch(error => {
-				            console.log(error);
-				            // this.$vux.toast.text(error.response.data.message);
-				          });
-				      }
-				
+			sendVerifycode() {
+				console.log('this.form.mobile', this.form.mobile)
+				if (!this.form.mobile || this.form.mobile.length != 11) {
+					return false;
+				} else {
+
+					this.$http
+						.request({
+							url: "sms",
+							method: "post",
+							data: {
+								mobile: this.form.mobile,
+								user_id: this.userInfo.id,
+								type: '验证码'
+							}
+						})
+						.then(response => {
+							this.startTimer();
+						})
+						.catch(error => {
+							console.log(error);
+							// this.$vux.toast.text(error.response.data.message);
+						});
+				}
+
 			},
 			startTimer() {
-			      this.btnDisabled = true;
-			      let seconds = 60;
-			      this.timer = setInterval(() => {
-			        seconds--;
-			        this.btnText = seconds + "秒";
-			        if (seconds <= 0) {
-			          clearInterval(this.timer);
-			          this.btnText = "重发验证码";
-			          this.btnDisabled = false;
-			        }
-			      }, 1000);
-			    },
+				this.btnDisabled = true;
+				let seconds = 60;
+				this.timer = setInterval(() => {
+					seconds--;
+					this.btnText = seconds + "秒";
+					if (seconds <= 0) {
+						clearInterval(this.timer);
+						this.btnText = "重发验证码";
+						this.btnDisabled = false;
+					}
+				}, 1000);
+			},
+			formSubmitshop(e) {
+				var rule = [{
+						name: "shop_name",
+						checkType: "notnull",
+						errorMsg: "请输入店铺名称"
+					},
+					{
+						name: "shop_name",
+						checkType: "reg",
+						checkRule: /^[\u4E00-\u9FA5]{1,5}$/,
+						errorMsg: "最多填写五个汉字"
+					},
+				];
+				//进行表单检查
+				var formData = e.detail.value;
+				var checkRes = graceChecker.check(formData, rule);
+				console.log('checkRes',checkRes)
+				if (checkRes&&this.avatar&&this.shop_bannerthis.avatar&&this.shop_banner) {
+					var obj = {
+						shop_name: formData.shop_name,
+						avatar:this.avatar,
+						shop_banner:this.shop_banner
+					}
+					this.$http
+						.request({
+							url: "users/" + this.userInfo.id,
+							method: "put",
+							data: obj
+						}).then(res => {
+							uni.showToast({
+								title: "设置成功!",
+								icon: "none"
+							});
+							this.$refs.popupshop.close();
+							this.$store.commit('user/setUserInfo', res.data);
+						})
+				} else {
+					if(graceChecker.error){
+						uni.showToast({
+							title: graceChecker.error,
+							icon: "none"
+						});
+					}else{
+						uni.showToast({
+							title: '请上传图片',
+							icon: "none"
+						});
+					}
+					
+				}
+			},
 			formSubmit(e) {
 				var rule = [{
 						name: "realname",
@@ -204,21 +343,21 @@
 						name: "mobile",
 						checkType: "notnull",
 						errorMsg: "请输入手机号"
-					},	
+					},
 					{
 						name: "mobile",
 						checkType: "phoneno",
 						errorMsg: "手机号填写有误"
 					},
 					{
-						name:'verifycode',
+						name: 'verifycode',
 						checkType: "notnull",
 						errorMsg: "请输入验证码"
 					},
 					{
-						name:'verifycode',
+						name: 'verifycode',
 						checkType: "reg",
-						checkRule:/^\d{6}$/,
+						checkRule: /^\d{6}$/,
 						errorMsg: "验证码填写有误"
 					}
 				];
@@ -228,16 +367,16 @@
 				if (checkRes) {
 					this.$http
 						.request({
-							url: "users/"+this.userInfo.id,
+							url: "users/" + this.userInfo.id,
 							method: "put",
-							data:formData
-						}).then(res=>{
+							data: formData
+						}).then(res => {
 							uni.showToast({
 								title: "实名成功!",
 								icon: "none"
 							});
-							this.$refs.popup.close();
-							this.$store.commit('user/setUserInfo',res.data);
+							this.$refs.popupshop.close();
+							this.$store.commit('user/setUserInfo', res.data);
 						})
 				} else {
 					uni.showToast({
@@ -248,6 +387,7 @@
 			}
 		},
 		mounted() {
+			// this.$refs.popupshop.open();
 		}
 	}
 </script>
@@ -286,6 +426,30 @@
 				.title {
 					padding: 0px;
 					margin-right: 20rpx;
+				}
+
+				.img {
+					position: relative;
+					width: 130rpx;
+					height: 130rpx;
+					background: #f5f5f5;
+
+					image {
+						width: 130rpx;
+						height: 130rpx;
+					}
+
+					.iconfont {
+						position: absolute;
+						top: 0;
+						bottom: 0;
+						left: 0;
+						right: 0;
+						margin: auto auto;
+						width: 32rpx;
+						height: 32rpx;
+						font-size: 32rpx;
+					}
 				}
 
 				input {

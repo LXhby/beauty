@@ -1,12 +1,13 @@
 <template>
 	<view class="good-detail">
 		<view class="banner">
-			<swiper :indicator-dots="false" :autoplay="true" :interval="3000" :duration="1000" :circular="true" v-if="info.pics.length" style="height:100%;" >
+			<swiper :indicator-dots="false" :autoplay="true" :interval="3000" :duration="1000" :circular="true" v-if="info.pics.length"
+			 style="height:100%;">
 				<swiper-item v-for="(img,index) in info.pics" :key="index">
-					<image :src="url+img" mode="aspectFill"></image>
+					<image :src="url+img" mode="aspectFill" @click="previewImg(url+img)"></image>
 				</swiper-item>
 			</swiper>
-			<image :src="url+info.image" mode="aspectFill" v-else></image>
+			<image :src="url+info.image" mode="aspectFill" v-else @click="previewImg(url+info.image)"></image>
 		</view>
 		<view class="shop-car" @click="gocart">
 			<text class="iconfont">&#xe603;</text>
@@ -63,7 +64,7 @@
 				<view class="line"></view>
 				<text class="text">粉丝们还在浏览</text>
 			</view>
-			<view class="image-box uni-flex uni-row" >
+			<view class="image-box uni-flex uni-row">
 				<image :src="url+item.image" mode="aspectFill" @click="gopage(item.id)" v-for="(item,index) in browseList" :key="index"></image>
 			</view>
 		</view>
@@ -157,53 +158,62 @@
 			return {
 				url: '',
 				info: {
-					pics:[]
+					pics: []
 				},
-				browseList:[],
-				commentList:[],
-				totalnum:0,
-				id:'',
-				iscollect:false
+				browseList: [],
+				commentList: [],
+				totalnum: 0,
+				id: '',
+				iscollect: false
 			}
 		},
 		computed: {
-			...mapGetters(['config', 'cartnum','collect'])
+			...mapGetters(['config', 'cartnum', 'collect'])
 		},
 		onLoad() {
-			this.id = this.$route.query.id*1;
+			this.id = this.$route.query.id * 1;
 			this.getInfo();
-			if(!this.collect.length){
+			if (!this.collect.length) {
 				this.iscollect = false;
-			}else{
-				var item = this.collect.find(ele=>ele.id == this.id);
-				if(item){
+			} else {
+				var item = this.collect.find(ele => ele.id == this.id);
+				if (item) {
 					this.iscollect = true;
-				}else{
+				} else {
 					this.iscollect = false;
 				}
 			}
-			
+
 		},
 		methods: {
-			 gettimeago(value) {
-				   var time =Moment().format("X") - Moment(value).format("X");
-				  	var minite= parseInt(time/60);
-				  	var hour= parseInt(time/60/60);
-					  var day= parseInt(time/60/60/24);
-					 if(day>=1){
-						 return day+'天前'
-					 }else{
-						 if(hour>=1){
-							 return hour +'小时前'
-						 }else{
-							 if(minite>=1){
-								 return minite+'分钟前'
-							 }else{
-								 return time+'秒前'
-							 }
-						 }
-					 }
-    },
+			previewImg(ele) {
+				this.$wechat.previewImage({
+					current: url, // 当前显示图片的http链接
+					urls: [ele], // 需要预览的图片http链接列表
+					success: res => {
+						console.log('res', res);
+					}
+				});
+			},
+			gettimeago(value) {
+				var time = Moment().format("X") - Moment(value).format("X");
+				var minite = parseInt(time / 60);
+				var hour = parseInt(time / 60 / 60);
+				var day = parseInt(time / 60 / 60 / 24);
+				if (day >= 1) {
+					return day + '天前'
+				} else {
+					if (hour >= 1) {
+						return hour + '小时前'
+					} else {
+						if (minite >= 1) {
+							return minite + '分钟前'
+						} else {
+							return time + '秒前'
+						}
+					}
+				}
+			},
 			getInfo() {
 				uni.showLoading({
 					title: '加载中'
@@ -214,31 +224,31 @@
 						params: {
 							page: 1,
 							"per-page": 10,
-							is_enabled:1,
-							
+							is_enabled: 1,
+
 						}
 					})
 					.then(res => {
 						var data = res.data.items;
 						this.deletSelf(data);
-						console.log('data',data)
-						this.browseList = this.getRandomArrayElements(data,3);
+						console.log('data', data)
+						this.browseList = this.getRandomArrayElements(data, 3);
 						console.log(this.browseList)
 					});
-					this.$http.request({
-							url: "product-comment",
-							method: "get",
-							params: {
-								page: 1,
-								"per-page": 2,
-								'ProductCommentSearch[product_id]':this.id,
-								expand:'user'
-							}
-						})
-						.then(res => {
-							this.commentList = res.data.items;
-							this.totalnum = res.data._meta.totalCount;
-						});
+				this.$http.request({
+						url: "product-comment",
+						method: "get",
+						params: {
+							page: 1,
+							"per-page": 2,
+							'ProductCommentSearch[product_id]': this.id,
+							expand: 'user'
+						}
+					})
+					.then(res => {
+						this.commentList = res.data.items;
+						this.totalnum = res.data._meta.totalCount;
+					});
 				this.$http.request({
 						url: "products/" + this.id,
 						method: "get",
@@ -249,32 +259,35 @@
 						this.url = this.$baseUrl;
 					});
 			},
-			deletSelf(arr){
-				arr.forEach((ele,index)=>{
-					if(ele.id == this.id){
-						arr.splice(index,1)
+			deletSelf(arr) {
+				arr.forEach((ele, index) => {
+					if (ele.id == this.id) {
+						arr.splice(index, 1)
 					}
 				})
 			},
 			getRandomArrayElements(arr, count) {
-			    var shuffled = arr.slice(0), i = arr.length, min = i - count, temp, index;
-			    while (i-- > min) {
-			        index = Math.floor((i + 1) * Math.random());
-			        temp = shuffled[index];
-			        shuffled[index] = shuffled[i];
-			        shuffled[i] = temp;
-			    }
-			    return shuffled.slice(min);
+				var shuffled = arr.slice(0),
+					i = arr.length,
+					min = i - count,
+					temp, index;
+				while (i-- > min) {
+					index = Math.floor((i + 1) * Math.random());
+					temp = shuffled[index];
+					shuffled[index] = shuffled[i];
+					shuffled[i] = temp;
+				}
+				return shuffled.slice(min);
 			},
 			gocomment() {
 				uni.navigateTo({
-					url: '/pages/home/comment?id='+this.id
+					url: '/pages/home/comment?id=' + this.id
 				});
 			},
-			gopage(id){
-			uni.navigateTo({
-				url: '/pages/home/detail?id='+id
-			});	
+			gopage(id) {
+				uni.navigateTo({
+					url: '/pages/home/detail?id=' + id
+				});
 			},
 			payGoods() {
 				uni.navigateTo({
@@ -294,14 +307,14 @@
 			},
 			// 收藏
 			handlecollection() {
-				if(!this.iscollect){
+				if (!this.iscollect) {
 					this.$store.commit('cartnum/setcollect', this.info);
 					this.iscollect = true;
 					uni.showToast({
 						title: '收藏成功！',
 						icon: 'none'
 					})
-				}else{
+				} else {
 					this.iscollect = false;
 					this.$store.commit('cartnum/delcollect', this.info);
 					uni.showToast({
@@ -309,7 +322,7 @@
 						icon: 'none'
 					})
 				}
-				
+
 			},
 			getcall() {
 				window.location.href = `tel:${this.config.service_phone}`;
@@ -614,12 +627,15 @@
 
 				.btn-sm {
 					text-align: center;
-					.hascollect{
-						color:$uni-bg-color ;
+
+					.hascollect {
+						color: $uni-bg-color;
 					}
-					.notcollect{
+
+					.notcollect {
 						color: #4aa3f0;
 					}
+
 					.iconfont {
 						font-size: 32rpx;
 					}

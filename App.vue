@@ -66,8 +66,8 @@
 	@font-face {
 		font-family: "iconfont";
 		/* project id 1377410 */
-		src: url("https://at.alicdn.com/t/font_1377410_01qi30m3m2dn.eot");
-		src: url("https://at.alicdn.com/t/font_1377410_01qi30m3m2dn.ttf") format("truetype");
+		src: url("https://at.alicdn.com/t/font_1377410_m1ypr87tdl.eot");
+		src: url("https://at.alicdn.com/t/font_1377410_m1ypr87tdl.ttf") format("truetype");
 	}
 
 	.iconfont {

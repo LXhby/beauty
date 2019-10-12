@@ -19,7 +19,13 @@
 			;border-radius: 5px; background: #f5f5f5;" placeholder=""
 			 :value="commentarr[index].content" />
 			<view class="uni-flex uni-row upimg-list">
-				 <image :src="ele" mode="aspectFill" v-for="(ele,index) in commentarr[index].image" :key="index"></image>
+				<view class="item" v-for="(ele,index) in commentarr[index].image" :key="index">
+					<image :src="ele" mode="aspectFill" @click="previewImg(ele)"></image>
+					<text class="iconfont" @click="deleteImg(commentarr[index].image,index)">&#xe632;</text>
+				</view>
+
+				
+				 <!-- <image :src="ele" mode="aspectFill" v-for="(ele,index) in commentarr[index].image" :key="index"></image> -->
 			 </view>
 			<view class="upload uni-flex uni-row">
 			 	<view class="up-image" @click="upload(commentarr[index],index)">
@@ -154,6 +160,28 @@
 					      });
 				}
 			},
+			deleteImg(item,index){
+				uni.showModal({
+				    title: '提示',
+				    content: '你确定要删除？',
+				    success: function (res) {
+				        if (res.confirm) {
+				            item.splice(index,1)
+				        } else if (res.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+			},
+			previewImg(ele){
+				 this.$wechat.previewImage({
+				      current: url, // 当前显示图片的http链接
+				      urls: [ele], // 需要预览的图片http链接列表
+				      success: res => {
+				        console.log('res', res);
+				      }
+				    });
+			},
 			 uploadImage(serverId) {
 			  return new Promise((resolve, reject) => {
 				this.$wechat.uploadImage({
@@ -222,6 +250,15 @@
 		.upimg-list{
 			margin-top:20rpx;
 			padding:0 20rpx;
+			.item{
+				position: relative;
+				.iconfont{
+					position: absolute;
+					top:0;
+					right: 20rpx;
+					background: red;
+				}
+			}
 			image{
 				width:160rpx;
 				height: 160rpx;

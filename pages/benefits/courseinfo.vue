@@ -12,7 +12,7 @@
 			<view class="course-name">
 				<view class="title">{{forum.name}}</view>
 				<view class="course-content">
-					<view class="course-list uni-flex uni-row">
+					<view class="course-list uni-flex uni-row" v-if="courseList.length">
 						<view class="icon-btn" @click="pushforword">
 							<text class="iconfont">&#xe60c;</text>
 						</view>
@@ -68,10 +68,10 @@
 		<view class="couse-money">
 			<text class="new-price">￥{{forum.price}}</text>
 			<text class="old-price">原价: ￥{{forum.original_price}}</text>
-			<button :class="[signBtn == '立即报名'?'redstyle':'infostyle','btn']" type="primary" @click="goPay">{{signBtn}}</button>
+			<button :class="[signBtn == '立即报名'?'redstyle':'infostyle','btn']" type="primary" @click="handlepay">{{signBtn}}</button>
 		</view>
-		<!-- <w-picker ref="picker" mode="selector" themeColor="#f00"
-    :selectList="selectList" level="1" v-if="selectList.length" :defaultVal="[1]"></w-picker> -->
+		<w-picker ref="picker" mode="selector" themeColor="#f00"
+    :selectList="selectList" level="1" v-if="selectList.length" :defaultVal="[1]" @confirm="onConfirm2" ></w-picker>
 	</view>
 </template>
 
@@ -218,6 +218,21 @@
 						this.signBtn = "立即报名";
 					}
 				})
+			},
+			onConfirm2(val){
+				console.log(val);
+				this.id= val.checkArr.value;
+			},
+			handlepay(){
+				if (this.signBtn != "已报名") {
+					if(this.courseList.length){
+						this.$refs.picker.show();
+					}else{
+						this.goPay()
+					}
+				}else{
+					return false
+				}
 			},
 			goPay() {
 				if (this.signBtn != "已报名") {

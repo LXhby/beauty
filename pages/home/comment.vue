@@ -12,7 +12,7 @@
 						<text class="iconfont">&#xe641;</text>
 					</view>
 					<view class="img-box uni-flex uni-row">
-						<image :src="url+info.image" mode="aspectFill"></image>
+						<image :src="url+info.image" mode="aspectFill" @click="previewImg(url+info.image)"></image>
 						<view class="right">
 							<view class="num">
 								￥{{info.price}}
@@ -53,7 +53,7 @@
 								此用户没有填写评价
 							</view>
 							<view class="comments-image">
-								<image :src="url+ele" mode="aspectFill" v-for="(ele,index) in item.images" :key="index"></image>
+								<image :src="url+ele" mode="aspectFill" v-for="(ele,index) in item.images" :key="index" @click="previewImg(url+ele)"></image>
 							</view>
 						</view>
 					</view>
@@ -134,6 +134,15 @@
 				});
 		},
 		methods: {
+			previewImg(ele){
+				 this.$wechat.previewImage({
+				      current: url, // 当前显示图片的http链接
+				      urls: [ele], // 需要预览的图片http链接列表
+				      success: res => {
+				        console.log('res', res);
+				      }
+				    });
+			},
 			gettimeago(value) {
 				var time = Moment().format("X") - Moment(value).format("X");
 				var minite = parseInt(time / 60);

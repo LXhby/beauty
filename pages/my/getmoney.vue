@@ -7,13 +7,21 @@
 				<text class="text">提现申请</text>
 			</view>
 			<view class="main-content">
-				<input class="uni-input" type="number" placeholder="自动获取可提现的总额度金额" />
-				<radio-group @change="radioChange">
-					<label class="radio">
-						<radio value="银行卡" style="transform:scale(0.7)" :checked="radioGroup" color="#ff0080" />银行卡
-					</label>
-				</radio-group>
-				<button type="primary">提现申请</button>
+				<input class="uni-input" type="number" placeholder="金额" v-model="money" />
+				<view class="uni-flex uni-row" style="justify-content: space-between;">
+					<radio-group @change="radioChange">
+						<label class="radio">
+							<radio value="银行卡" style="transform:scale(0.7)" :checked="radioGroup" color="#ff0080" />银行卡
+						</label>
+					</radio-group>
+
+					<button type="primary" class="addbtn" @click="addcar">添加银行卡</button>
+				</view>
+				<view class="show-bank uni-flex uni-row" v-if="choseBank.value">
+					<text>{{choseBank.label}}</text>
+					<button type="primary" class="addbtn" @click="changcar">更换</button>
+				</view>
+				<button type="primary" class="subbtn" @click="submitgetmoney">提现申请</button>
 				<view class="instructions">
 					<text>*提现周期为{{config.min_settle_interval}}天，每天最高提现额度为￥{{config.min_settle_amount}}；</text><br>
 					<text>*提现申请后财务会在1个工作日内审核，到账时间24小时内；</text><br>
@@ -23,7 +31,7 @@
 				<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 			</view>
 		</view>
-		<uni-popup ref="popup" type="center" :custom="true">
+		<uni-popup ref="popupout" type="center" :custom="true">
 			<view class="alert-box">
 				<view class="title">
 					提现确认
@@ -33,13 +41,13 @@
 						<view class="item-text">
 							提现金额
 						</view>
-						<text class="item-money">￥9000.00</text>
+						<text class="item-money">￥{{money}}</text>
 					</view>
 					<view class="item">
 						<view class="item-text">
 							提现手续费
 						</view>
-						<text class="item-money">￥180.00</text>
+						<text class="item-money">￥{{poundage}}</text>
 					</view>
 				</view>
 				<view class="get-total uni-flex uni-row">
@@ -47,16 +55,17 @@
 						到账金额
 					</view>
 					<view class="item-money">
-						￥8640.00
+						￥{{lastMoney}}
 					</view>
 				</view>
 
-				<view class="btn">
+				<button class="btn" @click="submitMoney" :disabled="lastMoney<=0">
 					提现确认
-				</view>
+				</button>
 			</view>
 		</uni-popup>
-		<w-picker v-if="myBank.length!=0" mode="selector" @confirm="onConfirm" ref="selector" themeColor="#f00" :selectList="myBank">
+		<w-picker v-if="myBank.length!=0" mode="selector" @confirm="onConfirm" ref="selector" themeColor="#f00" :selectList="myBank"
+		 @cancel="cancelselect">
 		</w-picker>
 		<uni-popup ref="popupbank" type="center" :custom="true">
 			<view class="real-form">
@@ -67,20 +76,19 @@
 					<view class="form-box">
 						<view class="uni-form-item uni-flex uni-row padding-botom">
 							<view class="title">持卡人</view>
-							<input class="uni-input" placeholder="请输入真实姓名" name="realname" />
+							<input class="uni-input" placeholder="请输入真实姓名" name="name" />
 						</view>
 						<view class="uni-form-item uni-flex uni-row padding-botom">
 							<view class="title">卡号</view>
-							<input class="uni-input" placeholder="请输入卡号" name="idsn" />
+							<input class="uni-input" placeholder="请输入卡号" name="number" />
 						</view>
 						<view class="uni-form-item uni-flex uni-row padding-botom">
-							<view class="uni-list-cell-left">
+							<view class="title">
 								开户银行
 							</view>
 							<view class="uni-list-cell-db">
-								<xfl-select :list="banks" :clearable="false" :showItemNum="5" :listShow="true" :isCanInput="true"
-								 :style_Container="'height: 50px; font-size: 16px;'" :placeholder="'placeholder'" :initValue="banks[index]"
-								 :selectHideType="'hideAll'">
+								<xfl-select :list="banks" :clearable="false" :showItemNum="4" :listShow="false" :isCanInput="true"
+								 :style_Container="'height: 30px; font-size: 16px;'" placeholder="请选择" :selectHideType="'hideAll'" @change="selectbank">
 								</xfl-select>
 							</view>
 						</view>
@@ -111,6 +119,7 @@
 	import {
 		mapGetters
 	} from "vuex";
+	var graceChecker = require("../../js_sdk/graceui-dataChecker/graceChecker.js");
 	export default {
 		components: {
 			topBar,
@@ -119,7 +128,22 @@
 			xflSelect
 		},
 		computed: {
-			...mapGetters(["userInfo", "config"])
+			...mapGetters(["userInfo", "config"]),
+			poundage() {
+				const a = this.money * this.config.settle_fee;
+				return a.toFixed(2);
+			},
+			tax() {
+				return this.money * 0;
+			},
+			lastMoney() {
+				let last = this.money - this.poundage - this.tax;
+				if (last < 0) last = 0;
+				return last.toFixed(2);
+			},
+			weixinEnabled() {
+				return (this.config.settle_to_wechat_balance == 1);
+			}
 		},
 		data() {
 			return {
@@ -132,8 +156,9 @@
 					number: "",
 					bank: ""
 				},
-				index: 0,
-				radioGroup: false
+				radioGroup: false,
+				selectbankname: '',
+				choseBank: {}, //选择的银行卡
 			}
 		},
 		mounted() {
@@ -159,6 +184,173 @@
 		},
 
 		methods: {
+			submitMoney() {
+				const info = {
+					account_id: this.radioGroup == "bank" ? this.choseBank.value : "wechat"
+				};
+				this.$http.request({
+					url: 'settle/apply',
+					method: 'post',
+					data:info
+				}).then(res => {
+				          if(res.data.success){
+				           this.$refs.popupout.close()
+				            uni.showToast({
+				            	title:res.data.message,
+								icon:'none'
+				            })
+				            
+				            uni.switchTab({
+				            	url:"/pages/my/index"
+				            })
+				          }
+				          else{
+				            uni.showToast({
+				            	title:res.data.message,
+				            	icon:'none'
+				            })
+				
+				            this.$http.request({
+				            	url: 'settle/sign',
+				            	method: 'get'
+				            }).then(res=>{
+				              window.location.href = res.data;
+				            }).catch(err => {
+								uni.showToast({
+									title:err.response.data.message,
+									icon:'none'
+								})
+				              });
+				          }
+				        })
+				        .catch(err => {
+				          this.dialog = false;
+				          console.log("err", err.response);
+				          this.snackbar = true;
+				          this.alerttext = err.response.data.message;
+				          this.alerttype = "error";
+				        });
+			},
+			selectbank(item) {
+				this.selectbankname = item.newVal;
+			},
+			cancelselect() {
+				this.radioGroup = false;
+			},
+			onConfirm(val) {
+				this.choseBank = val.checkArr;
+				console.log('this.choseBank', this.choseBank)
+			},
+			addcar() {
+				this.$refs.popupbank.open()
+			},
+			changcar() {
+				this.$refs.selector.show()
+			},
+			submitgetmoney() {
+				if (!this.choseBank.value) {
+					uni.showToast({
+						title: '请选择银行卡',
+						icon: "none"
+					});
+					return false
+				}
+				if (!this.money) {
+					uni.showToast({
+						title: '请选择银行卡',
+						icon: "none"
+					});
+					return false
+				}
+				// if(this.money > this.userInfo.balance){
+				// 	uni.showToast({
+				// 		title: '填的金额大于余额',
+				// 		icon: "none"
+				// 	});
+				// 	return false
+				// }
+				this.$refs.popupout.open()
+			},
+			formSubmit(e) {
+				var rule = [{
+						name: "name",
+						checkType: "notnull",
+						errorMsg: "请输入持卡人"
+					},
+					{
+						name: "number",
+						checkType: "notnull",
+						errorMsg: "请输入卡号"
+					},
+					{
+						name: "number",
+						checkType: "reg",
+						checkRule: /^([1-9]{1})(\d{15}|\d{18})$/,
+						errorMsg: "卡号填写有误"
+					}
+				];
+				//进行表单检查
+				var formData = e.detail.value;
+				var checkRes = graceChecker.check(formData, rule);
+				console.log('checkRes', checkRes)
+				if (checkRes) {
+					var obj = {
+						user_id: this.userInfo.id,
+						name: formData.name,
+						number: formData.number,
+						bank: this.selectbankname
+					}
+					this.$http
+						.request({
+							url: "accounts",
+							method: "post",
+							data: obj
+						}).then(res => {
+							uni.showToast({
+								title: "添加成功!",
+								icon: "none"
+							});
+							this.$refs.popupbank.close();
+							//查看是否本人有银行卡
+							this.$http.request({
+								url: 'accounts',
+								method: 'get',
+								params: {
+									'AccountSearch[user_id]': this.userInfo.id
+								}
+							}).then(res => {
+								const data = res.data.items;
+								if (data.length) {
+									data.forEach(ele => {
+										var le = {
+											label: ele.bank + ':' + ele.number,
+											value: ele.id
+										}
+										this.myBank.push(le);
+									})
+
+									this.$refs.selector.show()
+								} else {
+									this.myBank = [];
+								}
+							})
+						})
+				} else {
+					console.log('graceChecker', graceChecker)
+					if (graceChecker.error) {
+						uni.showToast({
+							title: graceChecker.error,
+							icon: "none"
+						});
+					} else {
+						uni.showToast({
+							title: '请选择银行',
+							icon: "none"
+						});
+					}
+
+				}
+			},
 			getAccounts() {
 				//查看是否本人有银行卡
 				this.$http.request({
@@ -170,7 +362,13 @@
 				}).then(res => {
 					const data = res.data.items;
 					if (data.length) {
-						this.myBank = data;
+						data.forEach(ele => {
+							var le = {
+								label: ele.bank + ':' + ele.number,
+								value: ele.id
+							}
+							this.myBank.push(le);
+						})
 					} else {
 						this.myBank = [];
 					}
@@ -211,7 +409,31 @@
 				color: $uni-text-color;
 			}
 
-			button {
+			uni-radio-group {
+				flex: 1;
+			}
+
+			.addbtn {
+				background: $uni-bg-color;
+				width: 180rpx;
+				height: 40rpx;
+				margin: 0px;
+				padding: 0;
+				line-height: 40rpx;
+				font-size: 24rpx;
+			}
+
+			.show-bank {
+				justify-content: space-between;
+				margin-top: 20rpx;
+				color: $uni-text-color;
+
+				text {
+					flex: 1;
+				}
+			}
+
+			.subbtn {
 				width: 520rpx;
 				height: 76rpx;
 				margin-top: 60rpx;
@@ -236,6 +458,7 @@
 			background-color: #fff;
 
 			.title {
+
 				height: 78rpx;
 				line-height: 78rpx;
 				border-bottom: 1px solid $uni-border-color;
@@ -266,6 +489,8 @@
 			.btn {
 				width: 300rpx;
 				height: 45rpx;
+				line-height: 45rpx;
+				font-size: 28rpx;
 				margin: 0 auto;
 				border-radius: 45rpx;
 				color: #fff;
@@ -302,7 +527,9 @@
 			align-items: center;
 
 			.title {
+				width: 120rpx;
 				padding: 0px;
+				text-align: left;
 				margin-right: 20rpx;
 			}
 

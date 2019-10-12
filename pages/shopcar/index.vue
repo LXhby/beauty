@@ -1,13 +1,13 @@
 <template>
 	<view class="cart-page">
-		<view class="have-none" v-if="!hasData">
+		<view class="have-none" v-if="!shopcar.length">
 			<image src="../../static/order_no_bg.png" mode="widthFix"></image>
 			<view class="title">
 				不过节吗！什么也没有啊~
 			</view>
 			<view class="text">到底还过不过了，啥也不买</view>
 			<text>买不买得，先加个购物车再说嘛</text>
-			<button>我想看看</button>
+			<button @click="gohome">我想看看</button>
 		</view>
 		<view class="goods-content" v-else>
 			<view class="goods-list">
@@ -82,7 +82,6 @@
 	export default {
 		data() {
 			return {
-				hasData: true,
 				productNum: 0,
 				totalMoney: 0,
 				status: false,
@@ -102,6 +101,11 @@
 			// this.$store.commit("cartnum/clearShopcar");
 		},
 		methods: {
+			gohome(){
+				uni.switchTab({
+					url:'/pages/home/index'
+				})
+			},
 			bindChange(value) {
 				this.productNum = value
 			},

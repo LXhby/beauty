@@ -24,7 +24,7 @@
 						<view class="name">
 							{{product.product.name}}
 						</view>
-						<text>套装产品加乳液</text>
+						<text>{{product.product.summary}}</text>
 					</view>
 				</view>
 				<view class="right">
@@ -35,7 +35,7 @@
 			<view class="total uni-flex uni-row">
 				<view class="total-glod">
 					<text>赠送</text>
-					<text class="dark-color">100</text>
+					<text class="dark-color">{{item.commission}}</text>
 					<text>个金币</text>
 				</view>
 				<view class="total-num uni-flex uni-row">
@@ -58,7 +58,7 @@
 				</view>
 				<view v-if="item.status === '待收货'" class="right-btn uni-flex uni-row">
 					<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
-					<button type="primary" class="dark" @click="getGoods">确认发货</button>
+					<button type="primary" class="dark" @click="getGoods(item)">确认发货</button>
 				</view>
 				<view v-if="item.status === '待评价'" class="right-btn uni-flex uni-row">
 					<button type="primary" class="blue btn1">再来一单</button>
@@ -124,8 +124,29 @@
 				})
 			},
 			// 确认收货
-			getGoods() {
-				this.$refs.popup.open()
+			getGoods(item) {
+				console.log('item',item)
+				this.$http
+					.request({
+						url: "orders/" + item.id,
+						method: "put",
+						data: {
+							status:'待评价',
+							express_com:item.express_com,
+							express_sn:item.express_sn
+						}
+					}).then(res => {
+						uni.showToast({
+							title: "确认成功!",
+							icon: "none"
+						});
+						uni.navigateTo({
+							url:'/pages/my/order?state='+ 3
+						}) 
+					})
+				// uni.navigateTo({
+				// 	url:'/pages/my/postcomment?orderId='+item.id
+				// })
 			},
 			// 提醒发货
 			sendGoods() {

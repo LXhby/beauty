@@ -5,8 +5,6 @@
 			<!-- 数据列表 -->
 			<pd-list :list="listItem"></pd-list>
 		</mescroll-uni>
-
-
 	</view>
 
 </template>
@@ -61,8 +59,8 @@
 		methods: {
 			//点击空布局按钮的回调
 			emptyClick() {
-				uni.showToast({
-					title: '点击了按钮,具体逻辑自行实现'
+				uni.switchTab({
+					url:'/pages/home/index'
 				})
 			},
 			// 立即付款

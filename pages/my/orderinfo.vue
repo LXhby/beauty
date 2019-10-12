@@ -29,7 +29,7 @@
 					<image :src="'http://backend.krtamall.yiidev.cn' + item.product.image"></image>
 					<view class="goods-src">
 						<p>{{item.product.name}}</p>
-						<text>套装护肤+洁面</text>
+						<text>{{item.product.summary}}</text>
 					</view>
 					<view class="goods-price">
 						<p>￥{{item.price}}</p>
@@ -63,7 +63,7 @@
 			<p>
 				<text v-if="orderInfo.status === '待付款'">待赠金币:</text>
 				<text v-else>实赠金币:</text>
-				<text>100个金币</text>
+				<text>{{orderInfo.commission}}个金币</text>
 			</p>
 			<p>
 				<text>订单编号:</text>
@@ -75,7 +75,7 @@
 			</p>
 			<p>
 				<text>发货时间:</text>
-				<text>2018-07-15 15:30:23</text>
+				<text>{{orderInfo.sent_at}}</text>  
 			</p>
 		</view>
 		<view class="progress" v-if="orderInfo.status === '待收货' || orderInfo.status === '待评价'">
@@ -123,7 +123,7 @@
 		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 
 		<!-- //评价 -->
-		<uni-popup ref="popup" type="center" custom="true">
+		<uni-popup ref="popup" type="center" :custom="true">
 			<view class="coment-form">
 				<view class="shop-image">
 					<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
@@ -163,7 +163,7 @@
 		</uni-popup>
 		
 		<!-- 提醒发货 -->
-		<uni-popup ref="popups" type="center" custom="true">
+		<uni-popup ref="popups" type="center" :custom="true">
 			<view class="alert-pop">
 				<view class="shop-image">
 					<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
