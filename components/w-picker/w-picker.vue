@@ -397,11 +397,13 @@
 			},
 			maskTap(){
 				this.showPicker = false;
+				this.$emit("cancel");
 			},
 			show(){
 				this.showPicker = true;
 			},
 			hide(){
+				console.log(111)
 				this.showPicker = false;
 			},
 			pickerCancel(){
