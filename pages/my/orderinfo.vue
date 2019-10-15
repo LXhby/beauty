@@ -122,45 +122,6 @@
 		</view>
 		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 
-		<!-- //评价 -->
-		<uni-popup ref="popup" type="center" :custom="true">
-			<view class="coment-form">
-				<view class="shop-image">
-					<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
-				</view>
-				<view class="title">
-					王晓文的店铺
-				</view>
-				<view class="star">
-					<text class="iconfont star dark-color" @click="clickStar(1)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(2)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(3)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(4)">&#xe623;</text>
-					<text class="iconfont star" @click="clickStar(5)">&#xe623;</text>
-				</view>
-				<textarea maxlength="200" placeholder-style="width:100%;border-radius: 5px; background: #f5f5f5;" placeholder=""
-				 value="非常好" />
-				<view class="upload uni-flex uni-row">
-					<view class="up-image">
-						<text class="iconfont">&#xe64a;</text>
-					</view>
-					<view class="up-text">
-						<view class="title">
-							上传照片
-						</view>
-						<text>内容丰富的评价更容易成为优质评价哦！</text>
-					</view>
-				</view>
-				<view class="noname">
-					<label>
-						<checkbox value="cb" checked="true" style="transform:scale(0.7)" color="#ff0080" />匿名评价
-					</label>
-				</view>
-				<view class="uni-btnv">
-					<button type="primary" @click="formSubmit">提交评价</button>
-				</view>
-			</view>
-		</uni-popup>
 		
 		<!-- 提醒发货 -->
 		<uni-popup ref="popups" type="center" :custom="true">

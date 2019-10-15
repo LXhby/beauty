@@ -121,7 +121,7 @@
 
 									if (info.type == "FORUM_ORDER") {
 										uni.navigateTo({
-											url: '、pages/my/haveclass'
+											url: '/pages/my/haveclass'
 										})
 									}
 								}

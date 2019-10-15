@@ -185,7 +185,12 @@
 				category_id:''
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			if(option.userid){
+				this.$store.commit('user/setShopId',option.userid)
+			}else{
+				this.$store.commit('user/clearShopId')
+			}
 			uni.showLoading({
 				title: "加载中"
 			});

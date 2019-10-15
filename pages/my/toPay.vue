@@ -67,7 +67,7 @@
 			</view>
 			<view class="uni-flex">
 				<text>留言</text>
-				<input class="uni-input" placeholder-style="color:#999;" placeholder="选填:请留下您的要求" />
+				<input class="uni-input" placeholder-style="color:#999;" placeholder="选填:请留下您的要求"  v-model="remark" />
 			</view>
 		</view>
 		<view class="height-box">
@@ -90,7 +90,7 @@
 							</text>
 						</view>
 					</view>
-					<button type="primary" size="mini">立即付款</button>
+					<button type="primary" size="mini" @click="gopay">立即付款</button>
 				</view>
 			</view>
 		</view>
@@ -108,11 +108,13 @@
 				info: '',
 				url: '',
 				adressInfo: {},
-				num: 1
+				num: 1,
+				remark:'',
+				means:'微信支付'
 			};
 		},
 		computed: {
-			...mapGetters(["userInfo"]),
+			...mapGetters(["userInfo","shopId"]),
 			totalamount(){
 				return (this.num*this.info.price)
 			}
@@ -149,6 +151,80 @@
 			},
 			bindChange(value) {
 				this.num = value
+			},
+			requestPayment(id) {
+				if (this.means == "微信支付") {
+					const info = {
+						type: 'FORUM_ORDER',//todo
+						id: id,
+						means: this.means
+					};
+					// todoing
+					this.$http
+						.request({
+							url: "payment/start",
+							method: "post",
+							data: info
+						}).then(res => {
+							const data = res.data;
+							this.$wechat.chooseWXPay({
+								timestamp: data.timestamp,
+								nonceStr: data.nonceStr,
+								package: data.package,
+								signType: data.signType,
+								paySign: data.paySign, // 支付签名
+								success: res => {
+									uni.navigateTo({
+										url: '/pages/benefits/PaySuccess'
+									})
+								}
+							});
+						});
+				}
+			},
+			gopay(){
+				if(!this.adressInfo.id){
+					uni.showToast({
+						title:'请填写收货地址',
+						icon:"none"
+					})
+					uni.navigateTo({
+						url:"/pages/my/address"
+					})
+				}else{
+					this.$http.request({
+						url: 'orders',
+						method: 'post',
+						data: {
+							user_id: this.userInfo.id,
+							quantity: this.num,
+							seller_user_id:1,
+							seller_user_id:this.shopId?this.shopId:this.userInfo.id,
+							receiver:this.adressInfo.receiver,
+							mobile:this.adressInfo.mobile,
+							address:this.adressInfo.address,
+							amount:this.totalamount,
+							remark:this.remark
+						}
+					}).then(res => {
+						// 获取到订单id
+						this.$http.request({
+							url: 'order-products',
+							method: 'post',
+							data: {
+								order_id: res.data.order_id,
+								product_id: this.info.id,
+								quantity:this.num,
+								price:this.info.price,
+								amount:this.totalamount,
+							}
+						}).then(info=>{
+							this.requestPayment(res.data.order_id)
+						})
+					
+					}).catch(console.log)
+				}
+				
 			}
 		}
 	}

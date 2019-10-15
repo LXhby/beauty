@@ -10,12 +10,12 @@
 					</view>
 					<view class="shop-detail uni-flex uni-column" style="-webkit-flex: 1;flex: 1;">
 						<view class="shop-name">
-							普瑞塔美妆总店
+							{{shopInfo.shop_name}}
 						</view>
-						<text class="shop-busis">浙江乘风萨科技地方生物科技有限公司</text>
+						<text class="shop-busis">{{shopInfo.industry}}</text>
 					</view>
 					<view class="shop-right" style="width: 228upx;">
-						<view class="time">
+						<view class="time" v-if="shopInfo.is_vip">
 							<text>服务期限</text> <text class="text">365天</text>
 						</view>
 						<view class="shop-nav uni-flex uni-row" style="-webkit-align-items: center;align-items: center;" @click="handleNav">
@@ -47,7 +47,7 @@
 					</uni-grid> -->
 				</view>
 			</view>
-			<image src="../../static/WechatIMG311.png" mode="" class="bg-img"></image>
+			<image :src="url+shopInfo.shop_banner" mode="" class="bg-img"></image>
 			<image src="../../static/WechatIMG391.png" mode="" class="bg-weave"></image>
 			<image src="../../static/real.png" mode="" class="real" v-if="isreal"></image>
 		</view>
@@ -164,18 +164,41 @@
 			}
 		},
 		computed: {
-			...mapGetters(['userInfo'])
+			...mapGetters(['userInfo','shopId','config'])
+		},
+		created(){
+			this.url = this.$baseUrl;
+			console.log('this.shopId',this.shopId);
+			if(this.shopId){
+				this.$http.request({
+					url: 'users/'+this.shopId,
+					method: 'get'
+				}).then(res => {
+					this.shopInfo = res.data;
+				})
+			}else{
+				this.shopInfo={
+					shop_name:'卜瑞塔美妆总店',
+					industry:this.config.industry
+				}
+				console.log('this.shopInfo',this.shopInfos)
+			}
 		},
 		data() {
 			return {
 				form: {
 					mobile: ''
 				},
+				url:'',
 				btnDisabled: false,
 				btnText: '获取验证码',
 				avatar: '',
 				shop_banner: '',
-				index:1
+				index:1,
+				shopInfo:{
+					name:'',
+					
+				}
 			}
 		},
 		methods: {

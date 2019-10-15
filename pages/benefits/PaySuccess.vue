@@ -12,8 +12,8 @@
 				</text>
 			</view>
 			<view class="button-sp-area">
-				<button class="order" type="primary">查看订单</button>
-				<button class="gohome" type="primary">返回首页</button>
+				<button class="order" type="primary" @click="seeorder">查看订单</button>
+				<button class="gohome" type="primary" @click="gohome">返回首页</button>
 			</view>
 		</view>
 
@@ -21,6 +21,20 @@
 </template>
 
 <script>
+	export default {
+		methods: {
+			seeorder(){
+				uni.navigateTo({
+					url:'/pages/my/order'
+				})
+			},
+			gohome(){
+				uni.switchTab({
+					url:"/pages/home/index"
+				})
+			}
+		}
+	}
 </script>
 
 <style lang="scss" scoped>

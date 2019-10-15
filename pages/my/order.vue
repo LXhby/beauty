@@ -63,17 +63,6 @@
 					url:'/pages/home/index'
 				})
 			},
-			// 立即付款
-			goPay(orderId) {
-				uni.navigateTo({
-					url: '/pages/my/toPay?orderId=' + orderId,
-				})
-			},
-
-
-
-
-
 
 			mescrollInit(mescroll) {
 				this.mescroll = mescroll;
