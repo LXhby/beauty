@@ -168,7 +168,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['config', 'cartnum', 'collect'])
+			...mapGetters(['config', 'cartnum', 'collect',"userInfo"])
 		},
 		onLoad() {
 			this.id = this.$route.query.id * 1;
@@ -291,9 +291,8 @@
 			},
 			payGoods() {
 				uni.navigateTo({
-					url: '/pages/benefits/PaySuccess'
+					url: '/pages/my/toPay?product_id='+this.id
 				});
-
 			},
 			goHome() {
 				uni.switchTab({

@@ -76,7 +76,7 @@
 					url: 'address',
 					method: 'get',
 					params: {
-						'addressSearch[user_id]': this.userInfo.id,
+						'AddressSearch[user_id]': this.userInfo.id,
 						'sort': '-is_default'
 					}
 				}).then(res => {

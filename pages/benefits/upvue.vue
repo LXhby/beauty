@@ -40,40 +40,40 @@
 						<text>分享赚钱</text>
 					</view>
 					<view class="nav-list">
-						<uni-grid :column="4" :show-border="false" :square="false" class="my-list"  @change="goPage">
-							<uni-grid-item>
+						<view  class="my-list uni-flex uni-row"  @change="goPage">
+							<view class="item">
 								<image class="image" src="../../static/vip_buy01.png" mode="widthFix" />
 								<text class="text">超值礼包</text>
-							</uni-grid-item>
-							<uni-grid-item>
+							</view>
+							<view class="item">
 								<image class="image" src="../../static/vip_buy02.png" mode="widthFix" />
 								<text class="text" >尊享店铺</text>
-							</uni-grid-item>
-							<uni-grid-item>
+							</view>
+							<view class="item">
 								<image class="image" src="../../static/vip_buy03.png" mode="widthFix" />
 								<text class="text" >会员折扣</text>
-							</uni-grid-item>
-							<uni-grid-item>
+							</view>
+							<view class="item">
 								<image class="image" src="../../static/vip_buy04.png" mode="widthFix" />
 								<text class="text" >超级福利</text>
-							</uni-grid-item>
-							<uni-grid-item>
+							</view>
+							<view class="item">
 								<image class="image" src="../../static/vip_buy05.png" mode="widthFix" />
 								<text class="text" >运营扶持</text>
-							</uni-grid-item>
-							<uni-grid-item>
+							</view>
+							<view class="item">
 								<image class="image" src="../../static/vip_buy06.png" mode="widthFix" />
 								<text class="text" >培训赋能</text>
-							</uni-grid-item>
-							<uni-grid-item>
+							</view>
+							<view class="item">
 								<image class="image" src="../../static/vip_buy07.png" mode="widthFix" />
 								<text class="text" >宣传助力</text>
-							</uni-grid-item>
-							<uni-grid-item>
+							</view>
+							<view class="item">
 								<image class="image" src="../../static/vip_buy08.png" mode="widthFix" />
 								<text class="text" >丰厚收益</text>
-							</uni-grid-item>
-						</uni-grid>
+							</view>
+						</view>
 					</view>
 					<view class="title  uni-flex uni-row">
 						<view class="circle circle1">		
@@ -85,43 +85,32 @@
 					<view class="word">
 						<text>请任意选择一个VIP会员套餐</text>
 					</view>
-					<view class="chose-list">
-						<view class="item uni-flex uni-row">
-							<image src="../../static/logo.png" mode=""></image>
-							<text class="name">卜瑞塔VIP会员升级：美白黄金套餐</text>
-							<view class="icon">
+					<view class="chose-list" v-if="list.length">
+						<view class="item uni-flex uni-row" v-for="(item,index) in list" :key="index" @click="chooseIndex = index">
+							<image :src="url+item.image" mode=""></image>
+							<text class="name">{{item.name}}</text>
+							<view class="icon" v-if="chooseIndex == index">
 								<text class="iconfont">&#xe63e;</text>
-							</view>
-							
-						</view>
-						<view class="item uni-flex uni-row">
-							<image src="../../static/logo.png" mode=""></image>
-							<text class="name">卜瑞塔VIP会员升级：美白黄金套餐</text>
-							<view class="icon" v-if="0">
-								<text class="iconfont">&#xe63e;</text>
-							</view>
+							</view>	
 						</view>
 					</view>
 				</view>
 			</view>
-			<button type="primary">立即升级</button>
+			<button type="primary" @click="showpop">立即升级</button>
 		</view>
-		<uni-popup ref="popup" type="center" custom="true">
+		<uni-popup ref="popup" type="center" :custom="true" v-if="chooseIndex != null">
 			<view class="alert-box">
 				<view class="img">
-					<image src="../../static/WechatIMG311.png" ></image>
+					<image :src="url+list[chooseIndex].image"></image>
 				</view>
 				<view class="text">
-					卜瑞塔VIP会员升级：美白黄金套餐
+					{{list[chooseIndex].name}}
 				</view>
-				<view class="content-box">
-					产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍<br>
-					产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍
-					产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍<br>
-					产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍产品图文介绍
+				<view class="content-box" v-html="list[chooseIndex].detail">
+					
 				</view>
 				
-				<view class="btn">
+				<view class="btn" @click="submitorder">
 					确认套餐
 				</view>
 			</view>
@@ -141,11 +130,47 @@
 		},
 		data(){
 			return{
-				
+				list:[],
+				url:'',
+				chooseIndex:null
 			}
 		},
 		mounted(){
-			this.$refs.popup.open()
+			uni.showLoading({
+				title:'正在加载中'
+			})
+			this.$http
+				.request({
+					url: "products",
+					method: "get",
+					params: {
+						'ProductSearch[is_enabled]':1,
+						'ProductSearch[is_vip]':1
+					}
+				})
+				.then(res => {
+					uni.hideLoading();
+					this.url = this.$baseUrl;
+					this.list = res.data.items;
+				});
+		},
+		methods:{
+			showpop(){
+				if(this.chooseIndex != null){
+					this.$refs.popup.open();
+					console.log(this.chooseIndex)
+				}else{
+					uni.showToast({
+						title:'请选择套餐',
+						icon:"none"
+					})
+				}
+			},
+			submitorder(){
+				uni.navigateTo({
+					url: '/pages/my/toPay?product_id='+this.list[this.chooseIndex].id
+				});
+			}
 		}
 	}
 </script>
@@ -267,18 +292,27 @@
 					}
 				}
 				.nav-list {
-					.uni-grid-item__box{
+					.my-list{
+						flex-wrap: wrap;
 						margin-bottom: 10rpx;
+						.item{
+							width: 25%;
+							text-align: center;
+						}
 					}
 					margin:34rpx 0;
 					image {
 						width: 90rpx;
 						height: 90rpx;
+						vertical-align: top;
 					}
 				
 					.text {
+						display: block;
 						margin-top: 14rpx;
+						margin-bottom: 30rpx;
 						font-size: 28rpx;
+						color: $uni-text-color;
 					}
 				}
 				.chose-list{

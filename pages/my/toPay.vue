@@ -1,22 +1,22 @@
 <template>
 	<view class="to-pay">
-		<view class="user-info">
+		<view class="user-info" @click="goadress">
 			<view class="user-word">
 				<view class="users uni-flex uni-row">
-					<text class="user-name">收件人：{{orderInfo.receiver}}</text>
-					<text class="num">{{orderInfo.mobile}}</text>
+					<text class="user-name">收件人：{{adressInfo.receiver}}</text>
+					<text class="num">{{adressInfo.mobile}}</text>
 				</view>
 				<view class="user-order uni-flex uni-row">
 					<view class="icon">
 						<text class="iconfont">&#xe657;</text>
 					</view>
 					<view class="address uni-flex">
-						<text class="detail">收货地址：{{orderInfo.address}}</text>
-					<view class="icon icon-right">
-						<text class="iconfont">&#xe642;</text>
+						<text class="detail">收货地址：{{adressInfo.address}}</text>
+						<view class="icon icon-right">
+							<text class="iconfont">&#xe642;</text>
+						</view>
 					</view>
-					</view>
-					
+
 				</view>
 			</view>
 			<image class="bg-bottom" src="../../static/add_bg.jpg"></image>
@@ -25,30 +25,34 @@
 			<view class="goods-item">
 				<view class="shop-name uni-flex uni-row" style="align-items: center; justify-content: space-between;">
 					<view class="uni-flex uni-row name-box" style="align-items: center; ">
-						<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
+						<image :src="url+info.image" mode="aspectFill"></image>
 						<text>王晓文的VIP会员店铺</text>
 					</view>
 					<text class="iconfont right">&#xe642;</text>
 				</view>
-				<view class="detail uni-flex uni-row" v-for="item in orderInfo.orderProducts">
+				<view class="detail uni-flex uni-row">
 					<view class="left uni-flex uni-row" style="align-items: center;">
-						<image :src="'http://backend.krtamall.yiidev.cn' + item.product.image" mode="aspectFill"></image>
+						<image :src="url+info.image" mode="aspectFill"></image>
 					</view>
 					<view class="right">
-						<view class="name">{{item.product.name}}</view>
+						<view class="name">{{info.name}}</view>
 						<view class="size">
 							商品规格
 						</view>
 						<view class="bottom  uni-flex uni-row">
 							<view class="num-box" style="overflow: hidden;">
 								<view class="money">
-									<text class="num">￥{{item.price}}</text>
+									<text class="num">￥{{info.price}}</text>
 									<text class="send">赠送128个金币</text>
 								</view>
-								<text class="total-num">x{{item.quantity}}</text>
+								<text class="total-num">x{{num}}</text>
 							</view>
 						</view>
 					</view>
+				</view>
+				<view class="number-box uni-flex uni-row" style="padding:0 30rpx;margin-bottom: 30rpx;justify-content: space-between;">
+					<text>购买数量：</text>
+					<uni-number-box :min="1" :max="info.stock" :value="num" @change="bindChange"></uni-number-box>
 				</view>
 			</view>
 		</view>
@@ -59,7 +63,7 @@
 			</view>
 			<view class="uni-flex">
 				<text>运费</text>
-				<text>￥10</text>
+				<text>￥{{info.freight}}</text>
 			</view>
 			<view class="uni-flex">
 				<text>留言</text>
@@ -72,14 +76,14 @@
 		<view class="handle-bottom ">
 			<view class="shop-bottom uni-flex uni-row">
 				<view class="all-left">
-					<text class="word-grey">共2件商品</text>
+					<text class="word-grey">共{{num}}件商品</text>
 					<text>赠送128个金币</text>
 				</view>
 				<view class="all-right uni-flex uni-row">
 					<text class="combined">合计</text>
 					<view>
 						<view class="count-box">
-							<view class="count-num">￥{{orderInfo.amount}}</view>
+							<view class="count-num">￥{{totalamount}}</view>
 							<!-- 大于7位数 弹窗-->
 							<text class="gray-color">
 								省256元
@@ -94,31 +98,67 @@
 </template>
 
 <script>
+	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
+	import {
+		mapGetters
+	} from "vuex";
 	export default {
-	  data() {
-	    return {
-	      orderInfo: '',
-	    };
-	  },
+		data() {
+			return {
+				info: '',
+				url: '',
+				adressInfo: {},
+				num: 1
+			};
+		},
+		computed: {
+			...mapGetters(["userInfo"]),
+			totalamount(){
+				return (this.num*this.info.price)
+			}
+		},
+		components: {
+			uniNumberBox
+		},
 		onLoad(option) {
 			this.$http.request({
-				url: 'orders/' + option.orderId,
+				url: 'products/' + option.product_id,
+				method: 'get',
+			}).then(res => {
+				this.info = res.data;
+				this.url = this.$baseUrl;
+			}).catch(console.log)
+
+			this.$http.request({
+				url: 'address',
 				method: 'get',
 				params: {
-					'expand': 'orderProducts,orderProducts.product'
+					'AddressSearch[user_id]': this.userInfo.id,
+					'AddressSearch[is_default]': 1,
 				}
 			}).then(res => {
-				this.orderInfo = res.data
-				console.log(this.orderInfo)
+				this.adressInfo = res.data.items[0];
+
 			}).catch(console.log)
+		},
+		methods: {
+			goadress() {
+				uni.navigateTo({
+					url: '/pages/my/address'
+				})
+			},
+			bindChange(value) {
+				this.num = value
+			}
 		}
-	 }
+	}
 </script>
 
 <style lang="scss" scoped>
-	page{
+	page {
 		height: 100%;
 	}
+
 	.to-pay {
 		height: 100%;
 		background-color: #f5f5f5;
@@ -152,19 +192,23 @@
 				}
 
 				.user-order {
-					align-items:center;
+					align-items: center;
+
 					.icon {
 						width: 80rpx;
 						text-align: center;
 					}
+
 					.address {
 						flex: 1;
-						.detail{
+
+						.detail {
 							flex: 1;
 						}
 					}
-					.icon-right{
-						.iconfont{
+
+					.icon-right {
+						.iconfont {
 							color: #999;
 							font-size: 32rpx;
 						}
@@ -182,10 +226,11 @@
 			overflow: scroll;
 			box-sizing: border-box;
 			width: 100%;
-			
+
 			.goods-item {
 				border-radius: 5px;
 				background-color: #fff;
+				border-bottom: 1px solid $uni-border-color;
 
 				.shop-name {
 					border-bottom: 1px solid $uni-border-color;
@@ -216,7 +261,7 @@
 				.detail {
 					padding: 30rpx 0;
 					margin: 0 30rpx;
-					border-bottom: 1px solid $uni-border-color;
+
 					align-items: center;
 
 					.left {
@@ -275,9 +320,10 @@
 										margin-left: 20rpx;
 									}
 								}
-								.total-num{
+
+								.total-num {
 									font-size: 32rpx;
-									color:#333;
+									color: #333;
 								}
 
 							}
@@ -293,12 +339,13 @@
 			background-color: $uni-text-color-inverse;
 
 			.uni-flex {
-				margin:0 30rpx;
+				margin: 0 30rpx;
 				height: 80rpx;
 				align-items: center;
 				justify-content: space-between;
 				border-bottom: 1px solid #f5f5f5;
-				color:#333;
+				color: #333;
+
 				.uni-input {
 					color: $uni-text-color-grey;
 				}
@@ -339,9 +386,9 @@
 				}
 
 				.all-right {
-					margin-right: 20rpx;
+					flex: 1;
 					align-items: center;
-
+					justify-content:flex-end;
 					.combined {
 						margin-right: 10rpx;
 					}
@@ -354,18 +401,19 @@
 						text-align: left;
 						align-items: center;
 						margin-right: 20rpx;
-						vertical-align:top;
+						vertical-align: top;
 
 						.count-num {
 							text-align: left;
 							color: $uni-bg-color;
 							font-size: 28rpx;
-							line-height:20rpx;
+							line-height: 20rpx;
 						}
 
 						.gray-color {
+							white-space: nowrap;
 							font-size: 20rpx;
-							height:20rpx;
+							height: 20rpx;
 							color: $uni-text-color-grey;
 						}
 					}
@@ -374,6 +422,8 @@
 						display: flex;
 						align-content: center;
 						justify-content: center;
+						margin-right:30rpx;
+						margin-left: 20rpx;
 						width: 212rpx;
 						height: 58rpx;
 						line-height: 58rpx;
@@ -381,7 +431,8 @@
 						border-radius: 58rpx;
 						font-size: 28rpx;
 						background-color: $uni-bg-color;
-						&:after{
+
+						&:after {
 							border: none;
 						}
 					}

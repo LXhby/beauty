@@ -353,6 +353,7 @@
 								page: pageNum,
 								"per-page": pageSize,
 								'ProductSearch[is_enabled]':1,
+								'ProductSearch[is_vip]':0,
 								'ProductSearch[is_coin_usable]':this.tabIndex?1:0,
 								sort:this.sortType,
 								'ProductSearch[category_id]':this.category_id
