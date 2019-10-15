@@ -118,12 +118,12 @@ const router = new Router({
 			name: 'toPay'
 		},
 		{
-			path:'/pages/my/postcomment',
-			name:'postComment'
+			path: '/pages/my/postcomment',
+			name: 'postComment'
 		},
 		{
-			path:'/pages/shopcar/paypage',
-			name:'paypage'
+			path: '/pages/shopcar/paypage',
+			name: 'paypage'
 		}
 	]
 });
@@ -196,8 +196,54 @@ router.beforeEach((to, from, next) => {
 	//#endif
 })
 router.afterEach((to, from) => {
-	// console.log(to);
-	// console.log(from)
+	Vue.nextTick(() => {
+		var url = ''
+		// 判断是否是ios微信浏览器
+		if (window.__wxjs_is_wkwebview === true) {
+			if (store.state.app.url) {
+				url = store.state.app.url.split('#')[0]
+			} else {
+				url = window.location.href.split('#')[0]
+			}
+		} else {
+			url = window.location.href.split('#')[0]
+		}
+
+		this.$http
+			.request({
+				url: "wechat/js-sdk-config",
+				method: "get",
+				params: {
+					url: url
+				}
+			}).then(response => {
+				// js-sdk配置
+				Vue.prototype.$wechat.config(response.data);
+				Vue.prototype.$wechat.ready(() => {
+					const options = {
+						title: '卡瑞塔', // 分享标题
+						desc: store.state.user.config.app_desc,
+						link: "http://" +
+							location.hostname +
+							"/#" +
+							to.fullPath +
+							"?from_user_id=" +
+							store.state.user.userInfo.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+						imgUrl: store.state.user.config.logo, // 分享图标  todoing
+						success: () => {
+							store.commit('app/showSnackbar', {
+								show: true,
+								color: 'success',
+								text: '分享成功！'
+							});
+						}
+					};
+					Vue.prototype.$wechat.onMenuShareTimeline(options);
+					Vue.prototype.$wechat.onMenuShareAppMessage(options);
+				});
+			})
+
+	}, 1000)
 })
 // console.log(router)
 
