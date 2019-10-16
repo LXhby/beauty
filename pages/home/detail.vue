@@ -26,7 +26,7 @@
 					<text class="iconfont erweima">&#xe641;</text>
 				</view>
 				<view class="price uni-flex uni-row">
-					<text class="one">￥{{info.pay_price}}</text>
+					<text class="one">￥{{info.price}}</text>
 					<text class="two">已售{{info.sold_count}}件</text>
 				</view>
 			</view>

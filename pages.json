@@ -96,7 +96,7 @@
 		{
 			"path": "pages/my/returngoods",
 			"style": {
-				"navigationBarTitleText": "退货"
+				"navigationBarTitleText": "退款详情"
 			}
 		},
 		{
@@ -199,6 +199,24 @@
 			"path": "pages/shopcar/paypage",
 			"style": {
 				"navigationBarTitleText": "支付"
+			}
+		},
+		{
+			"path": "pages/my/order-pay",
+			"style": {
+				"navigationBarTitleText": "待付款"
+			}
+		},
+		{
+			"path": "pages/my/backlist",
+			"style": {
+				"navigationBarTitleText": "订单退款"
+			}
+		},
+		{
+			"path": "pages/my/backdetail",
+			"style": {
+				"navigationBarTitleText": "退款详情"
 			}
 		}
 	],

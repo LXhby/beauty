@@ -17,9 +17,9 @@
 					<image v-if="item.status === '待收货' || item.status === '待发货'" src="../../static/car.png" mode="widthFix"></image>
 				</view>
 			</view>
-			<view class="item-main uni-flex uni-row" v-for="product in item.orderProducts">
+			<view class="item-main uni-flex uni-row" v-for="product in item.orderProducts" @click="gogoodsdetail(product)">
 				<view class="left uni-flex uni-row">
-					<image :src="'http://backend.krtamall.yiidev.cn' + product.product.image" mode="aspectFill"></image>
+					<image :src="url + product.product.image" mode="aspectFill"></image>
 					<view class="item-title">
 						<view class="name">
 							{{product.product.name}}
@@ -50,7 +50,7 @@
 				<button type="primary" class="detail" @click="godetail(item.id)">订单详情</button>
 				<view v-if="item.status === '待付款'" class="right-btn uni-flex uni-row">
 					<button type="primary" class="blue btn1">朋友代付</button>
-					<button type="primary" class="dark" @click="goPay(item.id)">立即付款</button>
+					<button type="primary" class="dark" @click="topay(item)">立即付款</button>
 				</view>
 				<view v-if="item.status === '待发货'" class="right-btn uni-flex uni-row">
 					<button type="primary" class="blue btn1" @click="drawBack(item.id)">申请退款</button>
@@ -61,7 +61,7 @@
 					<button type="primary" class="dark" @click="getGoods(item)">确认发货</button>
 				</view>
 				<view v-if="item.status === '待评价'" class="right-btn uni-flex uni-row">
-					<button type="primary" class="blue btn1">再来一单</button>
+					<button type="primary" class="blue btn1" @click="anotherpay(item)">再来一单</button>
 					<button type="primary" class="dark" @click="goAssess(item.id)">评价有奖</button>
 				</view>
 			</view>
@@ -82,6 +82,9 @@
 </template>
 
 <script>
+	import {
+		mapGetters
+	} from "vuex";
 	import Moment from "moment";
 	import uniPopup from '@/components/uni-popup/uni-popup.vue';
 	export default {
@@ -102,16 +105,36 @@
 		components: {
 			uniPopup,
 		},
+		computed: {
+			...mapGetters(["userInfo"])
+		},
 		data() {
 			return {
-				url: ''
+				url: '',
+				adressInfo:{}
 			}
 		},
 		created() {
 			this.url = this.$baseUrl;
-			console.log('this.list', this.list)
+			this.$http.request({
+				url: 'address',
+				method: 'get',
+				params: {
+					'AddressSearch[user_id]': this.userInfo.id,
+					'AddressSearch[is_default]': 1,
+				}
+			}).then(res => {
+				this.adressInfo = res.data.items[0];
+			
+			}).catch(console.log)
 		},
 		methods: {
+			gogoodsdetail(item){
+				console.log(item,)
+				uni.navigateTo({
+					url: '/pages/home/detail?id=' + item.product.id,
+				})
+			},
 			godetail(orderId) {
 				uni.navigateTo({
 					url: '/pages/my/orderinfo?orderId=' + orderId,
@@ -122,6 +145,60 @@
 				uni.navigateTo({
 					url: '/pages/my/postcomment?orderId=' + orderId,
 				})
+			},
+			//支付
+			topay(item){
+				uni.navigateTo({
+					url:'/pages/my/order-pay?orderId='+item.id
+				})
+			},
+			//再来一单
+			anotherpay(item){
+				if(!this.adressInfo.id){
+					uni.showToast({
+						title:'请填写收货地址',
+						icon:"none"
+					})
+					uni.navigateTo({
+						url:"/pages/my/address"
+					})
+				}else{
+					uni.showLoading({
+						title:"正在加载中"
+					})
+					var arr = [];
+					item.orderProducts.forEach(item=>{
+						var obj={
+							product_id:item.product.id,
+							quantity:item.quantity
+						}
+						arr.push(obj)
+					})
+					console.log('arr',arr)
+					this.$http.request({
+						url: 'orders',
+						method: 'post',
+						data: {
+							user_id: this.userInfo.id,
+							quantity: item.quantity,
+							seller_user_id:item.seller_user_id,
+							receiver:this.adressInfo.receiver,
+							mobile:this.adressInfo.mobile,
+							address:this.adressInfo.address,
+							amount:item.amount,
+							remark:'',
+							products:arr
+						}
+					}).then(res => {
+						uni.hideLoading();
+						// 获取到订单id
+						uni.navigateTo({
+							url:'/pages/my/order-pay?orderId='+res.data.id					
+						})
+					
+					}).catch(console.log)
+				}
+				
 			},
 			// 确认收货
 			getGoods(item) {

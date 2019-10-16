@@ -30,29 +30,25 @@
 					</view>
 					<text class="iconfont right">&#xe642;</text>
 				</view>
-				<view class="detail uni-flex uni-row">
+				<view class="detail uni-flex uni-row" v-for="(item,index) in info.orderProducts" :key="index" @click="gogoodsdetail(item)">
 					<view class="left uni-flex uni-row" style="align-items: center;">
-						<image :src="url+info.image" mode="aspectFill"></image>
+						<image :src="url+item.product.image" mode="aspectFill"></image>
 					</view>
 					<view class="right">
-						<view class="name">{{info.name}}</view>
+						<view class="name">{{item.product.name}}</view>
 						<view class="size">
 							商品规格
 						</view>
 						<view class="bottom  uni-flex uni-row">
 							<view class="num-box" style="overflow: hidden;">
 								<view class="money">
-									<text class="num">￥{{info.price}}</text>
+									<text class="num">￥{{item.product.price}}</text>
 									<text class="send">赠送128个金币</text>
 								</view>
-								<text class="total-num">x{{num}}</text>
+								<text class="total-num">x{{item.quantity}}</text>
 							</view>
 						</view>
 					</view>
-				</view>
-				<view class="number-box uni-flex uni-row" style="padding:0 30rpx;margin-bottom: 30rpx;justify-content: space-between;">
-					<text>购买数量：</text>
-					<uni-number-box :min="1" :max="info.stock" :value="num" @change="bindChange"></uni-number-box>
 				</view>
 			</view>
 		</view>
@@ -63,11 +59,11 @@
 			</view>
 			<view class="uni-flex">
 				<text>运费</text>
-				<text>￥{{info.freight}}</text>
+				<text>￥{{freight}}</text>
 			</view>
 			<view class="uni-flex">
 				<text>留言</text>
-				<input class="uni-input" placeholder-style="color:#999;" placeholder="选填:请留下您的要求"  v-model="remark" />
+				<input class="uni-input" placeholder-style="color:#999;" placeholder="选填:请留下您的要求"  v-model="info.remark" />
 			</view>
 		</view>
 		<view class="height-box">
@@ -83,7 +79,7 @@
 					<text class="combined">合计</text>
 					<view>
 						<view class="count-box">
-							<view class="count-num">￥{{totalamount}}</view>
+							<view class="count-num">￥{{info.amount}}</view>
 							<!-- 大于7位数 弹窗-->
 							<text class="gray-color">
 								省256元
@@ -109,14 +105,14 @@
 				url: '',
 				adressInfo: {},
 				num: 1,
-				remark:'',
-				means:'微信支付'
+				means:'微信支付',
+				freight:null,//运费
 			};
 		},
 		computed: {
 			...mapGetters(["userInfo","shopId"]),
 			totalamount(){
-				return (this.num*this.info.price)+this.info.freight*1
+				return (this.num*this.info.price)
 			}
 		},
 		components: {
@@ -124,11 +120,22 @@
 		},
 		onLoad(option) {
 			this.$http.request({
-				url: 'products/' + option.product_id,
+				url: 'orders/' + option.orderId,
 				method: 'get',
+				params:{
+					'expand': 'orderProducts,orderProducts.product',
+				}
 			}).then(res => {
 				this.info = res.data;
 				this.url = this.$baseUrl;
+				if(this.info.orderProducts.length){
+					var arr = [];
+					this.info.orderProducts.forEach(item=>{
+						arr.push(item.product.freight*1)
+					})
+					this.freight = Math.max.apply(null, arr);
+					console.log(this.freight,'this.freight')
+				}
 			}).catch(console.log)
 
 			this.$http.request({
@@ -144,6 +151,12 @@
 			}).catch(console.log)
 		},
 		methods: {
+			gogoodsdetail(item){
+				console.log(item,)
+				uni.navigateTo({
+					url: '/pages/home/detail?id=' + item.product.id,
+				})
+			},
 			goadress() {
 				uni.navigateTo({
 					url: '/pages/my/address'
@@ -192,28 +205,20 @@
 						url:"/pages/my/address"
 					})
 				}else{
-					this.$http.request({
-						url: 'orders',
-						method: 'post',
-						data: {
-							user_id: this.userInfo.id,
-							quantity: this.num,
-							seller_user_id:this.shopId?this.shopId:this.userInfo.id,
-							receiver:this.adressInfo.receiver,
-							mobile:this.adressInfo.mobile,
-							address:this.adressInfo.address,
-							amount:this.totalamount,
-							remark:this.remark,
-							products:[{
-								product_id:this.info.id,
-								quantity:this.num
-							}]
-						}
-					}).then(res => {
-						// 获取到订单id
-						this.requestPayment(res.data.id)
 					
-					}).catch(console.log)
+					this.$http
+						.request({
+							url: "orders/"+this.info.id,
+							method: "put",
+							data: {
+								receiver:this.adressInfo.receiver,
+								mobile:this.adressInfo.mobile,
+								address:this.adressInfo.address,
+								remark:this.info.remark
+							}
+						}).then(res=>{
+							this.requestPayment(this.info.id)
+						})
 				}
 				
 			}

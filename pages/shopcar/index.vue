@@ -14,16 +14,20 @@
 				<view class="goods-item">
 					<view class="shop-name uni-flex uni-row" style="align-items: center; justify-content: space-between;">
 						<view class="uni-flex uni-row name-box" style="align-items: center; ">
-							<checkbox value="cb" checked="true" color="#ff0080" style="transform:scale(0.8);" />
+							<checkbox-group @change="selectAll" style="width:44rpx;margin-right: 10rpx;">
+								<label class="radio">
+									<checkbox value="cb" :checked="selectStatus" color="#ff0080" style="transform:scale(0.8);" />
+								</label>
+							</checkbox-group>
 							<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
 							<text>王晓文的VIP会员店铺</text>
 						</view>
 						<text class="iconfont right">&#xe60e;</text>
 					</view>
-					<view class="detail uni-flex uni-row" v-for="item in shopcar">
+					<view class="detail uni-flex uni-row" v-for="(item,index) in shopcar">
 						<view class="left uni-flex uni-row" style="align-items: center;">
-							<checkbox-group class="checkbox-group" @change="oneChange(item, $event)">
-								<checkbox :value="(item.price * item.num).toString()" :checked="status" color="#ff0080" style="transform:scale(0.8);" />
+							<checkbox-group class="checkbox-group" @change="oneChange(item,$event)">
+								<checkbox :value="item.id.toString()" :checked="status" color="#ff0080" style="transform:scale(0.8);" />
 							</checkbox-group>
 							<image :src="'http://backend.krtamall.yiidev.cn'+ item.image" mode="aspectFill"></image>
 						</view>
@@ -32,14 +36,18 @@
 							<view class="size">
 								商品规格
 							</view>
-							<view class="bottom  uni-flex uni-row">
+							<view class="bottom  uni-flex uni-row" style="align-items: center;">
 								<view class="num-box" style="overflow: hidden;">
-									<text class="num">￥{{item.price * item.num}}</text>
-									<text class="send">赠送128个金币</text>
+									<text class="num">￥{{item.price}}</text>
+									
 								</view>
-								<view class="number-box" @click="clickNumberBox(item.id)">
-									<uni-number-box :min="1" :max="item.stock" :value="item.num" @change="bindChange"></uni-number-box>
+								<view class="number-box" >
+									<uni-number-box :min="1" :max="item.stock" :value="item.num" @change="bindChange(item,$event)"></uni-number-box>
 								</view>
+							</view>
+							<view class="bottom-line uni-flex uni-row" style="margin-top: 20rpx;">
+								<text class="send">赠送128个金币</text>
+								<text class="send" style="margin-left:20rpx;">运费：{{item.freight}}</text>
 							</view>
 						</view>
 					</view>
@@ -66,7 +74,7 @@
 								</text>
 							</view>
 						</view>
-						<button type="primary" size="mini">确认订单</button>
+						<button type="primary" size="mini" @click="submitOrder">确认订单</button>
 					</view>
 				</view>
 			</view>
@@ -82,63 +90,131 @@
 	export default {
 		data() {
 			return {
-				productNum: 0,
 				totalMoney: 0,
+				checklist:[],
 				status: false,
 				selectStatus: false,
-				num: 0
+				adressInfo:{}
 			}
 		},
 		computed: {
-			...mapGetters(["shopcar", "cartnum"])
+			...mapGetters(["shopcar", "cartnum","userInfo"])
 		},
 		components: {
 			uniNumberBox
 		},
+		watch:{
+			checklist(){
+				console.log(this.checklist);
+				if(this.checklist.length == this.shopcar.length){
+					this.selectStatus = true;
+				}else{
+					this.selectStatus = false;
+				}
+				this.totalMoney= 0;
+				if(this.checklist.length){
+					var feig = [];
+					this.checklist.forEach(ele=>{
+						var obj = this.shopcar.find(item=>ele*1 == item.id*1)
+						if(obj){
+							feig.push(obj.freight)
+							this.totalMoney+=obj.price*obj.num
+						}
+					})
+					this.totalMoney+= Math.max.apply(null,feig)*1
+				}else{
+					this.totalMoney = 0;
+				}
+			}
+		},
 		onLoad() {
-			console.log(this.shoper)
-			// this.$store.commit("cartnum/clearnum");
-			// this.$store.commit("cartnum/clearShopcar");
+			if(this.shopcar.length){
+				this.shopcar.forEach(item=>{
+					this.$set(item, "status", false);
+				})
+			}
+			this.$http.request({
+				url: 'address',
+				method: 'get',
+				params: {
+					'AddressSearch[user_id]': this.userInfo.id,
+					'AddressSearch[is_default]': 1,
+				}
+			}).then(res => {
+				this.adressInfo = res.data.items[0];
+			}).catch(console.log)
 		},
 		methods: {
+			submitOrder(){
+				if(!this.adressInfo.id){
+					uni.showToast({
+						title:'请填写收货地址',
+						icon:"none"
+					})
+					uni.navigateTo({
+						url:"/pages/my/address"
+					})
+				}else{
+					// this.$http.request({
+					// 	url: 'orders',
+					// 	method: 'post',
+					// 	data: {
+					// 		user_id: this.userInfo.id,
+					// 		quantity: this.num,
+					// 		seller_user_id:this.shopId?this.shopId:this.userInfo.id,
+					// 		receiver:this.adressInfo.receiver,
+					// 		mobile:this.adressInfo.mobile,
+					// 		address:this.adressInfo.address,
+					// 		amount:this.totalamount,
+					// 		remark:this.remark,
+					// 		products:[{
+					// 			product_id:this.info.id,
+					// 			quantity:this.num
+					// 		}]
+					// 	}
+					// }).then(res => {
+					// 	// 获取到订单id
+					// 	uni.navigateTo({
+					// 		url:'/pages/my/order-pay?orderId='+res.data.id
+					// 	})
+					// 
+					// 
+					// }).catch(console.log)
+				}
+			},
+			
 			gohome(){
 				uni.switchTab({
 					url:'/pages/home/index'
 				})
 			},
-			bindChange(value) {
-				this.productNum = value
-			},
-			clickNumberBox(productId) {
-				let totalMoney = 0
-				this.shopcar.forEach(ele => {
-					if (ele.id === productId) {
-						this.$store.commit("cartnum/setnum", this.productNum - ele.num);
-						uni.setTabBarBadge({
-							index: 2,
-							text: this.cartnum.toString()
-						});
-						ele.num = this.productNum
+			bindChange(item,value) {
+				item.num = value;
+				var obj = this.checklist.find(ele=>ele== item.id*1);
+				if(obj){
+					this.totalMoney= 0;
+					if(this.checklist.length){
+						this.checklist.forEach(ele=>{
+							var obj = this.shopcar.find(item=>ele*1 == item.id*1)
+							if(obj){
+								this.totalMoney+=obj.price*obj.num
+							}
+						})
 					}
-					totalMoney += ele.num * ele.price
-				})
-				this.totalMoney = totalMoney
+				}
 			},
 			// 单个选
-			oneChange(data, $event) {
-				console.log($event)
-				if ($event.target.value.length === 0) {
-					this.num--
-					this.totalMoney -= data.price * data.num
-					console.log(this.num)
-				} else {
-					this.num++
-					this.totalMoney += data.price * data.num
-				}
-				if (this.num === this.shopcar.length) {
-					this.selectStatus = true
-				} else {
-					this.selectStatus = false
+			oneChange(item,e) {
+				var arr = e.detail.value;
+				if(arr[0]){
+					this.checklist.push(arr[0])
+				}else{
+					console.log('this.checklist',this.checklist)
+					this.checklist.forEach((ele,index)=>{
+						if(ele*1 == item.id*1){
+							this.checklist.splice(index,1)
+						}
+					})
 				}
 			},
 			// 全选
@@ -153,12 +229,10 @@
 					this.totalMoney = totalMoney
 					this.selectStatus = true
 					this.status = true
-					this.num = this.shopcar.length
 				} else {
 					this.totalMoney = 0
 					this.selectStatus = false
 					this.status = false
-					this.num = 0
 				}
 			},
 		}
@@ -293,7 +367,13 @@
 								color: $uni-text-color-grey;
 								background: #f9f9f9;
 							}
-
+							.bottom-line{
+								.send {
+									color: $uni-text-color-grey;
+									font-size: 20rpx;
+									margin-left: 10rpx;
+								}
+							}
 							.bottom {
 								align-items: flex-end;
 								flex-wrap: wrap;
@@ -310,11 +390,7 @@
 										color: $uni-bg-color;
 									}
 
-									.send {
-										color: $uni-text-color-grey;
-										font-size: 20rpx;
-										margin-left: 10rpx;
-									}
+									
 								}
 
 								.number-box {

@@ -3,10 +3,7 @@
 		<view class="header">
 			<image src="../../static/order_top_bg.jpg" mode="widthFix"></image>
 			<view class="text uni-flex uni-row">
-				<text v-if="orderInfo.status === '待付款'">{{orderInfo.status}}：订单倒计时30分钟，订单取消</text>
-				<text v-if="orderInfo.status === '待发货'">{{orderInfo.status}}：仓库正在紧张发货中</text>
-				<text v-if="orderInfo.status === '待收货'">{{orderInfo.status}}：系统将在X天后自动确认收货</text>
-				<text v-if="orderInfo.status === '待评价'">{{orderInfo.status}}：评价有奖哦！</text>
+				<text >{{orderInfo.status}}</text>
 			</view>
 		</view>
 		<view class="store-name">
@@ -16,17 +13,10 @@
 					<text>某某店铺名称</text>
 					<text class="iconfont">&#xe642;</text>
 				</view>
-				<view class="header-right">
-					<button v-if="orderInfo.status === '待付款'" class="friend-pay btn" type="primary" size="mini">朋友代付</button>
-					<button v-if="orderInfo.status === '待付款'" class="me-pay btn" type="primary" size="mini" @click="goPay">立即付款</button>
-					<button v-if="orderInfo.status === '待发货'" class="me-pay btn" type="primary" size="mini" @click="sendGoods">提醒发货</button>
-					<button v-if="orderInfo.status === '待收货'" class="me-pay btn" type="primary" size="mini" @click="getGoods">确认收货</button>
-					<button v-if="orderInfo.status === '待评价'" class="me-pay btn" type="primary" size="mini" @click="goAssess">立即评价</button>
-				</view>
 			</view>
 			<view class="store-content">
 				<view class="goods-info" v-for="item in orderInfo.orderProducts" @click="gogoodsdetail(item.product)">
-					<image :src="'http://backend.krtamall.yiidev.cn' + item.product.image" mode="aspectFill"></image>
+					<image :src="url + item.product.image" mode="aspectFill"></image>
 					<view class="goods-src">
 						<p>{{item.product.name}}</p>
 						<text>{{item.product.summary}}</text>
@@ -78,63 +68,9 @@
 				<text>{{orderInfo.sent_at}}</text>  
 			</p>
 		</view>
-		<view class="progress" v-if="orderInfo.status === '待收货' || orderInfo.status === '待评价'">
-			<view class="title">
-				{{orderInfo.express_com}}快递单号：{{orderInfo.express_sn}}
-				</view>
-			<view class="progress-detail uni-flex uni-row">
-				<view class="flow-li">
-					<view class="flow-bor"></view>
-					<view class="flow-text">
-						<view>已发货</view>
-					</view>
-				</view>
-				<view class="flow-line"></view>
-				<view class="flow-li">
-					<view class="flow-bor"></view>
-					<view class="flow-text">
-						<view>运输中</view>
-					</view>
-				</view>
-				<!-- fail-line -->
-				<view class="flow-line "></view>
-				<view class="flow-li ">
-					<!-- fail-li -->
-					<view class="flow-bor"></view>
-					<view class="flow-text">
-						<view>已签收</view>
-					</view>
-				</view>
-			</view>
-			<view class="progress-time">
-				<view class="time-list uni-flex uni-row">
-					<view class="left">
-						<view class="time">
-							21:13
-						</view>
-						<text>2018-07-23</text>
-					</view>
-					<view class="right">
-						[茂名市]快件已在茂名高州签收 签收人：拍照签收，感谢您使用中通快递，期待再次为您服务！
-					</view>
-				</view>
-			</view>
-		</view>
 		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 
-		
-		<!-- 提醒发货 -->
-		<uni-popup ref="popups" type="center" :custom="true">
-			<view class="alert-pop">
-				<view class="shop-image">
-					<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
-				</view>
-				<view class="title">
-					王晓文的店铺
-				</view>
-				<view class="text">亲，我们已收到提醒，将尽快发货！</view>
-			</view>
-		</uni-popup>
+
 	</view>
 </template>
 
@@ -154,13 +90,14 @@
 			return {
 				orderInfo: '',
 				orderId: '',
-				starsNum:1,
+				url:''
 			}
 		},
 		mounted(){
 			// this.$refs.popups.open()
 		},
 		onLoad(option) {
+			this.url= this.$baseUrl;
 			this.orderId = option.orderId
 			this.$http.request({
 				url: 'orders/' + option.orderId,
@@ -174,26 +111,6 @@
 			}).catch(console.log)
 		},
 		methods:{
-			// 立即付款
-			goPay(){
-				uni.navigateTo({
-					url: '/pages/my/order-pay?orderId=' + this.orderId,
-				})
-			},
-			// 提醒发货
-			sendGoods() {
-				this.$refs.popups.open()
-			},
-			// 确认收货
-			getGoods() {
-				this.$refs.popup.open()
-			},
-			// 立即评价
-			goAssess() {
-				uni.navigateTo({
-					url: '/pages/my/postcomment?orderId='+this.orderId
-				});
-			},
 gogoodsdetail(item){
 				console.log(item);
 				uni.navigateTo({

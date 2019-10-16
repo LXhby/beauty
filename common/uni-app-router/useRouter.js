@@ -124,6 +124,18 @@ const router = new Router({
 		{
 			path: '/pages/shopcar/paypage',
 			name: 'paypage'
+		},
+		{
+			path:'/pages/my/order-pay',
+			name:'orderpay'
+		},
+		{
+			path:'/pages/my/backdetail',
+			name:'backdetail'
+		},
+		{
+			path:'/pages/my/backlist',
+			name:'backlist'
 		}
 	]
 });
