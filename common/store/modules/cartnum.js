@@ -24,13 +24,29 @@ const mutations = {
 		})
 	},
 	setShopcar:(state,info)=>{
-		var item = state.shopcar.find((ele)=>ele.id==info.id)
-		if(!item){
-			var obj = Object.assign({num:1},info)
-			state.shopcar.push(obj)
+		console.log('shopId',info.shopId)
+		var shop = state.shopcar.find((ele)=>ele.shopId==info.shopId);
+		if(shop){
+			console.log('同一个店铺')
+			var item = shop.products.find((ele)=>ele.id==info.item.id)
+			if(!item){
+				var obj = Object.assign({num:1},info.item)
+				shop.products.push(obj)
+			}else{
+				item.num++;
+			}
 		}else{
-			item.num++;
+			console.log('不一样的店铺')
+			var ob={
+				shopId:info.shopId,
+				products:[]
+			};
+			var oa= Object.assign({num:1},info.item)
+			ob.products.push(oa);
+			console.log(ob)
+			state.shopcar.push(ob)
 		}
+		
 		console.log('shopcar',state.shopcar)
 	},
 	clearnum: (state) => {

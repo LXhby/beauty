@@ -54,7 +54,7 @@
 			console.log('this.list', this.list)
 		},
 		computed: {
-		      ...mapGetters(['cartnum']),
+		      ...mapGetters(['cartnum','shopId','userInfo']),
 			  
 		},
 		methods:{
@@ -63,14 +63,19 @@
 			},
 			addcar(item){
 				 this.$store.commit("cartnum/setnum", 1);
-				 this.$store.commit("cartnum/setShopcar", item);
+				 var id = this.shopId?this.shopId:this.userInfo.id;
+				 var data ={
+					 shopId:id,
+					 item:item
+				 }
+				 this.$store.commit("cartnum/setShopcar", data);
 				 uni.setTabBarBadge({
 				 	index: 2,
 				 	text: this.cartnum.toString()
 				 });
 				 uni.showToast({
 					 title:'加入购物车成功！',
-					 icon:none
+					 icon:"none"
 				 })
 				 console.log('cartnum',this.cartnum)
 			},
