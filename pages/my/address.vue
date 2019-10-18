@@ -17,12 +17,12 @@
 			<view class="main-content">
 				<view class="item-box" v-for="(item, i) in addressList">
 					<radio-group @change="radioChange">
-						<view class="item">
+						<view class="item" @click="setAdress(item)">
 							<view class="user">
 								<text class="name">{{item.receiver}}</text>
 								<text>{{item.mobile}}</text>
 							</view>
-							<text class="address">{{item.address}}</text>
+							<text class="address">{{item.province}}-{{item.city}}-{{item.address}}</text>
 						</view>
 						<view class="edit uni-flex uni-row">
 							<label class="radio">
@@ -66,11 +66,29 @@
 				detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
 				addressList: [],
 				current: {},
-				currentIndex:0
+				currentIndex:0,
+				isOrder:false
 			};
 		},
-		onLoad() {
-			this.findAllAddr()
+		onLoad(option) {
+
+			if(option.getaddress){
+				this.isOrder = true;
+				this.getaddress = option.getaddress;
+				this.product_id = null;
+			}else if(option.product_id){
+				this.isOrder = true;
+				this.product_id = option.product_id;
+				this.getaddress =null;
+			}else{
+				this.isOrder = false;
+				this.getaddress =null;
+				this.product_id = null;
+			}
+			
+		},
+		onShow() {
+				this.findAllAddr();
 		},
 		methods: {
 			findAllAddr() {
@@ -94,6 +112,29 @@
 					}
 
 				}).catch(console.log)
+			},
+			setAdress(item){
+				if(this.isOrder){
+					var obj={
+						address:item.province+"-"+item.city+"-"+item.address,
+						mobile:item.mobile,
+						receiver:item.receiver
+					}
+					this.$store.commit("user/setorderadress",obj)
+					if(this.getaddress){
+						uni.navigateTo({
+							url:"/pages/my/toPay?shopcarorder="+this.getaddress
+						})
+					}else if(this.product_id){
+						uni.navigateTo({
+							url:"/pages/my/toPay?product_id="+this.product_id
+						})
+					}
+					
+				}else{
+					return false;
+				}
+				
 			},
 			radioChange(evt) {
 				this.$http.request({
@@ -120,6 +161,23 @@
 										icon: 'none',
 										title: '默认地址修改成功'
 									})
+									if(this.isOrder){
+										var obj={
+											address:res.data.province+"-"+res.data.city+"-"+res.data.address,
+											mobile:res.data.mobile,
+											receiver:res.data.receiver
+										}
+										this.$store.commit("user/setorderadress",obj)
+										if(this.getaddress){
+											uni.navigateTo({
+												url:"/pages/my/toPay?shopcarorder="+this.getaddress
+											})
+										}else if(this.product_id){
+											uni.navigateTo({
+												url:"/pages/my/toPay?product_id="+this.product_id
+											})
+										}
+									}
 								},1000)
 							}
 						}).catch(console.log)
@@ -141,11 +199,15 @@
 					method: 'delete'
 				}).then(res => {
 					if (res.statusCode === 204) {
-						uni.showToast({
-							icon: 'none',
-							title: '删除成功'
+						uni.redirectTo({
+							url:'/pages/my/address'
 						})
-						this.reload()
+						setTimeout(()=>{
+							uni.showToast({
+								icon: 'none',
+								title: '删除成功'
+							})
+						},1000)
 					}
 				}).catch(console.log)
 			}

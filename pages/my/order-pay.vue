@@ -1,20 +1,20 @@
 <template>
 	<view class="to-pay">
-		<view class="user-info" @click="goadress">
+		<view class="user-info">
 			<view class="user-word">
 				<view class="users uni-flex uni-row">
-					<text class="user-name">收件人：{{adressInfo.receiver}}</text>
-					<text class="num">{{adressInfo.mobile}}</text>
+					<text class="user-name">收件人：{{info.receiver}}</text>
+					<text class="num">{{info.mobile}}</text>
 				</view>
 				<view class="user-order uni-flex uni-row">
 					<view class="icon">
 						<text class="iconfont">&#xe657;</text>
 					</view>
 					<view class="address uni-flex">
-						<text class="detail">收货地址：{{adressInfo.address}}</text>
-						<view class="icon icon-right">
+						<text class="detail">收货地址：{{info.address}}</text>
+						<!-- <view class="icon icon-right">
 							<text class="iconfont">&#xe642;</text>
-						</view>
+						</view> -->
 					</view>
 
 				</view>
@@ -103,14 +103,13 @@
 			return {
 				info: '',
 				url: '',
-				adressInfo: {},
 				num: 1,
 				means:'微信支付',
 				freight:null,//运费
 			};
 		},
 		computed: {
-			...mapGetters(["userInfo","shopId"]),
+			...mapGetters(["userInfo","shopId",]),
 			totalamount(){
 				return (this.num*this.info.price)
 			}
@@ -128,38 +127,26 @@
 			}).then(res => {
 				this.info = res.data;
 				this.url = this.$baseUrl;
+				var obj={
+					address:res.data.address,
+					mobile:res.data.mobile,
+					receiver:res.data.receiver,
+				}
+
 				if(this.info.orderProducts.length){
 					var arr = [];
 					this.info.orderProducts.forEach(item=>{
 						arr.push(item.product.freight*1)
 					})
 					this.freight = Math.max.apply(null, arr);
-					console.log(this.freight,'this.freight')
 				}
 			}).catch(console.log)
 
-			this.$http.request({
-				url: 'address',
-				method: 'get',
-				params: {
-					'AddressSearch[user_id]': this.userInfo.id,
-					'AddressSearch[is_default]': 1,
-				}
-			}).then(res => {
-				this.adressInfo = res.data.items[0];
-
-			}).catch(console.log)
 		},
 		methods: {
 			gogoodsdetail(item){
-				console.log(item,)
 				uni.navigateTo({
 					url: '/pages/home/detail?id=' + item.product.id,
-				})
-			},
-			goadress() {
-				uni.navigateTo({
-					url: '/pages/my/address'
 				})
 			},
 			bindChange(value) {
@@ -202,7 +189,7 @@
 						icon:"none"
 					})
 					uni.navigateTo({
-						url:"/pages/my/address"
+						url:"/pages/my/address?getaddress="+this.info.id
 					})
 				}else{
 					
@@ -211,9 +198,6 @@
 							url: "orders/"+this.info.id,
 							method: "put",
 							data: {
-								receiver:this.adressInfo.receiver,
-								mobile:this.adressInfo.mobile,
-								address:this.adressInfo.address,
 								remark:this.info.remark
 							}
 						}).then(res=>{

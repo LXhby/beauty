@@ -7,7 +7,9 @@ const state = {
     token: '0ab538e92c6db78d10b1694e645f3625',
     config: {},
     appurl: null,
-	shopId:null
+	shopId:null,
+	orderadress:{},
+	shopcarorder:{}
 }
 
 const mutations = {
@@ -31,6 +33,12 @@ const mutations = {
 	clearShopId:(state) => {
         state.shopId = null;
     },
+	setorderadress:(state,info)=>{
+		state.orderadress = info;
+	},
+	setshopcarorder:(state,info)=>{
+		state.shopcarorder = info;
+	}
 }
 
 const actions = {

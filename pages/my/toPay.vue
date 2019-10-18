@@ -30,30 +30,55 @@
 					</view>
 					<text class="iconfont right">&#xe642;</text>
 				</view>
-				<view class="detail uni-flex uni-row">
-					<view class="left uni-flex uni-row" style="align-items: center;">
-						<image :src="url+info.image" mode="aspectFill"></image>
-					</view>
-					<view class="right">
-						<view class="name">{{info.name}}</view>
-						<view class="size">
-							商品规格
+				<view v-if="!iscarorder">
+					<view class="detail uni-flex uni-row" >
+						<view class="left uni-flex uni-row" style="align-items: center;">
+							<image :src="url+info.image" mode="aspectFill"></image>
 						</view>
-						<view class="bottom  uni-flex uni-row">
-							<view class="num-box" style="overflow: hidden;">
-								<view class="money">
-									<text class="num">￥{{info.price}}</text>
-									<text class="send">赠送128个金币</text>
+						<view class="right">
+							<view class="name">{{info.name}}</view>
+							<view class="size">
+								商品规格
+							</view>
+							<view class="bottom  uni-flex uni-row">
+								<view class="num-box" style="overflow: hidden;">
+									<view class="money">
+										<text class="num">￥{{info.price}}</text>
+										<text class="send">赠送128个金币</text>
+									</view>
+									<text class="total-num">x{{info.num}}</text>
 								</view>
-								<text class="total-num">x{{num}}</text>
+							</view>
+						</view>
+					</view>
+					<view class="number-box uni-flex uni-row" style="padding:0 30rpx;margin-bottom: 30rpx;justify-content: space-between;">
+						<text>购买数量：</text>
+						<uni-number-box :min="1" :max="info.stock" :value="info.num" @change="bindChange"></uni-number-box>
+					</view>
+				</view>
+				<view v-else v-for="(info,index) in shopcarorder.cardetail">
+					<view class="detail uni-flex uni-row" >
+						<view class="left uni-flex uni-row" style="align-items: center;">
+							<image :src="url+info.image" mode="aspectFill"></image>
+						</view>
+						<view class="right">
+							<view class="name">{{info.name}}</view>
+							<view class="size">
+								商品规格
+							</view>
+							<view class="bottom  uni-flex uni-row">
+								<view class="num-box" style="overflow: hidden;">
+									<view class="money">
+										<text class="num">￥{{info.price}}</text>
+										<text class="send">赠送128个金币</text>
+									</view>
+									<text class="total-num">x{{info.num}}</text>
+								</view>
 							</view>
 						</view>
 					</view>
 				</view>
-				<view class="number-box uni-flex uni-row" style="padding:0 30rpx;margin-bottom: 30rpx;justify-content: space-between;">
-					<text>购买数量：</text>
-					<uni-number-box :min="1" :max="info.stock" :value="num" @change="bindChange"></uni-number-box>
-				</view>
+				
 			</view>
 		</view>
 		<view class="pay-method">
@@ -63,7 +88,8 @@
 			</view>
 			<view class="uni-flex">
 				<text>运费</text>
-				<text>￥{{info.freight}}</text>
+				<text v-if="!iscarorder">￥{{info.freight}}</text>
+				<text v-else>￥{{shopcarorder.feig}}</text>
 			</view>
 			<view class="uni-flex">
 				<text>留言</text>
@@ -76,14 +102,16 @@
 		<view class="handle-bottom ">
 			<view class="shop-bottom uni-flex uni-row">
 				<view class="all-left">
-					<text class="word-grey">共{{num}}件商品</text>
+					<text class="word-grey" v-if="!iscarorder">共{{info.num}}件商品</text>
+					<text class="word-grey" v-else>共{{shopcarorder.quantity}}件商品</text>
 					<text>赠送128个金币</text>
 				</view>
 				<view class="all-right uni-flex uni-row">
 					<text class="combined">合计</text>
 					<view>
 						<view class="count-box">
-							<view class="count-num">￥{{totalamount}}</view>
+							<view class="count-num" v-if="!iscarorder">￥{{totalamount}}</view>
+							<view class="count-num" v-else>￥{{shopcarorder.amount}}</view>
 							<!-- 大于7位数 弹窗-->
 							<text class="gray-color">
 								省256元
@@ -105,52 +133,94 @@
 	export default {
 		data() {
 			return {
-				info: '',
+				info: {},
 				url: '',
 				adressInfo: {},
-				num: 1,
 				remark:'',
-				means:'微信支付'
+				iscarorder:false,
+				means:'微信支付',
+				totalamount:0
 			};
 		},
 		computed: {
-			...mapGetters(["userInfo","shopId"]),
-			totalamount(){
-				return (this.num*this.info.price)+this.info.freight*1
-			}
+			...mapGetters(["userInfo","shopId","orderadress","shopcarorder"]),
+			
 		},
 		components: {
 			uniNumberBox
 		},
 		onLoad(option) {
-			this.$http.request({
-				url: 'products/' + option.product_id,
-				method: 'get',
-			}).then(res => {
-				this.info = res.data;
-				this.url = this.$baseUrl;
-			}).catch(console.log)
+			this.url = this.$baseUrl;
+			if(option.product_id){
+				this.iscarorder = false;
+				this.$http.request({
+					url: 'products/' + option.product_id,
+					method: 'get',
+				}).then(res => {
+					this.info = res.data;
+					this.info.num = 1;
+					this.settotalamount()
+					
+				}).catch(console.log)
+			}else if(option.shopcarorder){
+				this.iscarorder = true;
+				console.log('shopcarorder',this.shopcarorder)
+			}
+			
+			
 
-			this.$http.request({
-				url: 'address',
-				method: 'get',
-				params: {
-					'AddressSearch[user_id]': this.userInfo.id,
-					'AddressSearch[is_default]': 1,
-				}
-			}).then(res => {
-				this.adressInfo = res.data.items[0];
-
-			}).catch(console.log)
+			if(this.orderadress.receiver){
+				this.adressInfo = this.orderadress;
+			}else{
+				this.setdefaultAddress()
+			}
+			
 		},
 		methods: {
+			settotalamount(){
+				this.totalamount= (this.info.num*this.info.price)+this.info.freight*1
+			},
+			setdefaultAddress(){
+				this.$http.request({
+					url: 'address',
+					method: 'get',
+					params: {
+						'AddressSearch[user_id]': this.userInfo.id,
+						'AddressSearch[is_default]': 1,
+					}
+				}).then(res => {
+					if(res.data.items.length){
+						this.adressInfo = {
+							address:res.data.items[0].province+"-"+res.data.items[0].city+"-"+res.data.items[0].address,
+							mobile:res.data.items[0].mobile,
+							receiver:res.data.items[0].receiver
+						};
+						this.$store.commit("user/setorderadress",this.adressInfo)
+						
+					}else{
+						this.$store.commit("user/setorderadress",{})
+						this.adressInfo = {};
+					}
+				}).catch(console.log)
+			},
 			goadress() {
-				uni.navigateTo({
-					url: '/pages/my/address'
-				})
+				if(this.iscarorder){
+					uni.navigateTo({
+						url: '/pages/my/address?getaddress=1'
+					})
+				}else{
+					uni.navigateTo({
+						url: '/pages/my/address?product_id='+this.info.id
+					})
+				}
+				
 			},
 			bindChange(value) {
-				this.num = value
+				this.$set(this.info,"num",value)
+				console.log('this.info',this.info);
+				this.$forceUpdate();
+				this.settotalamount();
+				// this.info.num = value
 			},
 			requestPayment(id) {
 				if (this.means == "微信支付") {
@@ -183,21 +253,39 @@
 				}
 			},
 			gopay(){
-				if(!this.adressInfo.id){
+				if(!this.adressInfo.receiver){
 					uni.showToast({
 						title:'请填写收货地址',
 						icon:"none"
 					})
-					uni.navigateTo({
-						url:"/pages/my/address"
-					})
+					if(this.iscarorder){
+						uni.navigateTo({
+							url:"/pages/my/address?getaddress=1"
+						})
+					}else{
+						uni.navigateTo({
+							url:"/pages/my/address?product_id="+this.info.id
+						})
+					}
+					
 				}else{
-					this.$http.request({
-						url: 'orders',
-						method: 'post',
-						data: {
+					var postdata ={};
+					if(this.iscarorder){
+						postdata={
 							user_id: this.userInfo.id,
-							quantity: this.num,
+							quantity:this.shopcarorder.quantity,
+							seller_user_id:this.shopcarorder.seller_user_id,
+							receiver:this.adressInfo.receiver,
+							mobile:this.adressInfo.mobile,
+							address:this.adressInfo.address,
+							amount:this.shopcarorder.amount,
+							remark:this.remark,
+							products:this.shopcarorder.products
+						}
+					}else{
+						postdata = {
+							user_id: this.userInfo.id,
+							quantity: this.info.num,
 							seller_user_id:this.shopId?this.shopId:this.userInfo.id,
 							receiver:this.adressInfo.receiver,
 							mobile:this.adressInfo.mobile,
@@ -209,8 +297,14 @@
 								quantity:this.num
 							}]
 						}
+					}
+					this.$http.request({
+						url: 'orders',
+						method: 'post',
+						data: postdata
 					}).then(res => {
 						// 获取到订单id
+						this.setdefaultAddress();
 						this.requestPayment(res.data.id)
 					
 					}).catch(console.log)

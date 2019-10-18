@@ -1,0 +1,25 @@
+{
+  "name": "beauty",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "dependencies": {
+    "jweixin-module": "^1.4.1",
+    "uni-simple-router": "^1.2.5",
+    "moment": "^2.24.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LXhby/beauty.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LXhby/beauty/issues"
+  },
+  "homepage": "https://github.com/LXhby/beauty#readme"
+}

@@ -172,9 +172,7 @@
 									icon: 'none',
 									title: '修改成功'
 								})
-								uni.navigateTo({
-									url: '/pages/my/address'
-								})
+								uni.navigateBack()
 							}
 						}).catch(console.log)
 					} else {
@@ -221,9 +219,7 @@
 									icon: 'none',
 									title: '新增成功'
 								})
-								uni.navigateTo({
-									url: '/pages/my/address'
-								})
+								uni.navigateBack()
 							}
 						}).catch(console.log)
 					}

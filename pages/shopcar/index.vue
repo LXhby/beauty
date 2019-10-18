@@ -93,7 +93,8 @@
 				totalMoney: 0,
 				checklist:[],
 				selectStatus: false,
-				adressInfo:{}
+				adressInfo:{},
+				feig:0
 			}
 		},
 		computed: {
@@ -115,7 +116,29 @@
 		components: {
 			uniNumberBox
 		},
-
+		onShow() {
+			this.$http.request({
+				url: 'address',
+				method: 'get',
+				params: {
+					'AddressSearch[user_id]': this.userInfo.id,
+					'AddressSearch[is_default]': 1,
+				}
+			}).then(res => {
+				if(res.data.items.length){
+					this.adressInfo = {
+						address:res.data.items[0].province+"-"+res.data.items[0].city+"-"+res.data.items[0].address,
+						mobile:res.data.items[0].mobile,
+						receiver:res.data.items[0].receiver
+					};
+					this.$store.commit("user/setorderadress",this.adressInfo)
+					
+				}else{
+					this.$store.commit("user/setorderadress",{})
+					this.adressInfo = {};
+				}
+			}).catch(console.log)
+		},
 		onLoad() {
 			console.log('this.shopcar',this.myshopcar)
 			if(this.myshopcar.length){
@@ -155,6 +178,7 @@
 							
 						})
 						this.totalMoney+= Math.max.apply(null,feig)*1
+						this.feig = Math.max.apply(null,feig)*1;
 					})
 					
 				}else{
@@ -162,23 +186,17 @@
 				}
 			},
 			submitOrder(){
-				if(!this.adressInfo.id){
-					uni.showToast({
-						title:'请填写收货地址',
-						icon:"none"
-					})
-					uni.navigateTo({
-						url:"/pages/my/address"
-					})
-				}else if(!this.checklist.length){
+				if(!this.checklist.length){
 					uni.showToast({
 						title:'请选择商品',
 						icon:"none"
 					})
 				}else{
 					var product=[];
-					console
-					var arr = this.myshopcar.find(ele=>ele.shopId == this.checklist[0].shopId)
+					
+					var arr = this.myshopcar.find(ele=>ele.shopId == this.checklist[0].shopId);
+					var num=0;
+					var cardetail=[];
 					this.checklist[0].productId.forEach(item=>{
 						arr.products.forEach(child=>{
 							if(item*1==child.id){
@@ -186,32 +204,26 @@
 									product_id:child.id,
 									quantity:child.num
 								}
+								cardetail.push(child)
+								num+=child.num;
 								product.push(obj)
 							}
 						})
 					})
-					this.$http.request({
-						url: 'orders',
-						method: 'post',
-						data: {
-							user_id: this.userInfo.id,
-							quantity: this.num,
-							seller_user_id:this.shopId?this.shopId:this.userInfo.id,
-							receiver:this.adressInfo.receiver,
-							mobile:this.adressInfo.mobile,
-							address:this.adressInfo.address,
-							amount:this.totalamount,
-							remark:'',
-							products:product
-						}
-					}).then(res => {
-						// 获取到订单id
-						uni.navigateTo({
-							url:'/pages/my/order-pay?orderId='+res.data.id
-						})
-					
-					
-					}).catch(console.log)
+					var shopcarorder={
+						user_id: this.userInfo.id,
+						quantity: num,
+						seller_user_id:this.shopId?this.shopId:this.userInfo.id,
+						amount:this.totalMoney,
+						remark:'',
+						products:product,
+						cardetail:cardetail,
+						feig:this.feig
+					}
+					this.$store.commit('user/setshopcarorder',shopcarorder)
+					uni.navigateTo({
+						url:'/pages/my/toPay?shopcarorder=1'
+					})
 				}
 			},
 			

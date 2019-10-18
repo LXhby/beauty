@@ -185,6 +185,29 @@
 			}
 
 		},
+		onShow() {
+			this.$http.request({
+				url: 'address',
+				method: 'get',
+				params: {
+					'AddressSearch[user_id]': this.userInfo.id,
+					'AddressSearch[is_default]': 1,
+				}
+			}).then(res => {
+				if(res.data.items.length){
+					this.adressInfo = {
+						address:res.data.items[0].province+"-"+res.data.items[0].city+"-"+res.data.items[0].address,
+						mobile:res.data.items[0].mobile,
+						receiver:res.data.items[0].receiver
+					};
+					this.$store.commit("user/setorderadress",this.adressInfo)
+					
+				}else{
+					this.$store.commit("user/setorderadress",{})
+					this.adressInfo = {};
+				}
+			}).catch(console.log)
+		},
 		methods: {
 			previewImg(ele) {
 				this.$wechat.previewImage({
