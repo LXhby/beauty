@@ -177,7 +177,7 @@
 						min-height: 150rpx;
 						display: flex;
 						flex-direction: column;
-						justify-content: space-around;
+						justify-content: space-between;
 						width: 300rpx;
 
 						.title {

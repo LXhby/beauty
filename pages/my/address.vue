@@ -115,10 +115,12 @@
 								uni.redirectTo({
 									url:'/pages/my/address'
 								})
-								uni.showToast({
-									icon: 'none',
-									title: '默认地址修改成功'
-								})
+								setTimeout(()=>{
+									uni.showToast({
+										icon: 'none',
+										title: '默认地址修改成功'
+									})
+								},1000)
 							}
 						}).catch(console.log)
 					}

@@ -43,7 +43,7 @@
 		</view>
 		<mpvue-picker :themeColor="themeColor" ref="mpvuePicker" :mode="mode" :deepLength="deepLength" :pickerValueDefault="pickerValueDefault"
 		 @onConfirm="onConfirm" :pickerValueArray="pickerValueArray"></mpvue-picker>
-		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
+		<view class="bottom-line">-- 我是有底线的卜瑞塔 --</view>
 	</view>
 </template>
 

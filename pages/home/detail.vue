@@ -168,7 +168,7 @@
 			}
 		},
 		computed: {
-			...mapGetters(['config', 'cartnum', 'collect',"userInfo"])
+			...mapGetters(['config', 'cartnum', 'collect',"userInfo","shopId"])
 		},
 		onLoad() {
 			this.id = this.$route.query.id * 1;
@@ -328,7 +328,12 @@
 			},
 			addcar() {
 				this.$store.commit("cartnum/setnum", 1);
-				this.$store.commit("cartnum/setShopcar", this.info);
+				var id = this.shopId?this.shopId:this.userInfo.id;
+				var data ={
+					shopId:id,
+					item:this.info
+				}
+				this.$store.commit("cartnum/setShopcar", data);
 				uni.setTabBarBadge({
 					index: 2,
 					text: this.cartnum.toString()

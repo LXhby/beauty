@@ -1,6 +1,6 @@
 <template>
 	<view class="cart-page">
-		<view class="have-none" v-if="!shopcar.length">
+		<view class="have-none" v-if="!myshopcar.length">
 			<image src="../../static/order_no_bg.png" mode="widthFix"></image>
 			<view class="title">
 				不过节吗！什么也没有啊~
@@ -11,7 +11,7 @@
 		</view>
 		<view class="goods-content" v-else>
 			<view class="goods-list">
-				<view class="goods-item" v-for="(ele,index) in shopcar">
+				<view class="goods-item" v-for="(ele,index) in myshopcar">
 					<view class="shop-name uni-flex uni-row" style="align-items: center; justify-content: space-between;">
 						<view class="uni-flex uni-row name-box" style="align-items: center; ">
 							<checkbox-group @change="selectshopAll(ele.shopId,$event)" style="width:44rpx;margin-right: 10rpx;">
@@ -97,16 +97,29 @@
 			}
 		},
 		computed: {
-			...mapGetters(["shopcar", "cartnum","userInfo"])
+			...mapGetters(["shopcar", "cartnum","userInfo","shopId"]),
+			myshopcar(){
+				var id = this.shopId?this.shopId:this.userInfo.id;
+				var arr = [];
+				if(this.shopcar.length){
+					this.shopcar.forEach(item=>{
+						if(item.shopId == id){
+							arr.push(item)
+						}
+					})
+					console.log('arr',arr)
+				}
+				return arr
+			}
 		},
 		components: {
 			uniNumberBox
 		},
 
 		onLoad() {
-			console.log('this.shopcar',this.shopcar)
-			if(this.shopcar.length){
-				this.shopcar.forEach(item=>{
+			console.log('this.shopcar',this.myshopcar)
+			if(this.myshopcar.length){
+				this.myshopcar.forEach(item=>{
 					this.$set(item, "status", false);
 					item.products.forEach(ee=>{
 						this.$set(ee, "status", false);
@@ -126,28 +139,22 @@
 		},
 		methods: {
 			handlechecklist(){
-				console.log('handlechecklist',this.checklist)
 				if(this.checklist.length){
 					this.totalMoney= 0;
 					console.log('this.checklist',this.checklist)
 					this.checklist.forEach(item=>{
 						var feig = [];
-						var shopitem = this.shopcar.find(ele=>ele.shopId == item.shopId);
-						console.log(item)
-						console.log('shopitem',shopitem)
+						var shopitem = this.myshopcar.find(ele=>ele.shopId == item.shopId);
 						item.productId.forEach(child=>{
 							
 							var selectItem = shopitem.products.find(eles=>eles.id*1 == child*1);
-							console.log('selectItem',selectItem)
 							if(selectItem){
 								feig.push(selectItem.freight)
 								this.totalMoney+=selectItem.price*selectItem.num
-								console.log('this.totalMoney',this.totalMoney)
 							}
 							
 						})
 						this.totalMoney+= Math.max.apply(null,feig)*1
-						console.log('this.totalMoney',this.totalMoney)
 					})
 					
 				}else{
@@ -163,7 +170,26 @@
 					uni.navigateTo({
 						url:"/pages/my/address"
 					})
+				}else if(!this.checklist.length){
+					uni.showToast({
+						title:'请选择商品',
+						icon:"none"
+					})
 				}else{
+					var product=[];
+					console
+					var arr = this.myshopcar.find(ele=>ele.shopId == this.checklist[0].shopId)
+					this.checklist[0].productId.forEach(item=>{
+						arr.products.forEach(child=>{
+							if(item*1==child.id){
+								var obj={
+									product_id:child.id,
+									quantity:child.num
+								}
+								product.push(obj)
+							}
+						})
+					})
 					this.$http.request({
 						url: 'orders',
 						method: 'post',
@@ -176,10 +202,7 @@
 							address:this.adressInfo.address,
 							amount:this.totalamount,
 							remark:'',
-							products:[{
-								product_id:this.info.id,
-								quantity:this.num
-							}]
+							products:product
 						}
 					}).then(res => {
 						// 获取到订单id
@@ -199,7 +222,7 @@
 			},
 			bindChange(id,item,value) {
 				
-				var obj = this.shopcar.find(ele=>ele.shopId*1== id*1);
+				var obj = this.myshopcar.find(ele=>ele.shopId*1== id*1);
 				if(obj){
 					var item = obj.products.find(child=>child.id == item.id);
 					if(item){
@@ -225,7 +248,7 @@
 					}
 
 					
-					var shopProduct= this.shopcar.find(er=>er.shopId == id);
+					var shopProduct= this.myshopcar.find(er=>er.shopId == id);
 					var hasshops = this.checklist.find(ele=>ele.shopId == id);
 					if(hasshops.productId.length== shopProduct.products.length){
 						
@@ -238,10 +261,9 @@
 					item.status = true;
 				}else{
 					var products = this.checklist.find(a=>a.shopId == id);
-					var shopProduct= this.shopcar.find(er=>er.shopId == id);
+					var shopProduct= this.myshopcar.find(er=>er.shopId == id);
 					shopProduct.status = false;
 					item.status = false;
-					console.log('checklist',this.checklist)
 					products.productId.forEach((ele,index)=>{
 						if(ele*1 == item.id*1){
 							products.productId.splice(index,1)
@@ -253,13 +275,13 @@
 						}
 					})
 				}
-				if(this.checklist.length == this.shopcar.length){
+				if(this.checklist.length == this.myshopcar.length){
 					var length = 0;
 					var length2=0;
 					this.checklist.forEach(ele=>{
 						length+=ele.productId.length;
 					})
-					this.shopcar.forEach(ele=>{
+					this.myshopcar.forEach(ele=>{
 						length2+=ele.products.length;
 					})
 					if(length == length2){
@@ -275,7 +297,7 @@
 			//选中一个店铺所有
 			selectshopAll(data,e){
 				if(e.target.value.length != 0){
-					var item =this.shopcar.find(ele=>ele.shopId == data);
+					var item =this.myshopcar.find(ele=>ele.shopId == data);
 						if(item){
 							var checkItem = this.checklist.find(ele=>ele.shopId == data);
 							if(checkItem){
@@ -301,7 +323,7 @@
 						}
 					item.status = true;
 				}else{
-					var item =this.shopcar.find(ele=>ele.shopId == data);
+					var item =this.myshopcar.find(ele=>ele.shopId == data);
 					if(item){
 						item.products.forEach(child=>{
 							this.$set(child, "status", false);
@@ -313,13 +335,13 @@
 						checkItem.productId=[]
 					}
 				}
-				if(this.checklist.length == this.shopcar.length){
+				if(this.checklist.length == this.myshopcar.length){
 					var length = 0;
 					var length2=0;
 					this.checklist.forEach(ele=>{
 						length+=ele.productId.length;
 					})
-					this.shopcar.forEach(ele=>{
+					this.myshopcar.forEach(ele=>{
 						length2+=ele.products.length;
 					})
 					if(length == length2){
@@ -342,12 +364,12 @@
 			},
 			// 全选
 			selectAll(data) {
-				console.log(this.shopcar)
+
 				if (data.target.value.length != 0) {
 					// 全选
 					let totalMoney = 0;
 					this.checklist=[]
-					this.shopcar.forEach(ele => {
+					this.myshopcar.forEach(ele => {
 						ele.status = true;
 						var obj={
 							shopId:ele.shopId,
@@ -366,7 +388,7 @@
 					this.totalMoney = 0
 					this.selectStatus = false;
 					this.checklist=[];
-					this.shopcar.forEach(ele => {
+					this.myshopcar.forEach(ele => {
 						ele.status = false;
 						ele.products.forEach(item=>item.status = false)
 					})
@@ -593,6 +615,7 @@
 							justify-content: center;
 							width: 212rpx;
 							height: 58rpx;
+							line-height: 58rpx;
 							border-radius: 58rpx;
 							font-size: 28rpx;
 							background-color: $uni-bg-color;
