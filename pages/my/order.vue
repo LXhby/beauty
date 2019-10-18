@@ -54,7 +54,8 @@
 				orderStatus: ''
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			this.changeTab(option.state)
 		},
 		methods: {
 			//点击空布局按钮的回调

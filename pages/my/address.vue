@@ -8,7 +8,7 @@
 					<text class="text">收货地址</text>
 				</view>
 				<view class="right">
-					<view class="mini-btn btn" type="primary">获取微信</view>
+					<view class="mini-btn btn" type="primary" @click="getweixinadress">获取微信</view>
 					<navigator url="/pages/my/newaddress">
 						<view class="btn" type="primary">新增地址</view>
 					</navigator>
@@ -210,7 +210,49 @@
 						},1000)
 					}
 				}).catch(console.log)
+			},
+			//获取微信地址
+			getweixinadress(){
+				this.$wechat.openAddress({
+					 success:  (res)=> {
+					    var userName = res.userName; // 收货人姓名
+					    var postalCode = res.postalCode; // 邮编
+					    var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
+					    var cityName = res.cityName; // 国标收货地址第二级地址（市）
+					    var countryName = res.countryName; // 国标收货地址第三级地址（国家）
+					    var detailInfo = res.detailInfo; // 详细收货地址信息
+					    var nationalCode = res.nationalCode; // 收货地址国家码
+					    var telNumber = res.telNumber; // 收货人手机号码
+						
+						this.$http.request({
+							url: 'addresses',
+							method: 'post',
+							data: {
+								'user_id': this.userInfo.id,
+								'mobile': telNumber,
+								'province': provinceName,
+								'city': cityName,
+								'receiver': userName,
+								'address': detailInfo,
+								'is_default': 0
+							}
+						}).then(res => {
+							console.log(res)
+							this.addressId = res.data.id
+							if (res.statusCode === 201) {
+								uni.redirectTo({
+									url:'/pages/my/address'
+								})
+								uni.showToast({
+									icon: 'none',
+									title: '新增成功'
+								})
+							}
+						}).catch(console.log)
+					  }
+				});
 			}
+			
 		}
 	};
 </script>
