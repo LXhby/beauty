@@ -25,8 +25,8 @@
 							<text class="address">{{item.address}}</text>
 						</view>
 						<view class="edit uni-flex uni-row">
-							<label class="radio" @change="radioChange">
-								<radio :value="'地址' + item.id" :checked="i === current" color="#ff0080" style="transform:scale(0.7)" />设置默认
+							<label class="radio">
+								<radio :value="item.id.toString()" :checked="i === currentIndex" color="#ff0080" style="transform:scale(0.7)" />设置默认
 							</label>
 							<view class="uni-flex uni-row handle-box">
 								<view class @click="updateAddress(item.id)">
@@ -57,6 +57,7 @@
 		components: {
 			topBar
 		},
+		inject:["reload"],
 		computed: {
 			...mapGetters(["userInfo"])
 		},
@@ -64,7 +65,8 @@
 			return {
 				detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
 				addressList: [],
-				current: -1
+				current: {},
+				currentIndex:0
 			};
 		},
 		onLoad() {
@@ -72,6 +74,7 @@
 		},
 		methods: {
 			findAllAddr() {
+
 				this.$http.request({
 					url: 'address',
 					method: 'get',
@@ -80,58 +83,48 @@
 						'sort': '-is_default'
 					}
 				}).then(res => {
-					this.addressList = res.data.items
-					this.addressList.forEach((ele, i) => {
-						if (ele.is_default === 1) {
-							this.current = i
+					this.addressList = res.data.items;
+					
+					for (let i = 0; i < this.addressList.length; i++) {
+						if (this.addressList[i].is_default === 1) {
+							this.current = this.addressList[i];
+							this.currentIndex= i;
+							break;
 						}
-					})
+					}
+
 				}).catch(console.log)
 			},
 			radioChange(evt) {
-				console.log(evt)
-				for (let i = 0; i < this.addressList.length; i++) {
-					if ('地址' + this.addressList[i].id === evt.target.value) {
-						this.current = i;
+				this.$http.request({
+					url: 'addresses/' + this.current.id,
+					method: 'put',
+					data: {
+						'is_default': 0
+					}
+				}).then(res => {
+					if (res.statusCode === 200) {
 						this.$http.request({
-							url: 'address',
-							method: 'get',
-							params: {
-								'addressSearch[user_id]': this.userInfo.id
-							}
-						}).then(res => {
-							res.data.items.forEach(ele => {
-								if (ele.is_default === 1 && ele.id != this.addressList[i].id) {
-									this.$http.request({
-										url: 'addresses/' + ele.id,
-										method: 'put',
-										data: {
-											'is_default': 0
-										}
-									}).then(res => {
-										console.log(res)
-									}).catch(console.log)
-								}
-							})
-						}).catch(console.log)
-						this.$http.request({
-							url: 'addresses/' + this.addressList[i].id,
+							url: 'addresses/' + evt.detail.value * 1,
 							method: 'put',
 							data: {
 								'is_default': 1
 							}
 						}).then(res => {
-							if(res.statusCode === 200) {
+							if (res.statusCode === 200) {
+								uni.redirectTo({
+									url:'/pages/my/address'
+								})
 								uni.showToast({
 									icon: 'none',
 									title: '默认地址修改成功'
 								})
-								this.findAllAddr()
 							}
 						}).catch(console.log)
-						break;
 					}
-				}
+				}).catch(console.log)
+
+
 			},
 			// 修改地址
 			updateAddress(id) {
@@ -150,7 +143,7 @@
 							icon: 'none',
 							title: '删除成功'
 						})
-						this.findAllAddr()
+						this.reload()
 					}
 				}).catch(console.log)
 			}
@@ -245,6 +238,7 @@
 
 						.iconfont {
 							font-size: 24rpx;
+							margin-right: 10rpx;
 						}
 					}
 				}

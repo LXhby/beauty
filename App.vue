@@ -1,19 +1,25 @@
+
 <script>
 	import {
 		mapGetters
 	} from "vuex";
 	export default {
+		data() {
+			return {
+				baseURL: ""
+			};
+		},
 		onLaunch: function() {
 			this.getconfig();
 			if (uni.getStorageSync("store")) {
 				this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(uni.getStorageSync("store"))))
 			}
 
-			
+
 			window.addEventListener("beforeunload", () => {
 				uni.setStorageSync("store", JSON.stringify(this.$store.state))
 			})
-			
+
 			if (this.cartnum) {
 				uni.setTabBarBadge({
 					index: 2,
@@ -30,6 +36,11 @@
 		computed: {
 			...mapGetters(['cartnum']),
 		},
+		provide() {
+			return {
+				reload: this.reload
+			}
+		},
 		methods: {
 			getconfig() {
 				this.$http
@@ -42,13 +53,8 @@
 					});
 			},
 
-
 		},
-		data() {
-			return {
-				baseURL: ""
-			};
-		}
+		
 	};
 </script>
 
@@ -60,9 +66,10 @@
 	/* #endif*/
 </style>
 <style lang="scss">
-	body{
-		font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+	body {
+		font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
 	}
+
 	@font-face {
 		font-family: "iconfont";
 		/* project id 1377410 */

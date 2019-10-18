@@ -12,25 +12,37 @@
 		{
 			"path": "pages/goods/info",
 			"style": {
-				"navigationBarTitleText": "美妆帮"
+				"navigationBarTitleText": "美妆帮",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/home/detail",
 			"style": {
-				"navigationBarTitleText": "商品详情"
+				"navigationBarTitleText": "商品详情",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/home/comment",
 			"style": {
-				"navigationBarTitleText": "更多评论"
+				"navigationBarTitleText": "更多评论",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/goods/consulting",
 			"style": {
-				"navigationBarTitleText": "咨询内容页"
+				"navigationBarTitleText": "咨询内容页",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
@@ -45,7 +57,10 @@
 		{
 			"path": "pages/benefits/courseinfo",
 			"style": {
-				"navigationBarTitleText": "课程详情"
+				"navigationBarTitleText": "课程详情",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
@@ -78,145 +93,217 @@
 		{
 			"path": "pages/shopcar/index",
 			"style": {
-				"navigationBarTitleText": "购物车"
+				"navigationBarTitleText": "购物车",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/index",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "我的",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/order",
 			"style": {
-				"navigationBarTitleText": "我的订单"
+				"navigationBarTitleText": "我的订单",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/returngoods",
 			"style": {
-				"navigationBarTitleText": "退款详情"
+				"navigationBarTitleText": "退款详情",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/orderinfo",
 			"style": {
-				"navigationBarTitleText": "订单详情"
+				"navigationBarTitleText": "订单详情",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/shipment",
 			"style": {
-				"navigationBarTitleText": "出货记录"
+				"navigationBarTitleText": "出货记录",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/fans",
 			"style": {
-				"navigationBarTitleText": "我的粉丝"
+				"navigationBarTitleText": "我的粉丝",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/reward",
 			"style": {
-				"navigationBarTitleText": "我的奖金"
+				"navigationBarTitleText": "我的奖金",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/getmoney",
 			"style": {
-				"navigationBarTitleText": "提现申请"
+				"navigationBarTitleText": "提现申请",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/haveclass",
 			"style": {
-				"navigationBarTitleText": "上课记录"
+				"navigationBarTitleText": "上课记录",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/collection",
 			"style": {
-				"navigationBarTitleText": "我的收藏"
+				"navigationBarTitleText": "我的收藏",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/address",
 			"style": {
-				"navigationBarTitleText": "收货地址"
+				"navigationBarTitleText": "收货地址",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/newaddress",
 			"style": {
-				"navigationBarTitleText": "新建地址"
+				"navigationBarTitleText": "新建地址",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/news",
 			"style": {
-				"navigationBarTitleText": "我的消息"
+				"navigationBarTitleText": "我的消息",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/serverule",
 			"style": {
-				"navigationBarTitleText": "服务条款"
+				"navigationBarTitleText": "服务条款",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/about/index",
 			"style": {
-				"navigationBarTitleText": "关于我们"
+				"navigationBarTitleText": "关于我们",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/benefits/PaySuccess",
 			"style": {
-				"navigationBarTitleText": "付款成功"
+				"navigationBarTitleText": "付款成功",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/drawback",
 			"style": {
-				"navigationBarTitleText": "退款申请"
+				"navigationBarTitleText": "退款申请",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/toPay",
 			"style": {
-				"navigationBarTitleText": "订单待付款"
+				"navigationBarTitleText": "订单待付款",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/postcomment",
 			"style": {
-				"navigationBarTitleText": "发表评论"
+				"navigationBarTitleText": "发表评论",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/shopcar/paypage",
 			"style": {
-				"navigationBarTitleText": "支付"
+				"navigationBarTitleText": "支付",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/order-pay",
 			"style": {
-				"navigationBarTitleText": "待付款"
+				"navigationBarTitleText": "待付款",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/backlist",
 			"style": {
-				"navigationBarTitleText": "订单退款"
+				"navigationBarTitleText": "订单退款",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		},
 		{
 			"path": "pages/my/backdetail",
 			"style": {
-				"navigationBarTitleText": "退款详情"
+				"navigationBarTitleText": "退款详情",
+				"app-plus":{
+					"titleNView":false
+				}
 			}
 		}
 	],
