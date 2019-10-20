@@ -414,6 +414,7 @@
 				this.showPicker = false;
 			},
 			pickerConfirm(e){
+				console.log(e)
 				switch(this.mode){
 					case "range":
 						let checkArr=this.checkArr;

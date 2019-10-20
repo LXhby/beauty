@@ -122,6 +122,10 @@ const router = new Router({
 			name: 'postComment'
 		},
 		{
+			path: '/pages/my/investmoney',
+			name: 'postComment'
+		},
+		{
 			path: '/pages/shopcar/paypage',
 			name: 'paypage'
 		},

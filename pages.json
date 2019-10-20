@@ -271,6 +271,15 @@
 			}
 		},
 		{
+			"path": "pages/my/investmoney",
+			"style": {
+				"navigationBarTitleText": "余额充值",
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+		},
+		{
 			"path": "pages/shopcar/paypage",
 			"style": {
 				"navigationBarTitleText": "支付",

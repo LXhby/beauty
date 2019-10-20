@@ -57,7 +57,7 @@
 		components: {
 			topBar
 		},
-		inject:["reload"],
+		inject: ["reload"],
 		computed: {
 			...mapGetters(["userInfo"])
 		},
@@ -66,33 +66,33 @@
 				detailist: ["可提现", "待提现", "产品额度", "粉丝量"],
 				addressList: [],
 				current: {},
-				currentIndex:0,
-				isOrder:false
+				currentIndex: 0,
+				isOrder: false
 			};
 		},
 		onLoad(option) {
 
-			if(option.getaddress){
+			if (option.getaddress) {
 				this.isOrder = true;
 				this.getaddress = option.getaddress;
 				this.product_id = null;
-			}else if(option.product_id){
+			} else if (option.product_id) {
 				this.isOrder = true;
 				this.product_id = option.product_id;
-				this.getaddress =null;
-			}else{
+				this.getaddress = null;
+			} else {
 				this.isOrder = false;
-				this.getaddress =null;
+				this.getaddress = null;
 				this.product_id = null;
 			}
-			
+
 		},
 		onShow() {
-				this.findAllAddr();
+			this.findAllAddr();
 		},
 		methods: {
 			findAllAddr() {
-
+				this.addressList = []
 				this.$http.request({
 					url: 'address',
 					method: 'get',
@@ -102,39 +102,38 @@
 					}
 				}).then(res => {
 					this.addressList = res.data.items;
-					
+					console.log(this.addressList)
 					for (let i = 0; i < this.addressList.length; i++) {
 						if (this.addressList[i].is_default === 1) {
 							this.current = this.addressList[i];
-							this.currentIndex= i;
+							this.currentIndex = i;
 							break;
 						}
 					}
-
 				}).catch(console.log)
 			},
-			setAdress(item){
-				if(this.isOrder){
-					var obj={
-						address:item.province+"-"+item.city+"-"+item.address,
-						mobile:item.mobile,
-						receiver:item.receiver
+			setAdress(item) {
+				if (this.isOrder) {
+					var obj = {
+						address: item.province + "-" + item.city + "-" + item.address,
+						mobile: item.mobile,
+						receiver: item.receiver
 					}
-					this.$store.commit("user/setorderadress",obj)
-					if(this.getaddress){
+					this.$store.commit("user/setorderadress", obj)
+					if (this.getaddress) {
 						uni.navigateTo({
-							url:"/pages/my/toPay?shopcarorder="+this.getaddress
+							url: "/pages/my/toPay?shopcarorder=" + this.getaddress
 						})
-					}else if(this.product_id){
+					} else if (this.product_id) {
 						uni.navigateTo({
-							url:"/pages/my/toPay?product_id="+this.product_id
+							url: "/pages/my/toPay?product_id=" + this.product_id
 						})
 					}
-					
-				}else{
+
+				} else {
 					return false;
 				}
-				
+
 			},
 			radioChange(evt) {
 				this.$http.request({
@@ -153,33 +152,33 @@
 							}
 						}).then(res => {
 							if (res.statusCode === 200) {
-								this.findAllAddr()
 								// uni.redirectTo({
 								// 	url:'/pages/my/address'
 								// })
-								// setTimeout(()=>{
-								// 	uni.showToast({
-								// 		icon: 'none',
-								// 		title: '默认地址修改成功'
-								// 	})
-								// 	if(this.isOrder){
-								// 		var obj={
-								// 			address:res.data.province+"-"+res.data.city+"-"+res.data.address,
-								// 			mobile:res.data.mobile,
-								// 			receiver:res.data.receiver
-								// 		}
-								// 		this.$store.commit("user/setorderadress",obj)
-								// 		if(this.getaddress){
-								// 			uni.navigateTo({
-								// 				url:"/pages/my/toPay?shopcarorder="+this.getaddress
-								// 			})
-								// 		}else if(this.product_id){
-								// 			uni.navigateTo({
-								// 				url:"/pages/my/toPay?product_id="+this.product_id
-								// 			})
-								// 		}
-								// 	}
-								// },1000)
+
+								uni.showToast({
+									icon: 'none',
+									title: '默认地址修改成功'
+								})
+								if (this.isOrder) {
+									var obj = {
+										address: res.data.province + "-" + res.data.city + "-" + res.data.address,
+										mobile: res.data.mobile,
+										receiver: res.data.receiver
+									}
+									this.$store.commit("user/setorderadress", obj)
+									if (this.getaddress) {
+										uni.navigateTo({
+											url: "/pages/my/toPay?shopcarorder=" + this.getaddress
+										})
+									} else if (this.product_id) {
+										uni.navigateTo({
+											url: "/pages/my/toPay?product_id=" + this.product_id
+										})
+									}
+								} else {
+									this.findAllAddr()
+								}
 							}
 						}).catch(console.log)
 					}
@@ -201,30 +200,30 @@
 				}).then(res => {
 					if (res.statusCode === 204) {
 						uni.redirectTo({
-							url:'/pages/my/address'
+							url: '/pages/my/address'
 						})
-						setTimeout(()=>{
+						setTimeout(() => {
 							uni.showToast({
 								icon: 'none',
 								title: '删除成功'
 							})
-						},1000)
+						}, 1000)
 					}
 				}).catch(console.log)
 			},
 			//获取微信地址
-			getweixinadress(){
+			getweixinadress() {
 				this.$wechat.openAddress({
-					 success:  (res)=> {
-					    var userName = res.userName; // 收货人姓名
-					    var postalCode = res.postalCode; // 邮编
-					    var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
-					    var cityName = res.cityName; // 国标收货地址第二级地址（市）
-					    var countryName = res.countryName; // 国标收货地址第三级地址（国家）
-					    var detailInfo = res.detailInfo; // 详细收货地址信息
-					    var nationalCode = res.nationalCode; // 收货地址国家码
-					    var telNumber = res.telNumber; // 收货人手机号码
-						
+					success: (res) => {
+						var userName = res.userName; // 收货人姓名
+						var postalCode = res.postalCode; // 邮编
+						var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
+						var cityName = res.cityName; // 国标收货地址第二级地址（市）
+						var countryName = res.countryName; // 国标收货地址第三级地址（国家）
+						var detailInfo = res.detailInfo; // 详细收货地址信息
+						var nationalCode = res.nationalCode; // 收货地址国家码
+						var telNumber = res.telNumber; // 收货人手机号码
+
 						this.$http.request({
 							url: 'addresses',
 							method: 'post',
@@ -242,7 +241,7 @@
 							this.addressId = res.data.id
 							if (res.statusCode === 201) {
 								uni.redirectTo({
-									url:'/pages/my/address'
+									url: '/pages/my/address'
 								})
 								uni.showToast({
 									icon: 'none',
@@ -250,10 +249,10 @@
 								})
 							}
 						}).catch(console.log)
-					  }
+					}
 				});
 			}
-			
+
 		}
 	};
 </script>
