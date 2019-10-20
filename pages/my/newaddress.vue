@@ -82,7 +82,7 @@
 			};
 		},
 		onLoad(option) {
-			console.log(option)
+			console.log(this.userInfo)
 			if (JSON.stringify(option) != "{}") {
 				this.$http.request({
 					url: 'addresses/' + option.addrId,

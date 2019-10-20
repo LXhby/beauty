@@ -32,7 +32,7 @@
 				<!-- 数字显示第二行 -->
 				<view class="example-body">
 					<view class="list uni-row uni-flex" style="justify-content: space-around;">
-						<view class="item" v-for="(item,index) in detailist" :key="index" style="text-align: center;">
+						<view class="item" v-for="(item,index) in detailist" :key="index" style="text-align: center;" @click="investmoney(item)">
 							<view class="text-one">
 								16
 							</view>
@@ -406,6 +406,13 @@
 						title: graceChecker.error,
 						icon: "none"
 					});
+				}
+			},
+			investmoney(data) {
+				if(data === "产品额度") {
+					uni.navigateTo({
+						url: "/pages/my/investmoney"
+					})
 				}
 			}
 		},
