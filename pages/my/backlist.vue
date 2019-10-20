@@ -105,7 +105,7 @@
 						url: "refund",
 						method: "get",
 						params: {
-							'expand': 'order',
+							'expand': 'order,order.orderProducts',
 							'page': pageNum,
 							'per-page': pageSize
 						}

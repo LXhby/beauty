@@ -11,9 +11,11 @@
 		</view>
 		<view class="store-name">
 			<view class="store-header">
-				<view class="header-left">
-					<image src="../../static/image_massge_people2.png"></image>
-					<text>某某店铺名称</text>
+				<view class="header-left" @click="goshop(sellerInfo.id)">
+					<image :src="sellerInfo.headimgurl" v-if="sellerInfo.headimgurl"></image>
+					<image src="../../static/vip_buy06.png" mode="aspectFill" v-else></image>
+					<text v-if="sellerInfo.shop_name">{{sellerInfo.shop_name}}</text>
+					<text v-else>{{sellerInfo.maskedName}}的店铺</text>
 					<text class="iconfont">&#xe642;</text>
 				</view>
 				<view class="header-right">
@@ -69,19 +71,19 @@
 				<text>订单编号:</text>
 				<text>{{orderInfo.id}}</text>
 			</p>
-			<p>
+			<p v-if="orderInfo.pay_at">
 				<text>付款时间:</text>
 				<text>{{orderInfo.pay_at}}</text>
 			</p>
-			<p>
+			<p v-if="orderInfo.sent_at">
 				<text>发货时间:</text>
-				<text>{{orderInfo.sent_at}}</text>  
+				<text>{{orderInfo.sent_at}}</text>
 			</p>
 		</view>
 		<view class="progress" v-if="orderInfo.status === '待收货' || orderInfo.status === '待评价'">
 			<view class="title">
 				{{orderInfo.express_com}}快递单号：{{orderInfo.express_sn}}
-				</view>
+			</view>
 			<view class="progress-detail uni-flex uni-row">
 				<view class="flow-li">
 					<view class="flow-bor"></view>
@@ -122,7 +124,7 @@
 		</view>
 		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 
-		
+
 		<!-- 提醒发货 -->
 		<uni-popup ref="popups" type="center" :custom="true">
 			<view class="alert-pop">
@@ -154,10 +156,11 @@
 			return {
 				orderInfo: '',
 				orderId: '',
-				starsNum:1,
+				starsNum: 1,
+				sellerInfo:{}
 			}
 		},
-		mounted(){
+		mounted() {
 			// this.$refs.popups.open()
 		},
 		onLoad(option) {
@@ -170,12 +173,24 @@
 				}
 			}).then(res => {
 				this.orderInfo = res.data;
-				
+				this.$http.request({
+					url: 'users/' + this.orderInfo.seller_user_id,
+					method: 'get',
+				}).then(info=>{
+					this.sellerInfo = info.data;
+				})
 			}).catch(console.log)
 		},
-		methods:{
+		methods: {
+			goshop(id){
+				console.log('id',id)
+				console.log(window)
+				var url = window.location.protocol+"//"+window.location.host+"/#/pages/home/index?userid="+id;
+				console.log('url',url)
+				window.location.href = url;
+			},
 			// 立即付款
-			goPay(){
+			goPay() {
 				uni.navigateTo({
 					url: '/pages/my/order-pay?orderId=' + this.orderId,
 				})
@@ -191,13 +206,13 @@
 			// 立即评价
 			goAssess() {
 				uni.navigateTo({
-					url: '/pages/my/postcomment?orderId='+this.orderId
+					url: '/pages/my/postcomment?orderId=' + this.orderId
 				});
 			},
-gogoodsdetail(item){
+			gogoodsdetail(item) {
 				console.log(item);
 				uni.navigateTo({
-					url:'/pages/home/detail?id='+item.id
+					url: '/pages/home/detail?id=' + item.id
 				})
 			}
 		}
@@ -259,11 +274,14 @@ gogoodsdetail(item){
 					text {
 						color: $uni-bg-color;
 						font-size: 24rpx;
+						line-height: 24rpx;
+						margin-left: 10rpx;
 					}
 
 					.iconfont {
 						font-size: 24rpx;
 						margin-left: 4rpx;
+						line-height: 24rpx;
 						color: #999;
 					}
 				}
@@ -281,7 +299,8 @@ gogoodsdetail(item){
 						width: 140rpx;
 						padding: 0px;
 						border-radius: 42rpx;
-						&:after{
+
+						&:after {
 							border: none;
 						}
 					}
@@ -293,7 +312,8 @@ gogoodsdetail(item){
 
 					.me-pay {
 						background-color: $uni-bg-color;
-						&:after{
+
+						&:after {
 							border: none;
 						}
 					}
@@ -320,8 +340,11 @@ gogoodsdetail(item){
 					.goods-src {
 						display: flex;
 						flex-wrap: wrap;
+						flex-direction: column;
 						margin-left: 20rpx;
 						width: 450rpx;
+						min-height: 135rpx;
+						justify-content: space-between;
 						letter-spacing: 3rpx;
 
 						text {
@@ -331,6 +354,11 @@ gogoodsdetail(item){
 
 					.goods-price {
 						text-align: right;
+						display: flex;
+						flex-wrap: wrap;
+						flex-direction: column;
+						min-height: 135rpx;
+						justify-content: space-between;
 					}
 
 					text {
@@ -520,37 +548,43 @@ gogoodsdetail(item){
 			color: $uni-text-color-grey;
 			text-align: center;
 		}
-		.coment-form{
+
+		.coment-form {
 			position: relative;
 			width: 550rpx;
 			border-radius: 5px;
-			background:#fff;
-			.shop-image{
+			background: #fff;
+
+			.shop-image {
 				position: absolute;
-				width:138rpx;
-				height:138rpx;
+				width: 138rpx;
+				height: 138rpx;
 				top: -64rpx;
 				left: 0;
 				right: 0;
-				margin:0 auto;
+				margin: 0 auto;
 				border-radius: 50%;
-				overflow:hidden;
-				image{
-					width:138rpx;
-					height:138rpx;
+				overflow: hidden;
+
+				image {
+					width: 138rpx;
+					height: 138rpx;
 					border-radius: 50%;
 				}
 			}
-			.title{
-				padding-top:84rpx;
+
+			.title {
+				padding-top: 84rpx;
 				color: #333;
 			}
-			
+
 		}
-		.upload{
-			padding:0 40rpx;
-			align-items:center;
-			.up-image{
+
+		.upload {
+			padding: 0 40rpx;
+			align-items: center;
+
+			.up-image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -560,35 +594,43 @@ gogoodsdetail(item){
 				background: $uni-bg-color;
 				border-radius: 5rpx;
 			}
-			.up-text{
+
+			.up-text {
 				flex: 1;
-				text-align:left;
-				.title{
+				text-align: left;
+
+				.title {
 					padding-top: 0px;
 					font-size: 24rpx;
 				}
-				text{
-					color:$uni-text-color-grey;
+
+				text {
+					color: $uni-text-color-grey;
 					font-size: 20rpx;
 					line-height: 20rpx;
 				}
 			}
-			.iconfont{
+
+			.iconfont {
 				color: #fff;
 				font-size: 46rpx;
 			}
 		}
-		.noname{
+
+		.noname {
 			margin-top: 30rpx;
 			padding-left: 40rpx;
 			text-align: left;
-			label{
+
+			label {
 				font-size: 24rpx;
 			}
 		}
-		.uni-btnv{
-			padding:20rpx 0 40rpx 0;
-			button{
+
+		.uni-btnv {
+			padding: 20rpx 0 40rpx 0;
+
+			button {
 				width: 276rpx;
 				height: 54rpx;
 				line-height: 54rpx;
@@ -596,38 +638,44 @@ gogoodsdetail(item){
 				color: #fff;
 				font-size: 28rpx;
 				background: $uni-bg-color;
-				&:after{
+
+				&:after {
 					border: none;
 				}
 			}
 		}
-		.alert-pop{
+
+		.alert-pop {
 			position: relative;
 			width: 550rpx;
 			border-radius: 5px;
-			background:#fff;
-			.shop-image{
+			background: #fff;
+
+			.shop-image {
 				position: absolute;
-				width:138rpx;
-				height:138rpx;
+				width: 138rpx;
+				height: 138rpx;
 				top: -64rpx;
 				left: 0;
 				right: 0;
-				margin:0 auto;
+				margin: 0 auto;
 				border-radius: 50%;
-				overflow:hidden;
-				image{
-					width:138rpx;
-					height:138rpx;
+				overflow: hidden;
+
+				image {
+					width: 138rpx;
+					height: 138rpx;
 					border-radius: 50%;
 				}
 			}
-			.title{
-				padding-top:84rpx;
+
+			.title {
+				padding-top: 84rpx;
 				color: #333;
 				font-size: 26rpx;
 			}
-			.text{
+
+			.text {
 				padding: 50rpx 0;
 			}
 		}

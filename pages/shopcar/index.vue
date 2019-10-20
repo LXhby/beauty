@@ -19,10 +19,18 @@
 									<checkbox value="cb" :checked="ele.status" color="#ff0080" style="transform:scale(0.8);" />
 								</label>
 							</checkbox-group>
-							<image src="../../static/image_massge_people2.png" mode="aspectFill"></image>
-							<text>王晓文的VIP会员店铺</text>
+							
 						</view>
-						<text class="iconfont right">&#xe60e;</text>
+						<view class="uni-flex uni-row" style="flex:1;justify-content: space-between;align-items: center;height: 100%;" @click="goshop(ele.id)">
+							<view class="uni-flex uni-row" style="align-items: center;">
+								<image :src="ele.headimgurl" mode="aspectFill" v-if="ele.headimgurl"></image>
+								<image src="../../static/vip_buy06.png" mode="" v-else></image>
+								<text v-if="ele.shop_name">{{ele.shop_name}}</text>
+								<text v-else>{{ele.maskedName}}的店铺</text>
+							</view>
+							<text class="iconfont right" style="font-size: 24rpx;">&#xe642;</text>
+						</view>
+						
 					</view>
 					<view class="detail uni-flex uni-row" v-for="(item,index) in ele.products">
 						<view class="left uni-flex uni-row" style="align-items: center;">
@@ -108,6 +116,14 @@
 							arr.push(item)
 						}
 					})
+					arr.forEach(item=>{
+						this.$http.request({
+							url: 'users/' + item.shopId,
+							method: 'get',
+						}).then(info=>{
+							Object.assign(item,info.data)
+						})
+					})
 					console.log('arr',arr)
 				}
 				return arr
@@ -161,6 +177,13 @@
 			}).catch(console.log)
 		},
 		methods: {
+			goshop(id){
+				console.log('id',id)
+				console.log(window)
+				var url = window.location.protocol+"//"+window.location.host+"/#/pages/home/index?userid="+id;
+				console.log('url',url)
+				window.location.href = url;
+			},
 			handlechecklist(){
 				if(this.checklist.length){
 					this.totalMoney= 0;

@@ -13,6 +13,7 @@ import {
   wx
 } from "./util/wx";
 Vue.prototype.$wechat = wx;
+
 Vue.prototype.$validate = validate
 Vue.filter('convertTime', function (data, formatStr) {
   return Moment(data).format(formatStr)

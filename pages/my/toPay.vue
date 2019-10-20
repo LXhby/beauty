@@ -118,7 +118,8 @@
 							</text>
 						</view>
 					</view>
-					<button type="primary" size="mini" @click="gopay">立即付款</button>
+					<button type="primary" size="mini" @click="gopay" v-if="!info.is_coin_usable">立即付款</button>
+					<button type="primary" size="mini" @click="gopay" v-else>立即兑换</button>
 				</view>
 			</view>
 		</view>
@@ -222,14 +223,36 @@
 				this.settotalamount();
 				// this.info.num = value
 			},
-			requestPayment(id) {
-				if (this.means == "微信支付") {
-					const info = {
+			requestPayment(id,type) {
+				var info={} ;
+				if(type=='ORDER'){
+					info = {
 						type: 'FORUM_ORDER',//todo
 						id: id,
-						means: this.means
+						means: '金币'
 					};
-					// todoing
+					this.$http
+						.request({
+							url: "payment/start",
+							method: "post",
+							data: info
+						}).then(res => {
+							const data = res.data;
+							uni.navigateTo({
+								url: '/pages/benefits/PaySuccess'
+							})
+						}).catch(err=>{
+							uni.showToast({
+								title:err.message,
+								icon:"none"
+							})
+						});
+				}else{
+					info = {
+						type: 'FORUM_ORDER',//todo
+						id: id,
+						means: '微信支付'
+					};
 					this.$http
 						.request({
 							url: "payment/start",
@@ -251,6 +274,7 @@
 							});
 						});
 				}
+				
 			},
 			gopay(){
 				if(!this.adressInfo.receiver){
@@ -270,7 +294,9 @@
 					
 				}else{
 					var postdata ={};
+					var paytype;
 					if(this.iscarorder){
+						paytype="FORUM_ORDER"
 						postdata={
 							user_id: this.userInfo.id,
 							quantity:this.shopcarorder.quantity,
@@ -283,6 +309,7 @@
 							products:this.shopcarorder.products
 						}
 					}else{
+						paytype="ORDER"
 						postdata = {
 							user_id: this.userInfo.id,
 							quantity: this.info.num,
@@ -305,7 +332,7 @@
 					}).then(res => {
 						// 获取到订单id
 						this.setdefaultAddress();
-						this.requestPayment(res.data.id)
+						this.requestPayment(res.data.id,paytype)
 					
 					}).catch(console.log)
 				}

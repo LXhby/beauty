@@ -15,7 +15,7 @@
 					</view>
 
 				</view>
-				<view class="item uni-flex uni-row" v-for="(item,index) in dataList" :key="index">
+				<view class="item uni-flex uni-row" v-for="(item,index) in dataList" :key="index" @click="navToDetails(item)">
 					<view class="left uni-flex uni-row">
 						<image :src="url+item.image" mode="aspectFill"></image>
 						<view class="detail">
@@ -32,7 +32,7 @@
 							<text class="num">{{item.price}}</text>
 							<text>金币</text>
 						</view>
-						<view class="btn">
+						<view class="btn" @click.stop="exchangecar(item)">
 							+兑换
 						</view>
 					</view>
@@ -75,6 +75,17 @@
 			this.url = this.$baseUrl;
 		},
 		methods: {
+			//兑换
+			exchangecar(item){
+				uni.navigateTo({
+					url:'/pages/my/toPay?product_id='+item.id
+				})
+			},
+			navToDetails(item){
+				uni.navigateTo({
+					url: '/pages/home/detail?id='+item.id
+				});
+			},
 			/*下拉刷新的回调 */
 			downCallback(mescroll) {
 				//联网加载数据
@@ -121,7 +132,9 @@
 						url: "products",
 						method: "get",
 						params: {
-							"ProductSearch[category_id]": 2,
+							'ProductSearch[is_enabled]':1,
+							'ProductSearch[is_vip]':0,
+							'ProductSearch[is_coin_usable]': 1,
 							page: pageNum,
 							"per-page": pageSize,
 						}

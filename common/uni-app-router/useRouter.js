@@ -126,16 +126,16 @@ const router = new Router({
 			name: 'paypage'
 		},
 		{
-			path:'/pages/my/order-pay',
-			name:'orderpay'
+			path: '/pages/my/order-pay',
+			name: 'orderpay'
 		},
 		{
-			path:'/pages/my/backdetail',
-			name:'backdetail'
+			path: '/pages/my/backdetail',
+			name: 'backdetail'
 		},
 		{
-			path:'/pages/my/backlist',
-			name:'backlist'
+			path: '/pages/my/backlist',
+			name: 'backlist'
 		}
 	]
 });

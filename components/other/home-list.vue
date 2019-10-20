@@ -18,8 +18,11 @@
 						<text>￥</text>
 						<text class="num">{{item.price}}</text>
 					</view>
-					<view class="btn" @click.stop="addcar(item)">
+					<view class="btn" @click.stop="addcar(item)" v-if="!item.is_coin_usable">
 						+购物车
+					</view>
+					<view class="btn" @click.stop="exchangecar(item)" v-else>
+						+兑换
 					</view>
 				</view>
 			</view>
@@ -60,6 +63,12 @@
 		methods:{
 			getrate(rate){
 				return (Math.round(rate/5*10000) / 100.00 + "%");
+			},
+			//兑换
+			exchangecar(item){
+				uni.navigateTo({
+					url:'/pages/my/toPay?product_id='+item.id
+				})
 			},
 			addcar(item){
 				 this.$store.commit("cartnum/setnum", 1);

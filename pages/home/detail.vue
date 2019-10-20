@@ -137,7 +137,8 @@
 					</view>
 				</view>
 				<button type="primary" class="btn1" @click="addcar">加入购物车</button>
-				<button type="primary" class="btn2" @click="payGoods">立即购买</button>
+				<button type="primary" class="btn2" @click="payGoods" v-if="!info.is_coin_usable">立即购买</button>
+				<button type="primary" class="btn2" @click="payGoods" v-else>立即兑换</button>
 			</view>
 
 		</view>
