@@ -35,19 +35,22 @@
 					</view>
 				</view>
 				<view :class="[{'line-yes':orderInfo.refund_status},'flow-line']"></view>
-				<view :class="[{'flow-yes':orderInfo.refund_status == 'REFUND_STATUS_PROCESSING' || orderInfo.refund_status == 'REFUND_STATUS_SUCCESS'},'flow-li']">
+				<view :class="[{'flow-yes':orderInfo.refund_status == 'STATUS_PROCESSING' || orderInfo.refund_status == 'STATUS_SUCCESS' || orderInfo.refund_status == 'STATUS_FAILED'},'flow-li']">
 					<view class="flow-bor"></view>
 					<view class="flow-text">
 						<view>系统受理</view>
 						<text>{{orderInfo.refund_process_at }}</text>
 					</view>
 				</view>
-				<view :class="[{'line-yes':orderInfo.refund_status == 'REFUND_STATUS_PROCESSING' || orderInfo.refund_status == 'REFUND_STATUS_SUCCESS'},'flow-line']"></view>
-				<view :class="[{'flow-yes':orderInfo.refund_status == 'REFUND_STATUS_SUCCESS'},'flow-li']">
+				<view :class="[{'line-yes':orderInfo.refund_status == 'STATUS_PROCESSING' || orderInfo.refund_status == 'STATUS_SUCCESS'|| orderInfo.refund_status == 'STATUS_FAILED'},'flow-line']"></view>
+				<view :class="[{'flow-yes':orderInfo.refund_status == 'STATUS_SUCCESS' || orderInfo.refund_status == 'STATUS_FAILED'},'flow-li']">
 					<!-- <view class="flow-bor"></view> -->
 					<view class="iconfont flow-icon">&#xe63e;</view>
 					<view class="flow-text">
-						<view>退款成功</view>
+						<view v-if="orderInfo.refund_status == 'STATUS_FAILED'">退款失败</view>
+						<view v-else>
+							退款成功
+						</view>
 						<text>{{orderInfo.refund_done_at}}</text>
 					</view>
 				</view>
@@ -111,7 +114,7 @@
 				url: 'orders/' + option.orderId,
 				method: 'get',
 				params: {
-					'expand': 'orderProducts,orderProducts.product'
+					'expand': 'orderProducts,orderProducts.product,refunds'
 				}
 			}).then(res => {
 				this.orderInfo = res.data;

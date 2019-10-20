@@ -1,6 +1,6 @@
 <template>
 	<view class="address-page">
-		<top-bar rightText="实名认证" :detailist="detailist" :isreal="false"></top-bar>
+		<top-bar rightText="实名认证" :detailist="detailist" :isreal="false" v-if="!isOrder"></top-bar>
 		<view class="main">
 			<view class="main-title">
 				<view class="left uni-flex uni-row">
@@ -153,32 +153,33 @@
 							}
 						}).then(res => {
 							if (res.statusCode === 200) {
-								uni.redirectTo({
-									url:'/pages/my/address'
-								})
-								setTimeout(()=>{
-									uni.showToast({
-										icon: 'none',
-										title: '默认地址修改成功'
-									})
-									if(this.isOrder){
-										var obj={
-											address:res.data.province+"-"+res.data.city+"-"+res.data.address,
-											mobile:res.data.mobile,
-											receiver:res.data.receiver
-										}
-										this.$store.commit("user/setorderadress",obj)
-										if(this.getaddress){
-											uni.navigateTo({
-												url:"/pages/my/toPay?shopcarorder="+this.getaddress
-											})
-										}else if(this.product_id){
-											uni.navigateTo({
-												url:"/pages/my/toPay?product_id="+this.product_id
-											})
-										}
-									}
-								},1000)
+								this.findAllAddr()
+								// uni.redirectTo({
+								// 	url:'/pages/my/address'
+								// })
+								// setTimeout(()=>{
+								// 	uni.showToast({
+								// 		icon: 'none',
+								// 		title: '默认地址修改成功'
+								// 	})
+								// 	if(this.isOrder){
+								// 		var obj={
+								// 			address:res.data.province+"-"+res.data.city+"-"+res.data.address,
+								// 			mobile:res.data.mobile,
+								// 			receiver:res.data.receiver
+								// 		}
+								// 		this.$store.commit("user/setorderadress",obj)
+								// 		if(this.getaddress){
+								// 			uni.navigateTo({
+								// 				url:"/pages/my/toPay?shopcarorder="+this.getaddress
+								// 			})
+								// 		}else if(this.product_id){
+								// 			uni.navigateTo({
+								// 				url:"/pages/my/toPay?product_id="+this.product_id
+								// 			})
+								// 		}
+								// 	}
+								// },1000)
 							}
 						}).catch(console.log)
 					}

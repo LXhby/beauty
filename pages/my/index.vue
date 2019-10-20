@@ -2,7 +2,7 @@
   <view class="my-page">
     <top-bar rightText="实名认证" :detailist="detailist" :isreal="false"></top-bar>
     <view class="active-nav">
-      <navigator url="/pages/my/order">
+      <navigator url="/pages/my/order?state=0">
         <view class="uni-flex uni-row nav-title">
           <view class="nav-left">
             <text class="iconfont">&#xe643;</text>
@@ -16,19 +16,19 @@
       </navigator>
 
       <view class="my-list uni-flex uni-row">
-        <view class="item" @click="navTo(0)">
+        <view class="item" @click="navTo(1)">
           <image class="image" src="../../static/ic_待付款.png" mode="aspectFill" />
           <text class="text">待付款</text>
         </view>
-        <view class="item" @click="navTo(1)">
+        <view class="item" @click="navTo(2)">
           <image class="image" src="../../static/待发货订单.png" mode="aspectFill" />
           <text class="text">待发货</text>
         </view>
-        <view class="item" @click="navTo(2)">
+        <view class="item" @click="navTo(3)">
           <image class="image" src="../../static/待收货.png" mode="aspectFill" />
           <text class="text">待收货</text>
         </view>
-        <view class="item" @click="navTo(3)">
+        <view class="item" @click="navTo(4)">
           <image class="image" src="../../static/待评价订单.png" mode="aspectFill" />
           <text class="text">待评价</text>
         </view>

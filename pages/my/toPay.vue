@@ -174,7 +174,7 @@
 			}else{
 				this.setdefaultAddress()
 			}
-			
+			console.log('this.orderadress',this.orderadress)
 		},
 		methods: {
 			settotalamount(){

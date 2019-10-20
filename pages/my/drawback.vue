@@ -229,13 +229,13 @@
 					}
 					
 					this.$http.request({
-						url: 'order/refund',
+						url: 'refunds',
 						method: 'post',
 						data: {
-							id:this.orderId,
-							refund_reason:str,
-							refund_amount:this.orderInfo.amount,
-							refund_images:this.form.image
+							order_id:this.orderId,
+							reason:str,
+							amount:this.orderInfo.amount,
+							images:this.form.image.length?this.form.image:null
 						}
 					}).then(res => {
 						uni.showToast({

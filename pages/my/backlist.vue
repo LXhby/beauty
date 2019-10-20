@@ -102,12 +102,10 @@
 				let listData = [];
 				this.$http
 					.request({
-						url: "order",
+						url: "refund",
 						method: "get",
 						params: {
-							'OrderSearch[user_id]': this.userInfo.id,
-							'OrderSearch[status]': '退款中',
-							'expand': 'orderProducts,orderProducts.product',
+							'expand': 'order',
 							'page': pageNum,
 							'per-page': pageSize
 						}
