@@ -59,11 +59,11 @@
 				<text>订单编号:</text>
 				<text>{{orderInfo.id}}</text>
 			</p>
-			<p>
+			<p v-if="orderInfo.pay_at">
 				<text>付款时间:</text>
 				<text>{{orderInfo.pay_at}}</text>
 			</p>
-			<p>
+			<p v-if="orderInfo.sent_at">
 				<text>发货时间:</text>
 				<text>{{orderInfo.sent_at}}</text>  
 			</p>
