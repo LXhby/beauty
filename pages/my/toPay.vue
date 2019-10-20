@@ -144,7 +144,7 @@
 			};
 		},
 		computed: {
-			...mapGetters(["userInfo","shopId","orderadress","shopcarorder"]),
+			...mapGetters(["userInfo","shopId","orderadress","shopcarorder","cartnum","shopcar"]),
 			
 		},
 		components: {
@@ -333,7 +333,28 @@
 						// 获取到订单id
 						this.setdefaultAddress();
 						this.requestPayment(res.data.id,paytype)
-					
+						
+						
+						// 处理购物车的数字
+						if(this.iscarorder){
+							console.log('处理购物车')
+							var num = 0;
+							this.shopcarorder.products.forEach(ele=>{
+								var obj={
+									shopId:this.shopId?this.shopId:this.userInfo.id,
+									id:ele.product_id
+								}
+								num+=ele.quantity;
+								this.$store.commit('cartnum/delShopcar',obj)
+								console.log('shopcar',this.shopcar);
+								console.log('num',num);
+							})
+							this.$store.commit('cartnum/setnum',-num)
+							uni.setTabBarBadge({
+								index: 2,
+								text: this.cartnum.toString()
+							});
+						}
 					}).catch(console.log)
 				}
 				
