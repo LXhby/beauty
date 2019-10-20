@@ -1,6 +1,6 @@
 <template>
 	<view class="order-page">
-		<tabs-sticky v-model="tabType" :tabs="tabTitle" @change="changeTab"></tabs-sticky>
+		<tabs-sticky v-model="tabType" :tabs="tabTitle" @change="changeTabUrl"></tabs-sticky>
 		<mescroll-uni :down="downOption" @down="downCallback" @up="upCallback" :up="upOption" top="80" @emptyclick="emptyClick" @init="mescrollInit">
 			<!-- 数据列表 -->
 			<pd-list :list="listItem"></pd-list>
@@ -55,7 +55,7 @@
 			}
 		},
 		onLoad(option) {
-			this.changeTab(option.state)
+			
 		},
 		methods: {
 			//点击空布局按钮的回调
@@ -95,10 +95,14 @@
 					title: '点击了按钮,具体逻辑自行实现'
 				})
 			},
-
-			// 切换菜单
+			changeTabUrl(type){
+				uni.navigateTo({
+					url:'/pages/my/order?state='+type
+				})
+			},
+			// 根据路由切换菜单
 			changeTab(type) {
-				console.log('type',type)
+				this.tabType = type;
 				switch (type) {
 					case 0:
 						this.orderStatus = '';
@@ -116,8 +120,6 @@
 						this.orderStatus = '待评价';
 						break;
 				}
-				
-				this.mescroll.resetUpScroll() // 刷新列表数据
 			},
 
 			/*联网加载列表数据
@@ -126,6 +128,9 @@
 			实际项目以您服务器接口返回的数据为准,无需本地处理分页.
 			* */
 			getListDataFromNet(pageNum, pageSize, successCallback, errorCallback) {
+				var statuscode = this.$route.query.state*1;
+				this.changeTab(statuscode);
+				console.log('this.orderStatus',this.orderStatus)
 				this.$http.request({
 					url: 'order',
 					method: 'get',
