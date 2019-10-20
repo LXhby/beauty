@@ -1,6 +1,6 @@
 <template>
 	<view class="cart-page">
-		<view class="have-none" v-if="!myshopcar.length">
+		<view class="have-none" v-if="!myshopcar.length || !myshopcar[0].products.length">
 			<image src="../../static/order_no_bg.png" mode="widthFix"></image>
 			<view class="title">
 				不过节吗！什么也没有啊~
@@ -133,6 +133,10 @@
 			uniNumberBox
 		},
 		onShow() {
+			uni.setTabBarBadge({
+				index: 2,
+				text: this.cartnum.toString()
+			});
 			this.$http.request({
 				url: 'address',
 				method: 'get',
@@ -256,12 +260,21 @@
 				})
 			},
 			bindChange(id,item,value) {
-				
+				console.log(value)
 				var obj = this.myshopcar.find(ele=>ele.shopId*1== id*1);
 				if(obj){
 					var item = obj.products.find(child=>child.id == item.id);
 					if(item){
+						if(item.num >value){
+							this.$store.commit('cartnum/setnum',-1)
+						}else{
+							this.$store.commit('cartnum/setnum',1)
+						}
 						item.num = value
+						uni.setTabBarBadge({
+							index: 2,
+							text: this.cartnum.toString()
+						});
 					}
 				}
 				this.handlechecklist()

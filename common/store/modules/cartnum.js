@@ -6,6 +6,8 @@ const state = {
 
 const mutations = {
     setnum: (state, info) => {
+		console.log(info)
+		console.log('state.num',state.num)
         state.num = state.num + info;
     },
 	setcollect:(state,info)=>{
@@ -23,11 +25,27 @@ const mutations = {
 			}
 		})
 	},
+	delShopcar:(sate,info)=>{
+
+		if(state.shopcar.length){
+
+			var shoplist =state.shopcar.find(ele=>ele.shopId*1 == info.shopId*1)
+			if(shoplist){
+				console.log('shoplist',shoplist)
+				shoplist.products.forEach((item,index)=>{
+					if(item.id == info.id){
+						shoplist.products.splice(index,1)
+					}
+				})
+				console.log('shoplist',shoplist)
+			}
+			
+		}
+	},
 	setShopcar:(state,info)=>{
 		console.log('shopId',info.shopId)
 		var shop = state.shopcar.find((ele)=>ele.shopId==info.shopId);
 		if(shop){
-			console.log('同一个店铺')
 			var item = shop.products.find((ele)=>ele.id==info.item.id)
 			if(!item){
 				var obj = Object.assign({num:1},info.item)
@@ -36,7 +54,6 @@ const mutations = {
 				item.num++;
 			}
 		}else{
-			console.log('不一样的店铺')
 			var ob={
 				shopId:info.shopId,
 				products:[]
