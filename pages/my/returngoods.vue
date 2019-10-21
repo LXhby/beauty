@@ -14,12 +14,12 @@
 				<text class="first-text">退款总金额</text>
 				<view class="first-num">
 					<text>共计：</text>
-					<text class="dark-color">{{orderInfo.refund_amount}}</text>
+					<text class="dark-color">{{orderInfo.amount}}</text>
 				</view>
 			</view>
 			<view class="total-second uni-flex uni-row">
 				<text class="first-text">退款方式</text>
-				<text class="dark-color">原路返回</text>
+				<text class="dark-color">{{orderInfo.channel}}</text>
 			</view>
 		</view>
 		<view class="return-progress">
@@ -27,31 +27,31 @@
 				退款进度
 			</view>
 			<view class="progress-detail uni-flex uni-row">
-				<view :class="[{'flow-yes':orderInfo.refund_status},'flow-li']">
-					<view class="flow-bor"></view>
+				<view class="flow-li">
+					<view :class="[{'flow-bor-active':orderInfo.status}, {'flow-bor':!orderInfo.status}]"></view>
 					<view class="flow-text">
 						<view>客服审核</view>
-						<text>{{orderInfo.refund_aduit_at}}</text>
+						<text>{{orderInfo.aduit_at}}</text>
 					</view>
 				</view>
-				<view :class="[{'line-yes':orderInfo.refund_status},'flow-line']"></view>
-				<view :class="[{'flow-yes':orderInfo.refund_status == 'STATUS_PROCESSING' || orderInfo.refund_status == 'STATUS_SUCCESS' || orderInfo.refund_status == 'STATUS_FAILED'},'flow-li']">
-					<view class="flow-bor"></view>
+				<view :class="[{'flow-line-active':orderInfo.status == '系统受理' || orderInfo.status == '退款成功' || orderInfo.status == '退款失败'}, {'flow-line':orderInfo.status != '系统受理' || orderInfo.status != '退款成功' || orderInfo.status != '退款失败'}]"></view>
+				<view class="flow-li">
+					<view :class="[{'flow-bor-active':orderInfo.status == '系统受理' || orderInfo.status == '退款成功' || orderInfo.status == '退款失败'}, {'flow-bor':orderInfo.status != '系统受理' || orderInfo.status != '退款成功' || orderInfo.status != '退款失败'}]"></view>
 					<view class="flow-text">
 						<view>系统受理</view>
-						<text>{{orderInfo.refund_process_at }}</text>
+						<text>{{orderInfo.process_at }}</text>
 					</view>
 				</view>
-				<view :class="[{'line-yes':orderInfo.refund_status == 'STATUS_PROCESSING' || orderInfo.refund_status == 'STATUS_SUCCESS'|| orderInfo.refund_status == 'STATUS_FAILED'},'flow-line']"></view>
-				<view :class="[{'flow-yes':orderInfo.refund_status == 'STATUS_SUCCESS' || orderInfo.refund_status == 'STATUS_FAILED'},'flow-li']">
+				<view :class="[{'flow-line-active':orderInfo.status == '退款成功' || orderInfo.status == '退款失败'},{'flow-line':orderInfo.status != '退款成功' || orderInfo.status != '退款成功' || orderInfo.status != '退款失败'}]"></view>
+				<view class="flow-li">
 					<!-- <view class="flow-bor"></view> -->
-					<view class="iconfont flow-icon">&#xe63e;</view>
+					<view :class="['iconfont', {'flow-icon-active': orderInfo.status == '退款成功' || orderInfo.status == '退款失败'}, {'flow-icon': orderInfo.status != '退款成功' || orderInfo.status != '退款失败'}] ">&#xe63e;</view>
 					<view class="flow-text">
-						<view v-if="orderInfo.refund_status == 'STATUS_FAILED'">退款失败</view>
+						<view v-if="orderInfo.status == '退款失败'">退款失败</view>
 						<view v-else>
 							退款成功
 						</view>
-						<text>{{orderInfo.refund_done_at}}</text>
+						<text>{{orderInfo.done_at}}</text>
 					</view>
 				</view>
 			</view>
@@ -75,10 +75,10 @@
 			</view>
 			<view class="return-resean">
 				<view class="text">
-					退款原因：{{orderInfo.refund_reason}}
+					退款原因：{{orderInfo.reason}}
 				</view>
 				<view class="text">
-					退款金额：￥{{orderInfo.refund_amount}}
+					退款金额：￥{{orderInfo.amount}}
 				</view>
 				<view class="text">
 					申请时间：{{orderInfo.updated_at}}
@@ -88,7 +88,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 	</view>
 </template>
@@ -97,40 +97,40 @@
 	import {
 		mapGetters
 	} from "vuex";
-	export default{
-		data(){
-			return{
-				orderInfo:{},
-				url:''
+	export default {
+		data() {
+			return {
+				orderInfo: {},
+				url: '',
+				refundId: '',
 			}
 		},
 		computed: {
 			...mapGetters(['userInfo'])
 		},
 		onLoad(option) {
-			this.orderId = option.orderId;
+			this.refundId = option.refundId;
 			this.url = this.$baseUrl;
 			this.$http.request({
-				url: 'orders/' + option.orderId,
+				url: 'refunds/' + option.refundId,
 				method: 'get',
 				params: {
-					'expand': 'orderProducts,orderProducts.product,refunds'
+					'expand': 'order,order.orderProducts,order.orderProducts.product',
 				}
 			}).then(res => {
 				this.orderInfo = res.data;
-				
 			}).catch(console.log)
 		},
-		methods:{
-			orderdetail(){
+		methods: {
+			orderdetail() {
 				uni.navigateTo({
-					url:'/pages/my/backdetail?orderId='+this.orderInfo.id
+					url: '/pages/my/backdetail?orderId=' + this.orderInfo.order_id
 				})
 			},
-			gogoodsdetail(item){
+			gogoodsdetail(item) {
 				console.log(item);
 				uni.navigateTo({
-					url:'/pages/home/detail?id='+item.id
+					url: '/pages/home/detail?id=' + item.id
 				})
 			}
 		}
@@ -139,6 +139,7 @@
 
 <style lang="scss" scoped>
 	@import "../../common/common.scss";
+
 	page {
 		width: 100%;
 		height: 100%;
@@ -179,7 +180,8 @@
 			background: #fff;
 			padding-top: 20rpx;
 			margin-bottom: 20rpx;
-			color:#333;
+			color: #333;
+
 			.total-first {
 				border-bottom: 1px solid $uni-border-color;
 			}
@@ -198,12 +200,13 @@
 		}
 
 		.return-progress {
-			margin-bottom:20rpx;
+			margin-bottom: 20rpx;
+
 			.progress-title {
-				padding:40rpx 20rpx 20rpx 20rpx;
+				padding: 40rpx 20rpx 20rpx 20rpx;
 				font-size: 28rpx;
 				background: #fff;
-				color:#333;
+				color: #333;
 				border-bottom: 1px solid $uni-border-color;
 			}
 
@@ -214,17 +217,21 @@
 				justify-content: space-between;
 				align-items: flex-start;
 				background: #fff;
-				.flow-yes{
+
+				.flow-yes {
 					.flow-bor {
 						background-color: #FF4000;
 					}
-					.flow-icon{
+
+					.flow-icon {
 						background-color: #FF4000;
 					}
 				}
-				.line-yes{
+
+				.line-yes {
 					background-color: #FF4000;
 				}
+
 				.flow-li {
 					width: 12rpx;
 					height: 12rpx;
@@ -241,7 +248,20 @@
 						border-radius: 50%;
 						text-align: center;
 					}
-					.flow-icon{
+					
+					.flow-bor-active {
+						background-color: #FF4000;
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 12rpx;
+						height: 12rpx;
+						border-radius: 50%;
+						text-align: center;
+					}
+					
+
+					.flow-icon {
 						width: 30rpx;
 						height: 30rpx;
 						position: absolute;
@@ -249,6 +269,17 @@
 						top: -9rpx;
 						border-radius: 50%;
 						background-color: #999;
+						color: #fff;
+					}
+					
+					.flow-icon-active {
+						width: 30rpx;
+						height: 30rpx;
+						position: absolute;
+						left: 0;
+						top: -9rpx;
+						border-radius: 50%;
+						background-color: #FF4000;
 						color: #fff;
 					}
 
@@ -282,62 +313,82 @@
 					height: 4rpx;
 					position: relative;
 				}
+				
+				.flow-line-active {
+					flex: 1;
+					background-color: #FF4000;
+					margin-top: 4rpx;
+					height: 4rpx;
+					position: relative;
+				}
 			}
-		
+
 		}
-		.return-detail{
-			background:#fff;
-			.detail-title{
+
+		.return-detail {
+			background: #fff;
+
+			.detail-title {
 				padding: 20rpx;
 				color: #333;
 				justify-content: space-between;
 				align-items: center;
 				border-bottom: 1px solid $uni-border-color;
 			}
-			.detail-goods{
-				margin:0 30rpx 0 20rpx;
-				padding:20rpx 0;
-				border-bottom:1px solid $uni-border-color;
-				image{
+
+			.detail-goods {
+				margin: 0 30rpx 0 20rpx;
+				padding: 20rpx 0;
+				border-bottom: 1px solid $uni-border-color;
+
+				image {
 					width: 165rpx;
 					height: 165rpx;
 					margin-right: 28rpx;
 				}
-				.goods-detail{
+
+				.goods-detail {
 					flex: 1;
 					display: flex;
 					flex-direction: column;
 					justify-content: space-between;
 					color: #333;
-					min-height:165rpx;
-					.title{
+					min-height: 165rpx;
+
+					.title {
 						font-size: 28rpx;
 					}
-					.goods-num{
-						
-						justify-content:space-between;
-						align-items:center;
-						.num{
+
+					.goods-num {
+
+						justify-content: space-between;
+						align-items: center;
+
+						.num {
 							font-size: 20rpx;
 						}
-						
+
 					}
 				}
-				.dark-color{
+
+				.dark-color {
 					font-size: 32rpx;
 					color: $uni-bg-color;
 				}
 			}
-			.return-resean{
+
+			.return-resean {
 				padding: 20rpx 20rpx 50rpx 20rpx;
-				.text{
+
+				.text {
 					margin-bottom: 10rpx;
 					font-size: 24rpx;
 					color: $uni-text-color-grey;
 				}
 			}
 		}
-		.bottom-line{
+
+		.bottom-line {
 			background: #f1f1f1;
 		}
 	}

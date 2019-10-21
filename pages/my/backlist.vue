@@ -8,7 +8,7 @@
 						<text class="time">{{item.created_at}}</text>
 					</view>
 				</view>
-				<view class="item-main uni-flex uni-row" v-for="product in item.orderProducts" @click="gogoodsdetail(product)">
+				<view class="item-main uni-flex uni-row" v-for="product in item.order.orderProducts" @click="gogoodsdetail(product)">
 					<view class="left uni-flex uni-row">
 						<image :src="url + product.product.image" mode="aspectFill"></image>
 						<view class="item-title">
@@ -69,7 +69,7 @@
 			},
 			godetail(item){
 				uni.navigateTo({
-					url:'/pages/my/returngoods?orderId='+item
+					url:'/pages/my/returngoods?refundId='+item
 				})
 			},
 			/*下拉刷新的回调 */
@@ -105,7 +105,7 @@
 						url: "refund",
 						method: "get",
 						params: {
-							'expand': 'order,order.orderProducts',
+							'expand': 'order,order.orderProducts,order.orderProducts.product',
 							'page': pageNum,
 							'per-page': pageSize
 						}
