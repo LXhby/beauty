@@ -140,7 +140,8 @@
 				remark:'',
 				iscarorder:false,
 				means:'微信支付',
-				totalamount:0
+				totalamount:0,
+				num:1
 			};
 		},
 		computed: {
@@ -237,15 +238,20 @@
 							method: "post",
 							data: info
 						}).then(res => {
-							const data = res.data;
-							uni.navigateTo({
-								url: '/pages/benefits/PaySuccess'
-							})
+							console.log(res,'99')
+							if(res.statusCode == 200){
+								uni.navigateTo({
+									url: '/pages/benefits/PaySuccess'
+								})
+							}else{
+								uni.showToast({
+									title:res.data.message,
+									icon:"none"
+								})
+							}
+							
 						}).catch(err=>{
-							uni.showToast({
-								title:err.message,
-								icon:"none"
-							})
+							console.log(err)
 						});
 				}else{
 					info = {
@@ -260,18 +266,26 @@
 							data: info
 						}).then(res => {
 							const data = res.data;
-							this.$wechat.chooseWXPay({
-								timestamp: data.timestamp,
-								nonceStr: data.nonceStr,
-								package: data.package,
-								signType: data.signType,
-								paySign: data.paySign, // 支付签名
-								success: res => {
-									uni.navigateTo({
-										url: '/pages/benefits/PaySuccess'
-									})
-								}
-							});
+							if(res.statusCode == 200){
+								this.$wechat.chooseWXPay({
+									timestamp: data.timestamp,
+									nonceStr: data.nonceStr,
+									package: data.package,
+									signType: data.signType,
+									paySign: data.paySign, // 支付签名
+									success: res => {
+										uni.navigateTo({
+											url: '/pages/benefits/PaySuccess'
+										})
+									}
+								});
+							}else{
+								uni.showToast({
+									title:res.data.message,
+									icon:"none"
+								})
+							}
+							
 						});
 				}
 				
@@ -309,7 +323,12 @@
 							products:this.shopcarorder.products
 						}
 					}else{
-						paytype="ORDER"
+						if(this.info.is_coin_usable){
+							paytype="ORDER"
+						}else{
+							paytype="FORUM_ORDER"
+						}
+						
 						postdata = {
 							user_id: this.userInfo.id,
 							quantity: this.info.num,
@@ -321,7 +340,7 @@
 							remark:this.remark,
 							products:[{
 								product_id:this.info.id,
-								quantity:this.num
+								quantity:this.info.num
 							}]
 						}
 					}

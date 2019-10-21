@@ -2,10 +2,9 @@
 	<view class="withdrawal-page">
 		<view class="main">
 			<view class="select-bank">
-				<view class="show-bank uni-flex uni-row">
+				<view class="show-bank uni-flex uni-row"  @click="changcar">
 					<text>{{choseBank.label}}</text>
-					<text class="iconfont arow" @click="changcar">&#xe610;</text>
-<!-- 					<button type="primary" class="addbtn" @>更换</button> -->
+					<text class="iconfont arow">&#xe610;</text>
 				</view>
 			</view>
 			
@@ -32,39 +31,6 @@
 				<view class="bottom-line">-- 我是有底线的卡瑞塔 --</view>
 			</view>
 		</view>
-		<uni-popup ref="popupout" type="center" :custom="true">
-			<view class="alert-box">
-				<view class="title">
-					提现确认
-				</view>
-				<view class="get-box uni-flex uni-row">
-					<view class="item">
-						<view class="item-text">
-							提现金额
-						</view>
-						<text class="item-money">￥{{money}}</text>
-					</view>
-					<view class="item">
-						<view class="item-text">
-							提现手续费
-						</view>
-						<text class="item-money">￥{{poundage}}</text>
-					</view>
-				</view>
-				<view class="get-total uni-flex uni-row">
-					<view class="item-text">
-						到账金额
-					</view>
-					<view class="item-money">
-						￥{{lastMoney}}
-					</view>
-				</view>
-
-				<button class="btn" @click="submitMoney" :disabled="lastMoney<=0">
-					提现确认
-				</button>
-			</view>
-		</uni-popup>
 		<w-picker v-if="myBank.length!=0" mode="selector" @confirm="onConfirm" ref="selector" themeColor="#f00" :selectList="myBank"
 		 @cancel="cancelselect">
 		</w-picker>
@@ -162,7 +128,14 @@
 		},
 		watch: {
 			myBank(val) {
-				this.choseBank = val[0]
+				if(val.length){
+					this.choseBank = val[0]
+				}else{
+					this.choseBank = {
+						label:'添加银行卡'
+					}
+				}
+				
 			}
 		},
 		mounted() {
@@ -180,61 +153,14 @@
 				}
 			})
 			//获取设置
-			this.nextTime = moment()
-				.add(this.config.min_settle_interval, "days")
-				.format("YYYY.MM.DD");
+			// this.nextTime = moment()
+			// 	.add(this.config.min_settle_interval, "days")
+			// 	.format("YYYY.MM.DD");
 			this.getAccounts();
 			this.formdata.name = this.userInfo.realname;
 		},
 
 		methods: {
-			submitMoney() {
-				const info = {
-					account_id: this.radioGroup == "bank" ? this.choseBank.value : "wechat"
-				};
-				this.$http.request({
-					url: 'settle/apply',
-					method: 'post',
-					data:info
-				}).then(res => {
-				          if(res.data.success){
-				           this.$refs.popupout.close()
-				            uni.showToast({
-				            	title:res.data.message,
-								icon:'none'
-				            })
-				            
-				            uni.switchTab({
-				            	url:"/pages/my/index"
-				            })
-				          }
-				          else{
-				            uni.showToast({
-				            	title:res.data.message,
-				            	icon:'none'
-				            })
-				
-				            this.$http.request({
-				            	url: 'settle/sign',
-				            	method: 'get'
-				            }).then(res=>{
-				              window.location.href = res.data;
-				            }).catch(err => {
-								uni.showToast({
-									title:err.response.data.message,
-									icon:'none'
-								})
-				              });
-				          }
-				        })
-				        .catch(err => {
-				          this.dialog = false;
-				          console.log("err", err.response);
-				          this.snackbar = true;
-				          this.alerttext = err.response.data.message;
-				          this.alerttype = "error";
-				        });
-			},
 			selectbank(item) {
 				this.selectbankname = item.newVal;
 			},
@@ -268,19 +194,34 @@
 				}
 				if (!this.money) {
 					uni.showToast({
-						title: '请选择银行卡',
+						title: '请输入金额',
 						icon: "none"
 					});
 					return false
 				}
-				// if(this.money > this.userInfo.balance){
-				// 	uni.showToast({
-				// 		title: '填的金额大于余额',
-				// 		icon: "none"
-				// 	});
-				// 	return false
-				// }
-				this.$refs.popupout.open()
+				var rechargesinfo={
+					amount:this.money,
+					
+				}
+				this.$http
+					.request({
+						url: "recharges",
+						method: "post",
+						data: obj
+					}).then(res => {
+						uni.showToast({
+							title: "添加成功!",
+							icon: "none"
+						});
+						this.$refs.popupbank.close();
+						//查看是否本人有银行卡
+						this.getAccounts()
+					}).catch(err=>{
+						uni.showToast({
+							title:err.error,
+							icon:"none"
+						})
+					})
 			},
 			formSubmit(e) {
 				var rule = [{
@@ -376,17 +317,6 @@
 			},
 			bindPickerChange(e) {
 				this.index = e.target.value
-			},
-			radioChange(val) {
-				console.log(val)
-				this.radioGroup = val.detail.value == '银行卡' ? true : false;
-				if (this.radioGroup) {
-					if (this.myBank.length) {
-						this.$refs.selector.show()
-					} else {
-						this.$refs.popupbank.open()
-					}
-				}
 			}
 		}
 	}
