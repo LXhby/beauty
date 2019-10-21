@@ -2,16 +2,6 @@
 	<view class="withdrawal-page">
 		<view class="main">
 			<view class="select-bank">
-				<!-- <view class="uni-flex uni-row" style="justify-content: space-between;">
-					<radio-group @change="radioChange">
-						<label class="radio">
-							<radio value="银行卡" style="transform:scale(0.7)" :checked="radioGroup" color="#ff0080" />银行卡
-						</label>
-					</radio-group>
-				
-					<button type="primary" class="addbtn" @click="addcar">添加银行卡</button>
-				</view>
-				 -->
 				<view class="show-bank uni-flex uni-row">
 					<text>{{choseBank.label}}</text>
 					<text class="iconfont arow" @click="changcar">&#xe610;</text>
@@ -333,26 +323,11 @@
 							});
 							this.$refs.popupbank.close();
 							//查看是否本人有银行卡
-							this.$http.request({
-								url: 'accounts',
-								method: 'get',
-								params: {
-									'AccountSearch[user_id]': this.userInfo.id
-								}
-							}).then(res => {
-								const data = res.data.items;
-								if (data.length) {
-									data.forEach(ele => {
-										var le = {
-											label: ele.bank + ':' + ele.number,
-											value: ele.id
-										}
-										this.myBank.push(le);
-									})
-									this.$refs.selector.show()
-								} else {
-									this.myBank = [];
-								}
+							this.getAccounts()
+						}).catch(err=>{
+							uni.showToast({
+								title:err.error,
+								icon:"none"
 							})
 						})
 				} else {

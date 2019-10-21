@@ -312,28 +312,7 @@
 							});
 							this.$refs.popupbank.close();
 							//查看是否本人有银行卡
-							this.$http.request({
-								url: 'accounts',
-								method: 'get',
-								params: {
-									'AccountSearch[user_id]': this.userInfo.id
-								}
-							}).then(res => {
-								const data = res.data.items;
-								if (data.length) {
-									data.forEach(ele => {
-										var le = {
-											label: ele.bank + ':' + ele.number,
-											value: ele.id
-										}
-										this.myBank.push(le);
-									})
-
-									this.$refs.selector.show()
-								} else {
-									this.myBank = [];
-								}
-							})
+							this.getAccounts();
 						})
 				} else {
 					console.log('graceChecker', graceChecker)
@@ -361,6 +340,7 @@
 					}
 				}).then(res => {
 					const data = res.data.items;
+					this.myBank = [];
 					if (data.length) {
 						data.forEach(ele => {
 							var le = {
