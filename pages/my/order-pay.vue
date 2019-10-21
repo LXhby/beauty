@@ -167,43 +167,44 @@
 							data: info
 						}).then(res => {
 							const data = res.data;
-							this.$wechat.chooseWXPay({
-								timestamp: data.timestamp,
-								nonceStr: data.nonceStr,
-								package: data.package,
-								signType: data.signType,
-								paySign: data.paySign, // 支付签名
-								success: res => {
-									uni.navigateTo({
-										url: '/pages/benefits/PaySuccess'
-									})
-								}
-							});
+							console.log(res)
+							if(res.statusCode == 200){
+								this.$wechat.chooseWXPay({
+									timestamp: data.timestamp,
+									nonceStr: data.nonceStr,
+									package: data.package,
+									signType: data.signType,
+									paySign: data.paySign, // 支付签名
+									success: res => {
+										uni.navigateTo({
+											url: '/pages/benefits/PaySuccess'
+										})
+									}
+								});
+							}else{
+								uni.showToast({
+									title:res.data.message,
+									icon:"none"
+								})
+							}
+							
+						}).catch(err=>{
+							console.log(err)
+							
 						});
 				}
 			},
 			gopay(){
-				if(!this.adressInfo.id){
-					uni.showToast({
-						title:'请填写收货地址',
-						icon:"none"
+				this.$http
+					.request({
+						url: "orders/"+this.info.id,
+						method: "put",
+						data: {
+							remark:this.info.remark
+						}
+					}).then(res=>{
+						this.requestPayment(this.info.id)
 					})
-					uni.navigateTo({
-						url:"/pages/my/address?getaddress="+this.info.id
-					})
-				}else{
-					
-					this.$http
-						.request({
-							url: "orders/"+this.info.id,
-							method: "put",
-							data: {
-								remark:this.info.remark
-							}
-						}).then(res=>{
-							this.requestPayment(this.info.id)
-						})
-				}
 				
 			}
 		}
