@@ -191,7 +191,8 @@ router.beforeEach((to, from, next) => {
 				url: 'oauth/get-redirect-url',
 				method: 'get',
 				params: {
-					redirectUrl: redirectUrl
+					redirectUrl: redirectUrl,
+					 from_user_id: to.query.userid
 				}
 			}).then(res => {
 				console.log(res)
@@ -243,7 +244,7 @@ router.afterEach((to, from) => {
 							location.hostname +
 							"/#" +
 							to.fullPath +
-							"?from_user_id=" +
+							"?userid=" +
 							store.state.user.userInfo.id, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 						imgUrl: store.state.user.config.logo, // 分享图标  todoing
 						success: () => {
