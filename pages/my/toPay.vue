@@ -369,10 +369,16 @@
 								console.log('num',num);
 							})
 							this.$store.commit('cartnum/setnum',-num)
-							uni.setTabBarBadge({
-								index: 2,
-								text: this.cartnum.toString()
-							});
+							if (this.cartnum) {
+								uni.setTabBarBadge({
+									index: 2,
+									text: this.cartnum.toString()
+								});
+							}else{
+								uni.removeTabBarBadge({
+									index:2
+								})
+							}
 						}
 					}).catch(console.log)
 				}

@@ -133,10 +133,16 @@
 			uniNumberBox
 		},
 		onShow() {
-			uni.setTabBarBadge({
-				index: 2,
-				text: this.cartnum.toString()
-			});
+			if (this.cartnum) {
+				uni.setTabBarBadge({
+					index: 2,
+					text: this.cartnum.toString()
+				});
+			}else{
+				uni.removeTabBarBadge({
+					index:2
+				})
+			}
 			this.$http.request({
 				url: 'address',
 				method: 'get',

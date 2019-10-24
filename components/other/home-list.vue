@@ -78,10 +78,16 @@
 					 item:item
 				 }
 				 this.$store.commit("cartnum/setShopcar", data);
-				 uni.setTabBarBadge({
-				 	index: 2,
-				 	text: this.cartnum.toString()
-				 });
+				 if (this.cartnum) {
+				 	uni.setTabBarBadge({
+				 		index: 2,
+				 		text: this.cartnum.toString()
+				 	});
+				 }else{
+				 	uni.removeTabBarBadge({
+				 		index:2
+				 	})
+				 }
 				 uni.showToast({
 					 title:'加入购物车成功！',
 					 icon:"none"

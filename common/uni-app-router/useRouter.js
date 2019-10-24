@@ -162,11 +162,24 @@ function delCookie(name) {
 	}
 }
 
+function getQueryStringByName(name) {
+	var result = location.search.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"));
+	if (result == null || result.length < 1) {
+		return "";
+	}
+	return result[1];
+}
+
 
 router.beforeEach((to, from, next) => {
 	//#ifdef H5
-	var redirectUrl = document.URL;
-	if (!getCookie('_identity-user') && !store.state.user.userInfo) {
+	var redirectUrl = "http://" + location.hostname + to.path;
+	var userid = getQueryStringByName('userid');
+	var code = getQueryStringByName('code');
+	if (userid) {
+		redirectUrl += "?userid=" + userid;
+	}
+	if (!store.state.user.userInfo && !code) {
 		window.localStorage.clear();
 		http.request({
 			url: 'oauth/get-redirect-url',
@@ -178,37 +191,25 @@ router.beforeEach((to, from, next) => {
 			console.log(res)
 			window.location.href = res.data;
 		})
-	} else if (!store.state.user.userInfo) {
+	} else if (code) {
 		http.request({
-			url: 'oauth/get-current-user',
-			method: 'get'
+			url: 'oauth/login',
+			method: 'get',
+			params: {
+				code: code
+			}
 		}).then(res => {
 			store.commit('user/setUserInfo', res.data);
 			uni.setStorageSync('userinfo', res.data)
 		}).catch(err => {
-			delCookie('_identity-user')
-			http.request({
-				url: 'oauth/get-redirect-url',
-				method: 'get',
-				params: {
-					redirectUrl: redirectUrl,
-					 from_user_id: to.query.userid
-				}
-			}).then(res => {
-				console.log(res)
-				window.location.href = res.data;
-			})
+			console.log(err)
 		})
-	} else {
 		if (!store.state.appurl) {
 			store.commit('user/setUrl', document.URL)
 		}
-		if (/\/http/.test(to.path)) {
-			let url = to.path.split("http")[1];
-			window.location.href = `http${url}`;
-		} else {
-			next();
-		}
+		next();
+	} else {
+		next();
 	}
 	//#endif
 })
