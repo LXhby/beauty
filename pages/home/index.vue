@@ -123,6 +123,10 @@
 			<!-- 数据列表 -->
 			<pd-list :list="pdList" :type="tabs[tabIndex].name"></pd-list>
 		</mescroll-uni>
+		
+		<view class="barrage">
+			
+		</view>
 	</view>
 </template>
 
