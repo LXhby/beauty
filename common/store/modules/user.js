@@ -1,20 +1,24 @@
 const state = {
+    title: '',
     userInfo: {
         id: 5,
         coin_count: 1,
-		u:1
+        u: 1
     },
     token: '0ab538e92c6db78d10b1694e645f3625',
     config: {},
     appurl: null,
-	shopId:null,
-	orderadress:{},
-	shopcarorder:{}
+    shopId: null,
+    orderadress: {},
+    shopcarorder: {}
 }
 
 const mutations = {
+    setTitle: (state, info) => {
+        state.title = info
+    },
     setUserInfo: (state, info) => {
-        console.log('setUserInfo', info);
+
         state.userInfo = info
     },
     setToken: (state, token) => {
@@ -27,18 +31,18 @@ const mutations = {
     setUrl: (state, url) => {
         state.appurl = url;
     },
-	setShopId:(state, id) => {
+    setShopId: (state, id) => {
         state.shopId = id;
     },
-	clearShopId:(state) => {
+    clearShopId: (state) => {
         state.shopId = null;
     },
-	setorderadress:(state,info)=>{
-		state.orderadress = info;
-	},
-	setshopcarorder:(state,info)=>{
-		state.shopcarorder = info;
-	}
+    setorderadress: (state, info) => {
+        state.orderadress = info;
+    },
+    setshopcarorder: (state, info) => {
+        state.shopcarorder = info;
+    }
 }
 
 const actions = {

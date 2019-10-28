@@ -6,140 +6,245 @@ import Request from '../../plugins/request/js/index'
 const router = new Router({
 	routes: [{
 			path: "/pages/home/index",
-			name: 'tabbar-1'
+			name: 'tabbar-1',
+			meta: {
+				title: '辰风生物·卜瑞塔美妆'
+			}
 		}, {
 			path: '/pages/goods/info',
-			name: 'tabbar-2'
+			name: 'tabbar-2',
+			meta: {
+				title: '美妆帮'
+			}
 		}, {
 			path: '/pages/home/detail',
-			name: "product-view"
+			name: "product-view",
+			meta: {
+				title: "商品详情"
+			}
 		}, {
 			path: '/pages/home/comment',
-			name: 'comment'
+			name: 'comment',
+			meta: {
+				title: '更多评论'
+			}
 		},
 		{
 			path: '/pages/goods/consulting',
-			name: 'article-view'
+			name: 'article-view',
+			meta: {
+				title: '咨询内容页'
+			}
 		},
 		{
 			path: '/pages/benefits/meeting',
-			name: 'meeting'
+			name: 'meeting',
+			meta: {
+				title: '会议活动'
+			}
 		},
 		{
 			path: '/pages/benefits/courseinfo',
-			name: 'course-view'
+			name: 'course-view',
+			meta: {
+				title: '课程详情'
+			}
 		},
 		{
 			path: '/pages/benefits/preferential',
-			name: 'preferential'
+			name: 'preferential',
+			meta: {
+				title: '特实惠'
+			}
 		},
 		{
 			path: '/pages/benefits/integral',
-			name: 'integral'
+			name: 'integral',
+			meta: {
+				title: '积分购'
+			}
 		},
 		{
 			path: '/pages/benefits/upvue',
-			name: 'upvue'
+			name: 'upvue',
+			meta: {
+				title: '升级VIP'
+			}
 		},
 		{
 			path: '/pages/shopcar/index',
-			name: 'shopcar'
+			name: 'shopcar',
+			meta: {
+				title: '购物车'
+			}
 		},
 		{
 			path: '/pages/my/index',
-			name: 'my'
+			name: 'my',
+			meta: {
+				title: '我的'
+			}
 		},
 		{
 			path: '/pages/my/order',
-			name: 'order'
+			name: 'order',
+			meta: {
+				title: '我的订单'
+			}
 		},
 		{
 			path: '/pages/my/returngoods',
-			name: 'returngoods'
+			name: 'returngoods',
+			meta: {
+				title: '退款详情'
+			}
 		},
 		{
 			path: '/pages/my/orderinfo',
-			name: 'orderinfo'
+			name: 'orderinfo',
+			meta: {
+				title: '订单详情'
+			}
 		},
 		{
 			path: '/pages/my/shipment',
-			name: 'shipment'
+			name: 'shipment',
+			meta: {
+				title: '出货记录'
+			}
 		},
 		{
 			path: '/pages/my/fans',
-			name: 'fans'
+			name: 'fans',
+			meta: {
+				title: '我的粉丝'
+			}
 		},
 		{
 			path: '/pages/my/reward',
-			name: 'reward'
+			name: 'reward',
+			meta: {
+				title: '我的奖金'
+			}
 		},
 		{
 			path: '/pages/my/getmoney',
-			name: 'getmoney'
+			name: 'getmoney',
+			meta: {
+				title: '提现申请'
+			}
 		},
 		{
 			path: '/pages/my/haveclass',
-			name: 'haveclass'
+			name: 'haveclass',
+			meta: {
+				title: '上课记录'
+			}
 		},
 		{
 			path: '/pages/my/collection',
-			name: 'collection'
+			name: 'collection',
+			meta: {
+				title: '我的收藏'
+			}
 		},
 		{
 			path: '/pages/my/address',
-			name: 'address'
+			name: 'address',
+			meta: {
+				title: '收货地址'
+			}
 		},
 		{
 			path: '/pages/my/newaddress',
-			name: 'newaddress'
+			name: 'newaddress',
+			meta: {
+				title: '新建地址'
+			}
 		},
 		{
 			path: '/pages/my/news',
-			name: 'news'
+			name: 'news',
+			meta: {
+				title: '我的消息'
+			}
 		},
 		{
 			path: '/pages/my/serverule',
-			name: 'serverule'
+			name: 'serverule',
+			meta: {
+				title: '服务条款'
+			}
 		},
 		{
 			path: '/pages/about/index',
-			name: 'about'
+			name: 'about',
+			meta: {
+				title: '关于我们'
+			}
 		},
 		{
 			path: '/pages/benefits/PaySuccess',
-			name: 'PaySuccess'
+			name: 'PaySuccess',
+			meta: {
+				title: '付款成功'
+			}
 		},
 		{
 			path: '/pages/my/drawback',
-			name: 'drawback'
+			name: 'drawback',
+			meta: {
+				title: '退款申请'
+			}
 		},
 		{
 			path: '/pages/my/toPay',
-			name: 'toPay'
+			name: 'toPay',
+			meta: {
+				title: '订单待付款'
+			}
 		},
 		{
 			path: '/pages/my/postcomment',
-			name: 'postComment'
+			name: 'postComment',
+			meta: {
+				title: '发表评论'
+			}
 		},
 		{
 			path: '/pages/my/investmoney',
-			name: 'postComment'
+			name: 'postComment',
+			meta: {
+				title: '余额充值'
+			}
 		},
 		{
 			path: '/pages/shopcar/paypage',
-			name: 'paypage'
+			name: 'paypage',
+			meta: {
+				title: '支付'
+			}
 		},
 		{
 			path: '/pages/my/order-pay',
-			name: 'orderpay'
+			name: 'orderpay',
+			meta: {
+				title: '待付款'
+			}
 		},
 		{
 			path: '/pages/my/backdetail',
-			name: 'backdetail'
+			name: 'backdetail',
+			meta: {
+				title: '退款详情'
+			}
 		},
 		{
 			path: '/pages/my/backlist',
-			name: 'backlist'
+			name: 'backlist',
+			meta: {
+				title: '订单退款'
+			}
 		}
 	]
 });
@@ -173,6 +278,7 @@ function getQueryStringByName(name) {
 
 router.beforeEach((to, from, next) => {
 	//#ifdef H5
+	store.commit("user/setTitle", to.meta.title);
 	var redirectUrl = "http://" + location.hostname + to.path;
 	var userid = getQueryStringByName('userid');
 	var code = getQueryStringByName('code');
@@ -239,7 +345,7 @@ router.afterEach((to, from) => {
 				Vue.prototype.$wechat.config(response.data);
 				Vue.prototype.$wechat.ready(() => {
 					const options = {
-						title: '卡瑞塔', // 分享标题
+						title: store.state.user.title, // 分享标题
 						desc: store.state.user.config.app_desc,
 						link: "http://" +
 							location.hostname +
