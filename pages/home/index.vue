@@ -121,7 +121,7 @@
 				</view>
 			</view>
 			<!-- 数据列表 -->
-			<pd-list :list="pdList" :type="tabs[tabIndex].name"></pd-list>
+			<pd-list :list="pdList" :type="tabs[tabIndex].name"></pd-list> 
 		</mescroll-uni>
 		
 		<view class="barrage">
