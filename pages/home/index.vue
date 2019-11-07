@@ -5,26 +5,26 @@
 			<top-bar rightText="店铺设置" :detailist="detailist" :isreal="isreal"></top-bar>
 			<view class="active-nav">
 				<view class="list uni-row uni-flex" style="justify-content: space-around;margin-bottom: 35rpx;">
-					<view class="item"  style="text-align: center;" @click="goPage('/pages/benefits/meeting')">
-						<view class="text-one" >
+					<view class="item" style="text-align: center;" @click="goPage('/pages/benefits/meeting')">
+						<view class="text-one">
 							<image class="image" src="../../static/meeting.png" mode="widthFix" />
 						</view>
 						<text class="text">会议活动</text>
 					</view>
-					<view class="item"  style="text-align: center;" @click="goPage('/pages/benefits/preferential')">
-						<view class="text-one" >
+					<view class="item" style="text-align: center;" @click="goPage('/pages/benefits/preferential')">
+						<view class="text-one">
 							<image class="image" src="../../static/promotion.png" mode="widthFix" />
 						</view>
 						<text class="text">特实惠</text>
 					</view>
-					<view class="item"  style="text-align: center;" @click="goPage('/pages/benefits/integral')">
-						<view class="text-one" >
+					<view class="item" style="text-align: center;" @click="goPage('/pages/benefits/integral')">
+						<view class="text-one">
 							<image class="image" src="../../static/integral.png" mode="widthFix" />
 						</view>
 						<text class="text">积分购</text>
 					</view>
-					<view class="item"  style="text-align: center;" @click="goPage('/pages/benefits/upvue')">
-						<view class="text-one" >
+					<view class="item" style="text-align: center;" @click="goPage('/pages/benefits/upvue')">
+						<view class="text-one">
 							<image class="image" src="../../static/vip.png" mode="widthFix" />
 						</view>
 						<text class="text">升级VIP</text>
@@ -103,7 +103,7 @@
 				<tabs-sticky v-model="tabIndex" :tabs="tabs" @change="changeTab"></tabs-sticky>
 			</view>
 			<!-- 筛选条件 -->
-			<view :class="[{ 'active': isShowSticky }, 'screen-btn','uni-flex','uni-row']"  v-if="tabIndex == 0">
+			<view :class="[{ 'active': isShowSticky }, 'screen-btn','uni-flex','uni-row']" v-if="tabIndex == 0">
 				<view :class="[{'active-sort':sortType.indexOf('price') != -1},'price']" @click="handlesort('price')">
 					<text>价格</text>
 					<text class="iconfont ">&#xe71c;</text>
@@ -117,16 +117,21 @@
 					<text class="iconfont ">&#xe71c;</text>
 				</view>
 				<view class="price all">
-					<sl-filter :independence="true" color="#000000" themeColor="#000000" :menuList.sync="menuList" @result="result" ></sl-filter>
+					<sl-filter :independence="true" color="#000000" themeColor="#000000" :menuList.sync="menuList" @result="result"></sl-filter>
 				</view>
 			</view>
 			<!-- 数据列表 -->
-			<pd-list :list="pdList" :type="tabs[tabIndex].name"></pd-list> 
+			<pd-list :list="pdList" :type="tabs[tabIndex].name"></pd-list>
 		</mescroll-uni>
-		
-		<view class="barrage">
-			
-		</view>
+
+		<transition name="slide-fade">
+			<view class="barrage-list uni-flex uni-row"  v-if="show&&msg.id">
+				<image :src="url+msg.headimgurl" mode="aspectFill" class="avatar"></image>
+				<view class="text">
+					{{msg.event}}
+				</view>
+			</view>
+		</transition>
 	</view>
 </template>
 
@@ -141,7 +146,9 @@
 	import TabsSticky from "@/components/other/tabs-home.vue";
 	import PdList from "@/components/other/home-list.vue";
 	import slFilter from '@/components/sl-filter/sl-filter.vue';
-	import {mapGetters} from "vuex";
+	import {
+		mapGetters
+	} from "vuex";
 	export default {
 		components: {
 			navTab,
@@ -156,7 +163,17 @@
 		data() {
 			return {
 				detailist: ["可提现", "待提现", "产品额度"],
-				bannerList: [],
+				bannerList: [
+
+				],
+				baradgeList: [{
+					headimgurl: '../static/add_bg.jpg',
+					text: 'xxxx'
+				}],
+				show: true,
+				length: 0,
+				msg:{},
+				num:1,
 				mescroll: null, //mescroll实例对象
 				url: '',
 				adverList: [],
@@ -182,17 +199,16 @@
 					'detailList': [{
 						'title': '全部商品',
 						'value': ''
-					}
-					]
+					}]
 				}],
-				sortType:'',
-				category_id:''
+				sortType: '',
+				category_id: ''
 			}
 		},
 		onLoad(option) {
-			if(option.userid){
-				this.$store.commit('user/setShopId',option.userid)
-			}else{
+			if (option.userid) {
+				this.$store.commit('user/setShopId', option.userid)
+			} else {
 				this.$store.commit('user/clearShopId')
 			}
 			uni.showLoading({
@@ -211,6 +227,31 @@
 					this.bannerList = res.data.items;
 					this.url = this.$baseUrl;
 				});
+			// 获取弹幕
+			this.$http
+				.request({
+					url: "user/events",
+					method: "get"
+				})
+				.then(res => {
+					
+					this.baradgeList = res.data;
+					this.length = this.baradgeList.length;
+					console.log('23',this.length)
+					if(this.length){
+						this.msg = this.baradgeList[0].name;
+						setInterval(() => {
+						  this.num++;
+						  this.show = false;
+						  this.msg = this.baradgeList[this.num % this.length].name;
+						  setTimeout(() => {
+						    this.show = true;
+						  }, 1000);
+						}, 3000);
+					}
+				});
+			
+			
 			this.getadvertising();
 			// 获取商品分类
 			this.$http
@@ -239,19 +280,19 @@
 				this.category_id = val.sort;
 				this.mescroll.resetUpScroll()
 			},
-			handlesort(item){
-				if(!this.sortType){
+			handlesort(item) {
+				if (!this.sortType) {
 					this.sortType = item;
-				}else{
+				} else {
 					console.log()
-					if(this.sortType.indexOf(item) != -1){
-						if(this.sortType.indexOf('-') != -1){
+					if (this.sortType.indexOf(item) != -1) {
+						if (this.sortType.indexOf('-') != -1) {
 							this.sortType = item
-						}else{
-							this.sortType = '-'+item
+						} else {
+							this.sortType = '-' + item
 						}
-						
-					}else{
+
+					} else {
 						this.sortType = item;
 					}
 				}
@@ -270,7 +311,7 @@
 				})
 			},
 			goPage(event) {
-				
+
 				uni.navigateTo({
 					url: event
 				});
@@ -301,7 +342,7 @@
 					mescroll.hideUpScroll(); // 切换菜单,不显示mescroll进度, 显示系统进度条
 					uni.showLoading();
 				}
-				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData,totalSize) => {
+				this.getListDataFromNet(mescroll.num, mescroll.size, (curPageData, totalSize) => {
 					//联网成功的回调
 					console.log("mescroll.num=" + mescroll.num + ", mescroll.size=" + mescroll.size + ", curPageData.length=" +
 						curPageData.length);
@@ -361,16 +402,16 @@
 							params: {
 								page: pageNum,
 								"per-page": pageSize,
-								'ProductSearch[is_enabled]':1,
-								'ProductSearch[is_vip]':0,
-								'ProductSearch[is_coin_usable]':this.tabIndex?1:0,
-								sort:this.sortType,
-								'ProductSearch[category_id]':this.category_id
+								'ProductSearch[is_enabled]': 1,
+								'ProductSearch[is_vip]': 0,
+								'ProductSearch[is_coin_usable]': this.tabIndex ? 1 : 0,
+								sort: this.sortType,
+								'ProductSearch[category_id]': this.category_id
 							}
 						})
 						.then(res => {
 							listData = (res.data.items);
-							successCallback && successCallback(listData,res.data._meta.totalCount);
+							successCallback && successCallback(listData, res.data._meta.totalCount);
 						});
 
 				} catch (e) {
@@ -388,12 +429,14 @@
 
 	.home-page {
 		.active-nav {
-			margin-top:15rpx;
-			padding:0 20rpx;
+			margin-top: 15rpx;
+			padding: 0 20rpx;
+
 			.text-one {
 				width: 90rpx;
 				height: 90rpx;
-				.image{
+
+				.image {
 					width: 100%;
 					height: 90rpx;
 				}
@@ -549,23 +592,26 @@
 		}
 
 		// 筛选
-		.active{
-			width:100%;
-			height:80rpx;
+		.active {
+			width: 100%;
+			height: 80rpx;
 			position: fixed;
 			z-index: 998;
 			top: 80rpx;
 			left: 0;
 			width: 100%;
 		}
-		.active-sort{
+
+		.active-sort {
 			color: $uni-bg-color;
 		}
+
 		.screen-btn {
 			justify-content: space-around;
 			height: 80rpx;
 			border-bottom: 20rpx solid #f5f5f5;
 			background: #fff;
+
 			.price {
 				font-size: 28rpx;
 
@@ -651,7 +697,55 @@
 		// 		}
 		// 	}
 		// }
+		.barrage-list {
+			position: fixed;
+			overflow: hidden;
+			align-items: center;
+			z-index: 999;
+			width: 450rpx;
+			height: 50rpx;
+			left: 20rpx;
+			bottom: 430rpx;
+			background: #fb89b9;
+			border-radius: 50rpx;
+			white-space: nowrap;
+			text-overflow: ellipsis;
 
+			.avatar {
+				width: 30rpx;
+				height: 30rpx;
+				margin: 0 10rpx;
+				border-radius: 50%;
+			}
+
+			.text {
+				font-size: 24rpx;
+				color: #000;
+			}
+
+		}
+		.slide-fade-enter-active {
+		  animation: bounce-in 1s;
+		}
+		.slide-fade-leave-active {
+		  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+		}
+		.slide-fade-enter, .slide-fade-leave-to
+		/* .slide-fade-leave-active for below version 2.1.8 */ {
+		  transform: translateX(10px);
+		  opacity: 0;
+		}
+		@keyframes bounce-in {
+		  0% {
+		    transform: translateX(-100rpx);
+		  }
+		  50% {
+		    transform: translateX(100rpx);
+		  }
+		  100% {
+		    transform: translateX(0px);
+		  }
+		}
 	}
 </style>
 <style lang="scss">
